@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Korea Trip 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--paper:#faf7f2;--gold:#d4a853;--muted:#7a7060;--cream:#f0ebe2}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:#f5f0ea}
+#hdr{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--ink);border-bottom:1px solid rgba(212,168,83,.3);padding:0 14px;height:50px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+#hdr h1{font-size:15px;font-weight:700;color:var(--paper);white-space:nowrap}
+.sub{font-size:10px;color:var(--gold);letter-spacing:.7px;text-transform:uppercase}
+.tabs{display:flex;gap:3px}
+.tab{padding:4px 10px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;border:1.5px solid rgba(212,168,83,.4);color:var(--gold);background:transparent;letter-spacing:.5px;text-transform:uppercase;transition:all .15s}
+.tab.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.tab:hover:not(.on){background:rgba(212,168,83,.15)}
+.hleg{display:flex;gap:8px}
+.hleg-i{display:flex;align-items:center;gap:4px;font-size:9px;color:rgba(250,247,242,.55);text-transform:uppercase;letter-spacing:.4px}
+.hleg-d{width:8px;height:8px;border-radius:50%}
+#body{display:flex;height:calc(100vh - 50px);margin-top:50px}
+#sb{width:240px;flex-shrink:0;background:var(--paper);border-right:1px solid #ddd5c8;overflow-y:auto;z-index:100}
+#sb::-webkit-scrollbar{width:3px}
+#sb::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+#mapwrap{flex:1;position:relative;overflow:hidden;background:#e8e0d4}
+#mapcanvas{position:absolute;top:0;left:0;cursor:grab}
+#mapcanvas.dragging{cursor:grabbing}
+.sh{padding:8px 12px;font-size:9px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;color:var(--muted);background:var(--cream);border-top:1px solid #ddd5c8;border-bottom:1px solid #ddd5c8;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.sh:hover{background:#e8ddd0}
+.sb-b{display:none}.sb-b.open{display:block}
+.pi{padding:6px 12px;cursor:pointer;display:flex;gap:7px;align-items:flex-start;border-left:3px solid transparent;transition:background .1s}
+.pi:hover{background:rgba(0,0,0,.04)}
+.pi.on{background:rgba(192,57,43,.07);border-left-color:#c0392b}
+.pi-n{font-size:11px;font-weight:600;color:var(--ink);line-height:1.3}
+.pi-s{font-size:9px;color:var(--muted);line-height:1.4;margin-top:1px}
+.tl{padding:8px 12px 4px}
+.tl-i{border-left:2px solid #ddd5c8;padding:5px 0 5px 12px;margin-left:4px;position:relative}
+.tl-i::before{content:'';position:absolute;left:-5px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.tl-d{font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase}
+.tl-c{font-size:12px;font-weight:600}
+.tl-s{font-size:10px;color:var(--muted)}
+.fb{padding:8px 12px;background:var(--cream);border-bottom:1px solid #ddd5c8;display:flex;gap:4px;flex-wrap:wrap}
+.fbl{width:100%;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:3px}
+.fbtn{padding:3px 9px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;border:1.5px solid transparent;background:rgba(0,0,0,.06);color:var(--muted);transition:all .12s}
+.fbtn.on,.fbtn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.bdg{padding:2px 6px;border-radius:20px;font-size:8px;font-weight:700;text-transform:uppercase;color:#fff}
+/* Popup */
+#popup{position:absolute;z-index:150;display:none;background:var(--paper);border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.25);min-width:220px;max-width:270px;overflow:hidden}
+.pu-h{padding:12px 14px 8px;border-bottom:1px solid #e8e0d4}
+.pu-tag{display:inline-block;padding:2px 7px;border-radius:20px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#fff;margin-bottom:4px}
+.pu-ti{font-size:14px;font-weight:700;color:var(--ink);line-height:1.3}
+.pu-bd{padding:8px 14px 12px}
+.pu-desc{font-size:11px;color:#555;line-height:1.6;margin-bottom:6px}
+.pu-rows{background:var(--cream);border-radius:6px;padding:8px 10px;margin-bottom:8px}
+.pu-row{display:flex;justify-content:space-between;font-size:10px;padding:2px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+.pu-row:last-child{border:none}
+.pu-lbl{color:var(--muted)}
+.pu-val{font-weight:600;color:var(--ink)}
+.pu-btn{display:flex;align-items:center;gap:6px;background:#FF5A5F;color:#fff;padding:8px 11px;border-radius:6px;text-decoration:none;font-size:11px;font-weight:600}
+.pu-close{position:absolute;top:8px;right:10px;cursor:pointer;font-size:18px;color:var(--muted);line-height:1}
+/* Zoom controls */
+#zctrl{position:absolute;top:10px;right:10px;z-index:150;display:flex;flex-direction:column;gap:2px}
+.zbtn{width:30px;height:30px;background:#1a1a2e;color:#faf7f2;border:none;border-radius:5px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.3);font-weight:300;line-height:1}
+.zbtn:hover{background:#2d2d4a}
+#wbtn{margin-top:4px;width:auto;padding:0 8px;font-size:8px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;height:24px}
+</style>
+</head>
+<body>
+<div id="hdr">
+  <div style="display:flex;align-items:center;gap:8px">
+    <span style="font-size:20px">🇰🇷</span>
+    <div><h1>South Korea Trip 2026</h1><div class="sub">Sep 25–Oct 12 · Seoul · Busan · Jeju · ~10 People</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab on" id="tab-seoul" onclick="goView('seoul',this)">Seoul</div>
+    <div class="tab" id="tab-busan" onclick="goView('busan',this)">Busan</div>
+    <div class="tab" id="tab-jeju" onclick="goView('jeju',this)">Jeju</div>
+    <div class="tab" id="tab-all" onclick="goView('all',this)">All Korea</div>
+  </div>
+  <div class="hleg">
+    <div class="hleg-i"><div class="hleg-d" style="background:#FF5A5F"></div>Airbnb</div>
+    <div class="hleg-i"><div class="hleg-d" style="background:#c0392b"></div>Tourist</div>
+    <div class="hleg-i"><div class="hleg-d" style="background:#7d6608"></div>Day Trips</div>
+  </div>
+</div>
+
+<div id="body">
+<div id="sb">
+  <div class="sh" onclick="tog('tl')">📅 Trip Itinerary <span id="ar-tl">▾</span></div>
+  <div class="sb-b open" id="sec-tl">
+    <div class="tl">
+      <div class="tl-i"><div class="tl-d">Sep 25</div><div class="tl-c" style="color:#7d6608">✈ Depart Toronto</div><div class="tl-s">Via Narita</div></div>
+      <div class="tl-i"><div class="tl-d">Sep 26–Oct 1</div><div class="tl-c" style="color:#c0392b">Seoul — Stay 1</div><div class="tl-s">5 nights · Chuseok</div></div>
+      <div class="tl-i"><div class="tl-d">Oct 1–Oct 5</div><div class="tl-c" style="color:#1a5276">Busan</div><div class="tl-s">4 nights · Seafood</div></div>
+      <div class="tl-i"><div class="tl-d">Oct 5–Oct 8</div><div class="tl-c" style="color:#27ae60">Jeju Island</div><div class="tl-s">3 nights · Hallasan</div></div>
+      <div class="tl-i"><div class="tl-d">Oct 8–Oct 11</div><div class="tl-c" style="color:#c0392b">Seoul — Stay 2</div><div class="tl-s">3 nights · Shopping</div></div>
+      <div class="tl-i"><div class="tl-d">Oct 12</div><div class="tl-c" style="color:#7d6608">✈ Return Toronto</div><div class="tl-s">7:05 PM</div></div>
+    </div>
+  </div>
+
+  <div class="fb">
+    <div class="fbl">Filter Map</div>
+    <div class="fbtn on" onclick="doFilter('all',this)">All</div>
+    <div class="fbtn" onclick="doFilter('airbnb',this)">Airbnb</div>
+    <div class="fbtn" onclick="doFilter('seoul',this)">Seoul</div>
+    <div class="fbtn" onclick="doFilter('busan',this)">Busan</div>
+    <div class="fbtn" onclick="doFilter('jeju',this)">Jeju</div>
+    <div class="fbtn" onclick="doFilter('daytrip',this)">Day Trips</div>
+  </div>
+
+  <div class="sh" onclick="tog('ab')">🏠 Airbnb Options <span id="ar-ab">▾</span></div>
+  <div class="sb-b open" id="sec-ab">
+    <div class="pi" onclick="focusPlace('a1')"><div><div class="pi-n">Option A — Bukchon area</div><div class="pi-s">Anguk stn (Line 3) ~5 min walk<br>Sep 26–Oct 1 &amp; Oct 8–11</div></div></div>
+    <div class="pi" onclick="focusPlace('a2')"><div><div class="pi-n">Option B — Gwanghwamun</div><div class="pi-s">Gyeongbokgung stn (Line 3) ~8 min<br>Sep 26–Oct 1 &amp; Oct 8–11</div></div></div>
+  </div>
+
+  <div class="sh" onclick="tog('sub')">🚇 Subway Lines <span id="ar-sub">▾</span></div>
+  <div class="sb-b open" id="sec-sub">
+    <div style="padding:8px 10px 4px;display:flex;flex-direction:column;gap:5px">
+      <div style="background:#003499;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 1 — Dark Blue</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Incheon ↔ Soyosan · Seoul Stn, Dongdaemun</div></div>
+      <div style="background:#37b42d;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 2 — Green · Circular</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">City Hall, Hongdae, Gangnam, Jamsil</div></div>
+      <div style="background:#fe5d10;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 3 — Orange ⭐ Airbnbs</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Anguk, Gyeongbokgung, Chungmuro</div></div>
+      <div style="background:#00a2d1;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 4 — Sky Blue</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Myeongdong, Seoul Stn, Hyehwa</div></div>
+      <div style="background:#996cac;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 5 — Purple</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Gwanghwamun, Yeouido, Gongdeok</div></div>
+      <div style="background:#cd7c2f;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 6 — Brown</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Itaewon, Mapo, Bulgwang, Sindang</div></div>
+      <div style="background:#747f00;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 7 — Olive</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Boramae, Gangnam-gu Office</div></div>
+      <div style="background:#e6186c;color:#fff;border-radius:5px;padding:5px 10px;margin-bottom:2px"><div style="font-size:10px;font-weight:700">Line 9 — Pink · Express</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Yeouido, Express Bus Terminal, COEX</div></div>
+    </div>
+    <div style="border-top:1px solid #e8e0d4;padding:8px 12px 8px">
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">🚶 Walking from Airbnbs</div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <div style="display:flex;align-items:center;gap:5px"><div style="background:rgba(255,90,95,0.88);color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:1.5px solid #fff">①</div><span style="font-size:9px;color:var(--muted)">5 min</span></div>
+        <div style="display:flex;align-items:center;gap:5px"><div style="background:rgba(255,90,95,0.88);color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:1.5px solid #fff">②</div><span style="font-size:9px;color:var(--muted)">10 min</span></div>
+        <div style="display:flex;align-items:center;gap:5px"><div style="background:rgba(255,90,95,0.88);color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:1.5px solid #fff">③</div><span style="font-size:9px;color:var(--muted)">15 min</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh" onclick="tog('sa')">📍 Seoul <span class="bdg" style="background:#c0392b">5+3 nights</span></div>
+  <div class="sb-b open" id="sec-sa"><div id="list-seoul"></div></div>
+  <div class="sh" onclick="tog('ba')">📍 Busan <span class="bdg" style="background:#1a5276">4 nights</span></div>
+  <div class="sb-b" id="sec-ba"><div id="list-busan"></div></div>
+  <div class="sh" onclick="tog('ja')">📍 Jeju <span class="bdg" style="background:#27ae60">3 nights</span></div>
+  <div class="sb-b" id="sec-ja"><div id="list-jeju"></div></div>
+  <div class="sh" onclick="tog('da')">🚌 Day Trips <span id="ar-da">▶</span></div>
+  <div class="sb-b" id="sec-da"><div id="list-daytrip"></div></div>
+</div>
+
+<div id="mapwrap">
+  <canvas id="mapcanvas"></canvas>
+  <div id="zctrl">
+    <button class="zbtn" onclick="zoom(1)">+</button>
+    <button class="zbtn" onclick="zoom(-1)">−</button>
+    <button class="zbtn" id="wbtn" onclick="toggleWalk()">① hide</button>
+  </div>
+  <div id="popup">
+    <span class="pu-close" onclick="closePopup()">×</span>
+    <div id="pu-inner"></div>
+  </div>
+</div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────
+var AIRBNBS = {
+  a1:{id:'a1',lat:37.5800,lng:126.9840,city:'airbnb',name:'Airbnb Option A',sub:'Bukchon area · Anguk stn (Line 3) ~5 min',
+    rows:[{l:'Nearest metro',v:'Anguk (Line 3)'},{l:'Walk to metro',v:'~5 min'},{l:'To Myeongdong',v:'2 stops ~8 min'},{l:'To Gangnam',v:'5 stops ~15 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],
+    url:'https://www.airbnb.ca/rooms/1071219924971118739'},
+  a2:{id:'a2',lat:37.5667,lng:126.9780,city:'airbnb',name:'Airbnb Option B',sub:'Gwanghwamun · Gyeongbokgung stn (Line 3) ~8 min',
+    rows:[{l:'Nearest metro',v:'Gyeongbokgung (Line 3)'},{l:'Walk to metro',v:'~8 min'},{l:'To Myeongdong',v:'3 stops ~10 min'},{l:'To Gangnam',v:'6 stops ~20 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],
+    url:'https://www.airbnb.ca/rooms/52696974'}
+};
+
+var PLACES = [
+  {id:'s1',city:'seoul',lat:37.5797,lng:126.9770,name:'Gyeongbokgung Palace',sub:'Line 3 · Gyeongbokgung stn'},
+  {id:'s2',city:'seoul',lat:37.5826,lng:126.9850,name:'Bukchon Hanok Village',sub:'Line 3 · Anguk stn'},
+  {id:'s3',city:'seoul',lat:37.5793,lng:126.9910,name:'Changdeokgung Palace',sub:'Line 3 · Anguk stn'},
+  {id:'s4',city:'seoul',lat:37.5512,lng:126.9882,name:'Namsan Tower',sub:'Walk from Myeongdong'},
+  {id:'s5',city:'seoul',lat:37.5563,lng:126.9237,name:'Hongdae',sub:'Line 2 · Hongik Univ stn'},
+  {id:'s6',city:'seoul',lat:37.5172,lng:127.0473,name:'Gangnam',sub:'Line 2 · Gangnam stn'},
+  {id:'s7',city:'seoul',lat:37.5131,lng:127.0589,name:'COEX & Starfield',sub:'Line 9 · Bongeunsa stn'},
+  {id:'s8',city:'seoul',lat:37.5636,lng:126.9827,name:'Myeongdong',sub:'Line 4 · Myeongdong stn'},
+  {id:'s9',city:'seoul',lat:37.5755,lng:127.0610,name:'Gyeongdong Market',sub:'Line 1 · Jegi-dong stn'},
+  {id:'s10',city:'seoul',lat:37.5500,lng:126.9075,name:'Mangwon Market',sub:'Line 6 · Mangwon stn'},
+  {id:'s11',city:'seoul',lat:37.5583,lng:126.9763,name:'Namdaemun Market',sub:'Line 4 · Hoehyeon stn'},
+  {id:'s12',city:'seoul',lat:37.5700,lng:126.9990,name:'Gwangjang Market',sub:'Line 1 · Jongno 5-ga stn'},
+  {id:'s13',city:'seoul',lat:37.5346,lng:126.9940,name:'Itaewon',sub:'Line 6 · Itaewon stn'},
+  {id:'s14',city:'seoul',lat:37.5702,lng:126.9994,name:'Cheonggyecheon Stream',sub:'Restored urban stream · Cheonggye Plaza'},
+  {id:'s15',city:'seoul',lat:37.5672,lng:127.0090,name:'Dongdaemun Design Plaza',sub:'Line 2/4/5 · DDP stn · Zaha Hadid'},
+  {id:'s16',city:'seoul',lat:37.5285,lng:126.9942,name:'Han River Park (Banpo)',sub:'Banpo Bridge Rainbow Fountain'},
+  {id:'s17',city:'seoul',lat:37.5796,lng:127.0074,name:'Ihwa Mural Village',sub:'Hillside murals · Walk from Hyehwa stn'},
+  {id:'b1',city:'busan',lat:35.0970,lng:129.0350,name:'Jagalchi Fish Market',sub:"Korea's largest seafood market"},
+  {id:'b2',city:'busan',lat:35.1588,lng:129.1603,name:'Haeundae Beach',sub:'Famous beach & waterfront'},
+  {id:'b3',city:'busan',lat:35.0980,lng:129.0107,name:'Gamcheon Culture Village',sub:'Colourful hillside art village'},
+  {id:'b4',city:'busan',lat:35.1879,lng:129.2209,name:'Haedong Yonggungsa',sub:'Coastal temple on rocky cliffs'},
+  {id:'b5',city:'busan',lat:35.1560,lng:129.1340,name:'Zest Bar',sub:'Cocktails, Haeundae area'},
+  {id:'j1',city:'jeju',lat:33.3617,lng:126.5292,name:'Hallasan',sub:"South Korea's highest peak"},
+  {id:'j2',city:'jeju',lat:33.4609,lng:126.9424,name:'Seongsan Ilchulbong',sub:'UNESCO Sunrise Peak'},
+  {id:'j3',city:'jeju',lat:33.5283,lng:126.7710,name:'Manjanggul Lava Tube',sub:"One of world's longest lava caves"},
+  {id:'j4',city:'jeju',lat:33.2450,lng:126.4117,name:'Jeju Beaches',sub:'Hyeopjae, Hamdeok, Gwakji'},
+  {id:'d1',city:'daytrip',lat:35.1935,lng:128.1060,name:'Jinju',sub:'Lantern Festival – week of Oct 9!'},
+  {id:'d2',city:'daytrip',lat:35.8562,lng:129.2247,name:'Gyeongju',sub:'UNESCO site, Bulguksa Temple'},
+  {id:'d3',city:'daytrip',lat:35.5383,lng:129.3114,name:'Ulsan',sub:'Whale Museum, Grand Park'},
+  {id:'d4',city:'daytrip',lat:38.1194,lng:128.4658,name:'Sokcho / Seoraksan',sub:'Fall foliage, national park'},
+  {id:'d5',city:'daytrip',lat:37.2893,lng:127.0134,name:'Suwon',sub:'Hwaseong Fortress (UNESCO)'},
+];
+
+var ALL_MARKERS = PLACES.concat(Object.values(AIRBNBS));
+
+var COLORS = {seoul:'#c0392b',busan:'#1a5276',jeju:'#27ae60',daytrip:'#7d6608',airbnb:'#FF5A5F'};
+
+// OSM tile helpers
+var TILE_SIZE = 256;
+
+function lng2tile(lng, z){ return Math.floor((lng+180)/360 * Math.pow(2,z)); }
+function lat2tile(lat, z){ return Math.floor((1 - Math.log(Math.tan(lat*Math.PI/180)+1/Math.cos(lat*Math.PI/180))/Math.PI)/2 * Math.pow(2,z)); }
+function tile2lng(x,z){ return x/Math.pow(2,z)*360-180; }
+function tile2lat(y,z){ var n=Math.PI-2*Math.PI*y/Math.pow(2,z); return 180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))); }
+
+// Geo → canvas pixel
+function geo2px(lat,lng){
+  var scale = TILE_SIZE * Math.pow(2, state.zoom);
+  var x = (lng + 180) / 360 * scale - state.offX;
+  var sinLat = Math.sin(lat * Math.PI / 180);
+  var y = (0.5 - Math.log((1+sinLat)/(1-sinLat))/(4*Math.PI)) * scale - state.offY;
+  return {x:x, y:y};
+}
+
+// View presets [lat, lng, zoom]
+var VIEWS = {
+  seoul: [37.562, 126.978, 13],
+  busan: [35.138, 129.082, 13],
+  jeju:  [33.390, 126.550, 12],
+  all:   [36.5,   127.8,   8]
+};
+
+var state = {zoom:13, offX:0, offY:0, showWalk:true, filter:'all'};
+var tileCache = {};
+var canvas, ctx, wrap;
+
+function setView(lat, lng, z) {
+  state.zoom = z;
+  var scale = TILE_SIZE * Math.pow(2, z);
+  var sinLat = Math.sin(lat * Math.PI / 180);
+  state.offX = (lng + 180) / 360 * scale - wrap.clientWidth / 2;
+  state.offY = (0.5 - Math.log((1+sinLat)/(1-sinLat))/(4*Math.PI)) * scale - wrap.clientHeight / 2;
+  draw();
+}
+
+// ── TILE LOADING ─────────────────────────────────────
+// Carto tiles — no referrer restriction, clean design
+var tileSubdomains = ['a','b','c','d'];
+var tileIdx = 0;
+
+function getTileUrl(x,y,z){
+  var s = tileSubdomains[tileIdx % tileSubdomains.length];
+  tileIdx++;
+  return 'https://'+s+'.basemaps.cartocdn.com/rastertiles/voyager/'+z+'/'+x+'/'+y+'.png';
+}
+
+function loadTile(x, y, z) {
+  var key = z+'/'+x+'/'+y;
+  if (tileCache[key]) return tileCache[key];
+  var img = new Image();
+  img.onload = function(){ tileCache[key] = img; draw(); };
+  img.src = getTileUrl(x, y, z);
+  tileCache[key] = img; // store even if loading so we don't double-request
+  return img;
+}
+
+// ── SUBWAY LINES DATA ─────────────────────────────────
+var SUBWAY = [
+  {name:'Line 1',color:'#003499',pts:[[37.5112,126.9424],[37.5298,126.9643],[37.5548,126.9707],[37.5709,126.9981],[37.5715,127.0095],[37.5805,127.0449]]},
+  {name:'Line 2',color:'#37b42d',pts:[[37.5574,126.9252],[37.5601,126.9641],[37.5645,126.9769],[37.5668,127.0048],[37.5659,127.0191],[37.5612,127.0359],[37.5130,127.1000],[37.4979,127.0277],[37.4769,126.9812],[37.4840,126.9295],[37.5343,126.9010],[37.5497,126.9148],[37.5574,126.9252]]},
+  {name:'Line 3',color:'#fe5d10',pts:[[37.4848,127.1027],[37.5048,127.0054],[37.5390,127.0186],[37.5607,126.9979],[37.5660,126.9924],[37.5762,126.9852],[37.5793,126.9773],[37.5724,126.9590],[37.6092,126.9328]]},
+  {name:'Line 4',color:'#00a2d1',pts:[[37.6373,127.0137],[37.5887,127.0031],[37.5828,127.0017],[37.5636,126.9826],[37.5548,126.9707],[37.5363,126.9727],[37.5124,126.9819],[37.4769,126.9812]]},
+  {name:'Line 5',color:'#996cac',pts:[[37.5219,126.9241],[37.5455,126.9519],[37.5716,126.9770],[37.5706,126.9919],[37.5668,127.0048],[37.5553,127.0358]]},
+  {name:'Line 6',color:'#cd7c2f',pts:[[37.6092,126.9328],[37.5384,126.9504],[37.5346,126.9940],[37.5519,127.0047],[37.5659,127.0191],[37.5747,127.0165]]},
+  {name:'Line 7',color:'#747f00',pts:[[37.5343,126.9010],[37.4956,126.9251],[37.4939,126.9786],[37.5424,127.0547],[37.5511,127.0793]]},
+  {name:'Line 9',color:'#e6186c',pts:[[37.5219,126.9241],[37.5124,126.9819],[37.5048,127.0054],[37.5087,127.0620],[37.5124,127.0827]]},
+];
+
+// ── DRAW ─────────────────────────────────────────────
+function draw() {
+  var W = wrap.clientWidth, H = wrap.clientHeight;
+  canvas.width = W; canvas.height = H;
+  ctx.clearRect(0,0,W,H);
+
+  // Draw map tiles
+  var z = Math.round(state.zoom);
+  var tileScale = TILE_SIZE * Math.pow(2, z);
+  // Scale tiles slightly if zooming between integer levels for smooth zoom feel
+  var scaleFactor = Math.pow(2, state.zoom - z);
+  var tScaled = Math.round(TILE_SIZE * scaleFactor);
+  var offXz = state.offX * Math.pow(2, z) / Math.pow(2, state.zoom);
+  var offYz = state.offY * Math.pow(2, z) / Math.pow(2, state.zoom);
+  var tileX0 = Math.floor(offXz / TILE_SIZE);
+  var tileY0 = Math.floor(offYz / TILE_SIZE);
+  var tilesX = Math.ceil(W / tScaled) + 2;
+  var tilesY = Math.ceil(H / tScaled) + 2;
+  var maxTile = Math.pow(2, z) - 1;
+
+  for (var tx = tileX0; tx <= tileX0 + tilesX; tx++) {
+    for (var ty = tileY0; ty <= tileY0 + tilesY; ty++) {
+      var wx = ((tx % (maxTile+1)) + (maxTile+1)) % (maxTile+1);
+      var wy = Math.max(0, Math.min(maxTile, ty));
+      var img = loadTile(wx, wy, z);
+      var px = Math.round(tx * tScaled - offXz * scaleFactor);
+      var py = Math.round(ty * tScaled - offYz * scaleFactor);
+      if (img && img.complete && img.naturalWidth > 10) {
+        ctx.drawImage(img, px, py, tScaled, tScaled);
+      } else {
+        ctx.fillStyle = '#f0ebe2';
+        ctx.fillRect(px, py, tScaled, tScaled);
+      }
+    }
+  }
+
+  // Only draw overlays at Seoul zoom levels
+  if (z >= 11) {
+    drawSubway();
+    if (state.showWalk) drawWalkRings();
+    drawMarkers();
+  } else {
+    drawMarkers(); // always draw markers
+  }
+}
+
+function drawSubway() {
+  if (state.filter !== 'all' && state.filter !== 'seoul') return;
+  SUBWAY.forEach(function(line) {
+    ctx.save();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    line.pts.forEach(function(pt, i) {
+      var p = geo2px(pt[0], pt[1]);
+      i===0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+    });
+    ctx.stroke();
+    ctx.strokeStyle = line.color;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    line.pts.forEach(function(pt, i) {
+      var p = geo2px(pt[0], pt[1]);
+      i===0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+    });
+    ctx.stroke();
+    ctx.restore();
+  });
+}
+
+function drawWalkRings() {
+  if (state.filter !== 'all' && state.filter !== 'airbnb' && state.filter !== 'seoul') return;
+  var radii = [400, 800, 1200];
+  var opacities = [0.65, 0.38, 0.18];
+  var nums = ['①','②','③'];
+  Object.values(AIRBNBS).forEach(function(ab) {
+    radii.forEach(function(r, i) {
+      var center = geo2px(ab.lat, ab.lng);
+      // 1 degree lat ≈ 111320m; convert radius to pixels
+      var pxPerMeter = (TILE_SIZE * Math.pow(2, Math.round(state.zoom))) / (111320 * 360);
+      var pxR = r * pxPerMeter;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,90,95,' + opacities[i] + ')';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([6, 4]);
+      ctx.fillStyle = 'rgba(255,90,95,' + (opacities[i]*0.06) + ')';
+      ctx.beginPath();
+      ctx.arc(center.x, center.y, pxR, 0, Math.PI*2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+      // Number label at top of ring
+      ctx.save();
+      ctx.font = 'bold 13px DM Sans,sans-serif';
+      ctx.fillStyle = '#fff';
+      ctx.shadowColor = 'rgba(255,90,95,0.9)';
+      ctx.shadowBlur = 8;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(nums[i], center.x, center.y - pxR - 2);
+      ctx.restore();
+    });
+  });
+}
+
+function drawMarkers() {
+  var f = state.filter;
+  ALL_MARKERS.forEach(function(p) {
+    if (f !== 'all' && f !== p.city && !(f==='airbnb' && p.city==='airbnb')) {
+      if (!(f === 'airbnb' && p.city === 'airbnb')) {
+        if (f !== p.city) return;
+      }
+    }
+    var pos = geo2px(p.lat, p.lng);
+    var color = COLORS[p.city] || '#c0392b';
+    if (p.city === 'airbnb') {
+      // Airbnb teardrop pin
+      ctx.save();
+      ctx.translate(pos.x, pos.y - 14);
+      ctx.rotate(-Math.PI/4);
+      ctx.fillStyle = '#FF5A5F';
+      ctx.shadowColor = 'rgba(0,0,0,0.35)';
+      ctx.shadowBlur = 6;
+      ctx.beginPath();
+      ctx.roundRect(0, 0, 18, 20, [9, 9, 9, 0]);
+      ctx.fill();
+      ctx.restore();
+      ctx.save();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 9px DM Sans,sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(p.id==='a1'?'A':'B', pos.x + 2, pos.y - 12);
+      ctx.restore();
+    } else {
+      // Circle dot
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,0.35)';
+      ctx.shadowBlur = 4;
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, 7, 0, Math.PI*2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, 5.5, 0, Math.PI*2);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.restore();
+    }
+  });
+}
+
+// ── HIT TESTING ──────────────────────────────────────
+function findMarkerAt(mx, my) {
+  var hit = null;
+  ALL_MARKERS.forEach(function(p) {
+    var f = state.filter;
+    if (f !== 'all' && f !== p.city) return;
+    var pos = geo2px(p.lat, p.lng);
+    var dx = mx - pos.x, dy = my - pos.y;
+    var r = p.city === 'airbnb' ? 18 : 10;
+    if (dx*dx + dy*dy < r*r) hit = p;
+  });
+  return hit;
+}
+
+// ── POPUP ─────────────────────────────────────────────
+function showPopup(p, cx, cy) {
+  var color = COLORS[p.city] || '#888';
+  var cityLabel = {seoul:'Seoul',busan:'Busan',jeju:'Jeju Island',daytrip:'Day Trip',airbnb:'Airbnb'}[p.city] || p.city;
+  var inner = '<div class="pu-h"><div><span class="pu-tag" style="background:'+color+'">'+cityLabel+'</span></div><div class="pu-ti">'+p.name+'</div></div>';
+  inner += '<div class="pu-bd">';
+  if (p.rows) {
+    inner += '<div class="pu-rows">'+p.rows.map(function(r){ return '<div class="pu-row"><span class="pu-lbl">'+r.l+'</span><span class="pu-val">'+r.v+'</span></div>'; }).join('')+'</div>';
+    inner += '<a href="'+p.url+'" target="_blank" class="pu-btn">View on Airbnb →</a>';
+  } else {
+    inner += '<div class="pu-desc">'+p.sub+'</div>';
+  }
+  inner += '</div>';
+  var pu = document.getElementById('popup');
+  document.getElementById('pu-inner').innerHTML = inner;
+  var W = wrap.clientWidth, H = wrap.clientHeight;
+  var pw = 240, ph = 160;
+  var left = cx + 12; if (left + pw > W - 10) left = cx - pw - 12;
+  var top = cy - 20; if (top + ph > H - 10) top = H - ph - 10; if (top < 5) top = 5;
+  pu.style.left = left + 'px';
+  pu.style.top = top + 'px';
+  pu.style.display = 'block';
+}
+
+function closePopup() { document.getElementById('popup').style.display = 'none'; }
+
+// ── DRAG / PAN (attached after DOM ready) ─────────────
+var drag = {active:false, startX:0, startY:0, offX0:0, offY0:0};
+var touch0 = null;
+
+// ── GLOBAL CONTROLS ──────────────────────────────────
+window.zoom = function(dir) {
+  var cx = wrap.clientWidth/2, cy = wrap.clientHeight/2;
+  var latLngX = (state.offX + cx) / (TILE_SIZE * Math.pow(2, state.zoom));
+  var latLngY = (state.offY + cy) / (TILE_SIZE * Math.pow(2, state.zoom));
+  state.zoom = Math.max(5, Math.min(18, state.zoom + dir));
+  state.offX = latLngX * TILE_SIZE * Math.pow(2, state.zoom) - cx;
+  state.offY = latLngY * TILE_SIZE * Math.pow(2, state.zoom) - cy;
+  draw();
+};
+
+window.toggleWalk = function() {
+  state.showWalk = !state.showWalk;
+  document.getElementById('wbtn').textContent = state.showWalk ? '① hide' : '① show';
+  draw();
+};
+
+window.goView = function(v, btn) {
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); });
+  if (btn) btn.classList.add('on');
+  var vd = VIEWS[v];
+  setView(vd[0], vd[1], vd[2]);
+  closePopup();
+};
+
+window.focusPlace = function(id) {
+  var p = ALL_MARKERS.filter(function(x){ return x.id===id; })[0];
+  if (!p) return;
+  document.querySelectorAll('.pi').forEach(function(e){ e.classList.remove('on'); });
+  var el = document.getElementById('pi-'+id);
+  if (el) el.classList.add('on');
+  setView(p.lat, p.lng, 15);
+  setTimeout(function(){
+    var pos = geo2px(p.lat, p.lng);
+    showPopup(p, pos.x, pos.y);
+  }, 50);
+};
+
+window.doFilter = function(f, btn) {
+  document.querySelectorAll('.fbtn').forEach(function(b){ b.classList.remove('on'); });
+  if (btn) btn.classList.add('on');
+  state.filter = f;
+  var viewMap = {all:'all',seoul:'seoul',busan:'busan',jeju:'jeju',airbnb:'seoul',daytrip:'all'};
+  var vk = viewMap[f];
+  if (vk) {
+    var tabEl = document.getElementById('tab-'+vk);
+    window.goView(vk, tabEl || null);
+  }
+  draw();
+};
+
+window.tog = function(n) {
+  var b = document.getElementById('sec-'+n);
+  var a = document.getElementById('ar-'+n);
+  if (!b) return;
+  b.classList.toggle('open');
+  if (a) a.innerHTML = b.classList.contains('open') ? '▾' : '▶';
+};
+
+// ── SIDEBAR LISTS ────────────────────────────────────
+function renderList(elId, city) {
+  var items = PLACES.filter(function(p){ return p.city===city; });
+  document.getElementById(elId).innerHTML = items.map(function(p) {
+    return '<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')">'
+      +'<div style="width:8px;height:8px;border-radius:50%;background:'+(COLORS[p.city]||'#c0392b')+';flex-shrink:0;margin-top:4px"></div>'
+      +'<div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div>'
+      +'</div>';
+  }).join('');
+}
+renderList('list-seoul','seoul');
+renderList('list-busan','busan');
+renderList('list-jeju','jeju');
+renderList('list-daytrip','daytrip');
+
+// ── INIT ─────────────────────────────────────────────
+window.addEventListener('load', function() {
+  wrap = document.getElementById('mapwrap');
+  canvas = document.getElementById('mapcanvas');
+  ctx = canvas.getContext('2d');
+  canvas.width = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+
+  // ── Mouse events ──
+  canvas.addEventListener('mousedown', function(e) {
+    drag.active = true;
+    drag.startX = e.clientX; drag.startY = e.clientY;
+    drag.offX0 = state.offX; drag.offY0 = state.offY;
+    canvas.classList.add('dragging');
+    closePopup();
+  });
+  window.addEventListener('mousemove', function(e) {
+    if (!drag.active) return;
+    state.offX = drag.offX0 - (e.clientX - drag.startX);
+    state.offY = drag.offY0 - (e.clientY - drag.startY);
+    draw();
+  });
+  window.addEventListener('mouseup', function(e) {
+    if (!drag.active) return;
+    var moved = Math.abs(e.clientX-drag.startX)+Math.abs(e.clientY-drag.startY);
+    drag.active = false;
+    canvas.classList.remove('dragging');
+    if (moved < 5) {
+      var rect = canvas.getBoundingClientRect();
+      var mx = e.clientX - rect.left, my = e.clientY - rect.top;
+      var hit = findMarkerAt(mx, my);
+      if (hit) showPopup(hit, mx, my); else closePopup();
+    }
+  });
+
+  // ── Touch events ──
+  canvas.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    if (e.touches.length === 1) {
+      drag.active = true;
+      drag.startX = e.touches[0].clientX; drag.startY = e.touches[0].clientY;
+      drag.offX0 = state.offX; drag.offY0 = state.offY;
+      touch0 = {x: e.touches[0].clientX, y: e.touches[0].clientY};
+    }
+  }, {passive:false});
+  canvas.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    if (drag.active && e.touches.length === 1) {
+      state.offX = drag.offX0 - (e.touches[0].clientX - drag.startX);
+      state.offY = drag.offY0 - (e.touches[0].clientY - drag.startY);
+      draw();
+    }
+  }, {passive:false});
+  canvas.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    if (touch0) {
+      var dx = e.changedTouches[0].clientX - touch0.x;
+      var dy = e.changedTouches[0].clientY - touch0.y;
+      if (Math.abs(dx)+Math.abs(dy) < 8) {
+        var rect = canvas.getBoundingClientRect();
+        var mx = e.changedTouches[0].clientX - rect.left;
+        var my = e.changedTouches[0].clientY - rect.top;
+        var hit = findMarkerAt(mx, my);
+        if (hit) showPopup(hit, mx, my); else closePopup();
+      }
+    }
+    drag.active = false; touch0 = null;
+  }, {passive:false});
+
+  // ── Scroll to zoom ──
+  canvas.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    var rect = canvas.getBoundingClientRect();
+    var mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    var latLngX = (state.offX + mx) / (TILE_SIZE * Math.pow(2, state.zoom));
+    var latLngY = (state.offY + my) / (TILE_SIZE * Math.pow(2, state.zoom));
+    state.zoom = Math.max(5, Math.min(18, state.zoom - e.deltaY * 0.002));
+    state.offX = latLngX * TILE_SIZE * Math.pow(2, state.zoom) - mx;
+    state.offY = latLngY * TILE_SIZE * Math.pow(2, state.zoom) - my;
+    draw();
+  }, {passive:false});
+
+  // Handle resize
+  window.addEventListener('resize', function() {
+    canvas.width = wrap.clientWidth;
+    canvas.height = wrap.clientHeight;
+    draw();
+  });
+
+  setView(37.562, 126.978, 13);
+});
+</script>
+</body>
+</html>
