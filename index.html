@@ -356,33 +356,84 @@ function drawSubway() {
 function drawWalkRings() {
   if (state.filter !== 'all' && state.filter !== 'airbnb' && state.filter !== 'seoul') return;
   var radii = [400, 800, 1200];
-  var opacities = [0.65, 0.38, 0.18];
+  var labels = ['5 min', '10 min', '15 min'];
   var nums = ['①','②','③'];
+  // Stronger fill + stroke opacities
+  var fillOps  = [0.13, 0.08, 0.04];
+  var strokeOps = [1.0,  0.75, 0.45];
+
   Object.values(AIRBNBS).forEach(function(ab) {
     radii.forEach(function(r, i) {
       var center = geo2px(ab.lat, ab.lng);
-      // 1 degree lat ≈ 111320m; convert radius to pixels
       var pxPerMeter = (TILE_SIZE * Math.pow(2, Math.round(state.zoom))) / (111320 * 360);
       var pxR = r * pxPerMeter;
+
+      // ── Ring fill ──
       ctx.save();
-      ctx.strokeStyle = 'rgba(255,90,95,' + opacities[i] + ')';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([6, 4]);
-      ctx.fillStyle = 'rgba(255,90,95,' + (opacities[i]*0.06) + ')';
       ctx.beginPath();
       ctx.arc(center.x, center.y, pxR, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(255,75,85,' + fillOps[i] + ')';
       ctx.fill();
+      ctx.restore();
+
+      // ── Ring stroke — solid + thick with glow ──
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(center.x, center.y, pxR, 0, Math.PI*2);
+      // Glow halo
+      ctx.strokeStyle = 'rgba(255,75,85,0.25)';
+      ctx.lineWidth = 8;
+      ctx.setLineDash([]);
+      ctx.stroke();
+      // Solid inner stroke
+      ctx.strokeStyle = 'rgba(255,75,85,' + strokeOps[i] + ')';
+      ctx.lineWidth = 2.5;
+      ctx.setLineDash([8, 5]);
       ctx.stroke();
       ctx.restore();
-      // Number label at top of ring
+
+      // ── Badge pill at top of ring ──
       ctx.save();
-      ctx.font = 'bold 13px DM Sans,sans-serif';
+      var bx = center.x;
+      var by = center.y - pxR - 1;
+      var bLabel = nums[i] + '  ' + labels[i];
+      ctx.font = 'bold 11px DM Sans,sans-serif';
+      var tw = ctx.measureText(bLabel).width;
+      var bw = tw + 18, bh = 20, br = 10;
+      var bleft = bx - bw/2;
+      var btop  = by - bh;
+
+      // Pill background
+      ctx.beginPath();
+      ctx.moveTo(bleft + br, btop);
+      ctx.lineTo(bleft + bw - br, btop);
+      ctx.arcTo(bleft+bw, btop, bleft+bw, btop+bh, br);
+      ctx.lineTo(bleft+bw, btop+bh-br);
+      ctx.arcTo(bleft+bw, btop+bh, bleft+bw-br, btop+bh, br);
+      ctx.lineTo(bleft+br, btop+bh);
+      ctx.arcTo(bleft, btop+bh, bleft, btop+bh-br, br);
+      ctx.lineTo(bleft, btop+br);
+      ctx.arcTo(bleft, btop, bleft+br, btop, br);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(220,50,60,0.92)';
+      ctx.shadowColor = 'rgba(0,0,0,0.35)';
+      ctx.shadowBlur = 6;
+      ctx.fill();
+
+      // Pill border
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([]);
+      ctx.stroke();
+
+      // Pill text
       ctx.fillStyle = '#fff';
-      ctx.shadowColor = 'rgba(255,90,95,0.9)';
-      ctx.shadowBlur = 8;
+      ctx.shadowColor = 'rgba(0,0,0,0.3)';
+      ctx.shadowBlur = 3;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(nums[i], center.x, center.y - pxR - 2);
+      ctx.fillText(bLabel, bx, btop + bh/2);
       ctx.restore();
     });
   });
