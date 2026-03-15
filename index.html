@@ -87,6 +87,90 @@ html,body{height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;backgroun
 
 <div id="body">
 <div id="sb">
+  <!-- ══ BUDGET PANEL ══ -->
+  <div id="budget-bar" style="background:var(--ink);border-bottom:2px solid rgba(212,168,83,.4);padding:10px 12px 8px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+      <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px">💰 Trip Budget — 12 People · 17 Nights</div>
+      <div style="display:flex;gap:4px">
+        <div id="cur-cad" onclick="setCur('cad')" style="cursor:pointer;padding:2px 7px;border-radius:10px;font-size:8px;font-weight:700;background:var(--gold);color:var(--ink)">CAD</div>
+        <div id="cur-usd" onclick="setCur('usd')" style="cursor:pointer;padding:2px 7px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(212,168,83,.2);color:var(--gold)">USD</div>
+      </div>
+    </div>
+
+    <!-- Per-person total strip -->
+    <div style="background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.3);border-radius:7px;padding:6px 10px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:8px;color:rgba(250,247,242,.55);text-transform:uppercase;letter-spacing:.6px">Est. per person (excl. flights)</div>
+        <div id="pp-total" style="font-size:20px;font-weight:700;color:#faf7f2;line-height:1.1">$2,850</div>
+        <div id="pp-day" style="font-size:9px;color:var(--gold)">$168 / day</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:8px;color:rgba(250,247,242,.55);text-transform:uppercase;letter-spacing:.6px">Group total (12 pax)</div>
+        <div id="grp-total" style="font-size:16px;font-weight:700;color:#faf7f2;line-height:1.2">$34,200</div>
+        <div style="font-size:9px;color:rgba(250,247,242,.5)">excl. flights</div>
+      </div>
+    </div>
+
+    <!-- Category breakdown grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:7px">
+
+      <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #FF5A5F">
+        <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">🏠 Lodging</div>
+        <div id="cat-lodge-pp" style="font-size:13px;font-weight:700;color:#faf7f2">$1,190</div>
+        <div id="cat-lodge-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">$70/night · pp</div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #37b42d">
+        <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">🍜 Food</div>
+        <div id="cat-food-pp" style="font-size:13px;font-weight:700;color:#faf7f2">$765</div>
+        <div id="cat-food-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">$45/day · pp</div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #00a2d1">
+        <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">🚇 Local Transit</div>
+        <div id="cat-transit-pp" style="font-size:13px;font-weight:700;color:#faf7f2">$255</div>
+        <div id="cat-transit-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">$15/day · pp</div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #d4a853">
+        <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">✈ Inter-city Travel</div>
+        <div id="cat-intercity-pp" style="font-size:13px;font-weight:700;color:#faf7f2">$210</div>
+        <div id="cat-intercity-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">KTX + flights pp</div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #996cac">
+        <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">🎟 Activities</div>
+        <div id="cat-act-pp" style="font-size:13px;font-weight:700;color:#faf7f2">$255</div>
+        <div id="cat-act-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">$15/day · pp</div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #e6186c">
+        <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">✈ ICN Transfer</div>
+        <div id="cat-icn-pp" style="font-size:13px;font-weight:700;color:#faf7f2">$175</div>
+        <div id="cat-icn-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">AREX x2 · pp</div>
+      </div>
+
+    </div>
+
+    <!-- Flights callout -->
+    <div style="background:rgba(212,168,83,.1);border:1px dashed rgba(212,168,83,.4);border-radius:6px;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:8px;color:var(--gold);text-transform:uppercase;letter-spacing:.5px">✈ Intl Flights (Toronto ↔ Seoul)</div>
+        <div id="cat-flights-pp" style="font-size:12px;font-weight:700;color:#faf7f2">$1,500–$1,900 pp</div>
+      </div>
+      <div style="text-align:right">
+        <div id="cat-flights-grp" style="font-size:11px;font-weight:700;color:var(--gold)">$18k–23k</div>
+        <div style="font-size:8px;color:rgba(250,247,242,.4)">group · book early</div>
+      </div>
+    </div>
+
+    <div style="margin-top:6px;font-size:8px;color:rgba(250,247,242,.35);line-height:1.5;text-align:center">
+      Estimates based on mid-range spending · Sep 2026 rates<br>
+      <span id="rate-note">1 CAD ≈ ₩1,070 · 1 USD ≈ ₩1,460</span>
+    </div>
+  </div>
+  <!-- ══ END BUDGET PANEL ══ -->
+
   <div class="sh" onclick="tog('tl')">📅 Trip Itinerary <span id="ar-tl">▾</span></div>
   <div class="sb-b open" id="sec-tl">
     <div class="tl">
@@ -995,6 +1079,97 @@ window.addEventListener('load', function() {
 
   setView(37.562, 126.978, 13);
 });
+
+// ── BUDGET CALCULATOR ────────────────────────────────
+var BUDGET = {
+  // All values in USD — CAD = USD * 1.37 (1 USD ≈ 1.37 CAD as of Mar 2026)
+  nights: 17,
+  days: 17,
+  pax: 12,
+  usdToCad: 1.37,
+  // Per-person USD values
+  lodgePerNight: 70,    // Airbnb $800–1000/night ÷ 12 pax
+  foodPerDay: 45,       // Mix of street food, cafes, Korean BBQ dinners
+  transitPerDay: 15,    // Subway, buses, occasional taxi
+  interCityPP: 210,     // KTX Seoul-Busan $45 + Busan-Jeju flight $33 + Jeju-Seoul $42 + AREX + buses
+  activitiesPerDay: 15, // Palaces, museums, tours (most are cheap/free)
+  icnTransferPP: 13,    // AREX Express x2 ÷ round trip = ~$13 each way
+  flightsLow: 1100,     // YYZ-ICN economy return, book 6mo early
+  flightsHigh: 1400,    // Shoulder season Sep/Oct
+};
+
+var currentCur = 'cad';
+
+function fmt(usd, cur) {
+  var val = cur === 'cad' ? usd * BUDGET.usdToCad : usd;
+  if (val >= 1000) return '$' + (val/1000).toFixed(1) + 'k';
+  return '$' + Math.round(val);
+}
+function fmtFull(usd, cur) {
+  var val = cur === 'cad' ? usd * BUDGET.usdToCad : usd;
+  return '$' + Math.round(val).toLocaleString();
+}
+function fmtRange(low, high, cur) {
+  var mul = cur === 'cad' ? BUDGET.usdToCad : 1;
+  return '$' + Math.round(low*mul).toLocaleString() + '–$' + Math.round(high*mul).toLocaleString() + ' pp';
+}
+
+function updateBudget(cur) {
+  var B = BUDGET;
+  var lodgePP   = B.lodgePerNight * B.nights;
+  var foodPP    = B.foodPerDay * B.days;
+  var transitPP = B.transitPerDay * B.days;
+  var actPP     = B.activitiesPerDay * B.days;
+  var icnPP     = B.icnTransferPP * 2; // arrival + departure
+  var totalPP   = lodgePP + foodPP + transitPP + B.interCityPP + actPP + icnPP;
+  var totalGrp  = totalPP * B.pax;
+  var perDay    = totalPP / B.days;
+
+  var mul = cur === 'cad' ? B.usdToCad : 1;
+  var sym = '$';
+
+  document.getElementById('pp-total').textContent   = sym + Math.round(totalPP * mul).toLocaleString();
+  document.getElementById('pp-day').textContent     = sym + Math.round(perDay * mul) + ' / day';
+  document.getElementById('grp-total').textContent  = sym + Math.round(totalGrp * mul / 1000).toFixed(0) + 'k est.';
+
+  document.getElementById('cat-lodge-pp').textContent   = fmtFull(lodgePP, cur);
+  document.getElementById('cat-lodge-day').textContent  = sym + Math.round(B.lodgePerNight * mul) + '/night · pp';
+  document.getElementById('cat-food-pp').textContent    = fmtFull(foodPP, cur);
+  document.getElementById('cat-food-day').textContent   = sym + Math.round(B.foodPerDay * mul) + '/day · pp';
+  document.getElementById('cat-transit-pp').textContent = fmtFull(transitPP, cur);
+  document.getElementById('cat-transit-day').textContent= sym + Math.round(B.transitPerDay * mul) + '/day · pp';
+  document.getElementById('cat-intercity-pp').textContent = fmtFull(B.interCityPP, cur);
+  document.getElementById('cat-act-pp').textContent     = fmtFull(actPP, cur);
+  document.getElementById('cat-act-day').textContent    = sym + Math.round(B.activitiesPerDay * mul) + '/day · pp';
+  document.getElementById('cat-icn-pp').textContent     = fmtFull(icnPP, cur);
+  document.getElementById('cat-icn-day').textContent    = 'AREX x2 · pp';
+
+  var fLow = Math.round(B.flightsLow * mul), fHigh = Math.round(B.flightsHigh * mul);
+  document.getElementById('cat-flights-pp').textContent = sym + fLow.toLocaleString() + '–' + sym + fHigh.toLocaleString() + ' pp';
+  var gLow = Math.round(B.flightsLow * mul * B.pax / 1000);
+  var gHigh = Math.round(B.flightsHigh * mul * B.pax / 1000);
+  document.getElementById('cat-flights-grp').textContent = sym + gLow + 'k–' + sym + gHigh + 'k';
+
+  document.getElementById('rate-note').textContent =
+    cur === 'cad'
+      ? '1 CAD ≈ ₩1,070 · 1 USD ≈ ₩1,460 · Estimates mid-range spending'
+      : '1 USD ≈ ₩1,460 · 1 USD = ' + (1/B.usdToCad).toFixed(2) + ' CAD · Estimates mid-range';
+}
+
+window.setCur = function(cur) {
+  currentCur = cur;
+  document.getElementById('cur-cad').style.background = cur === 'cad' ? 'var(--gold)' : 'rgba(212,168,83,.2)';
+  document.getElementById('cur-cad').style.color      = cur === 'cad' ? 'var(--ink)' : 'var(--gold)';
+  document.getElementById('cur-usd').style.background = cur === 'usd' ? 'var(--gold)' : 'rgba(212,168,83,.2)';
+  document.getElementById('cur-usd').style.color      = cur === 'usd' ? 'var(--ink)' : 'var(--gold)';
+  updateBudget(cur);
+};
+
+// Init with CAD on load
+window.addEventListener('load', function() {
+  updateBudget('cad');
+});
+
 </script>
 </body>
 </html>
