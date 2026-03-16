@@ -466,7 +466,7 @@ var VIEWS = {
   all:   [36.5,   127.8,   8]
 };
 
-var state = {zoom:13, offX:0, offY:0, showWalk:true, filter:'all'};
+var state = {zoom:13, offX:0, offY:0, showWalk:true, filter:'all', activeAirbnb:null};
 var tileCache = {};
 var canvas, ctx, wrap;
 
@@ -745,19 +745,20 @@ function drawTransportToggleBtn() {
 }
 
 function drawWalkRings() {
-  // Draw rings around every Airbnb — no filter gate, so both Seoul & Busan rings show
+  // Only draw rings around the currently selected Airbnb pin to avoid overlap
+  if (!state.activeAirbnb) return;
+  var ab = AIRBNBS[state.activeAirbnb];
+  if (!ab) return;
   var radii = [400, 800, 1200];
   var labels = ['5 min', '10 min', '15 min'];
   var nums = ['①','②','③'];
-  // Stronger fill + stroke opacities
   var fillOps  = [0.13, 0.08, 0.04];
   var strokeOps = [1.0,  0.75, 0.45];
 
-  Object.values(AIRBNBS).forEach(function(ab) {
-    radii.forEach(function(r, i) {
-      var center = geo2px(ab.lat, ab.lng);
-      var pxPerMeter = (TILE_SIZE * Math.pow(2, Math.round(state.zoom))) / (111320 * 360);
-      var pxR = r * pxPerMeter;
+  radii.forEach(function(r, i) {
+    var center = geo2px(ab.lat, ab.lng);
+    var pxPerMeter = (TILE_SIZE * Math.pow(2, Math.round(state.zoom))) / (111320 * 360);
+    var pxR = r * pxPerMeter;
 
       // ── Ring fill ──
       ctx.save();
@@ -826,7 +827,6 @@ function drawWalkRings() {
       ctx.textBaseline = 'middle';
       ctx.fillText(bLabel, bx, btop + bh/2);
       ctx.restore();
-    });
   });
 }
 
@@ -911,8 +911,17 @@ function findMarkerAt(mx, my) {
     var f = state.filter;
     if (f !== 'all' && f !== p.city) return;
     var pos = geo2px(p.lat, p.lng);
-    var dx = mx - pos.x, dy = my - pos.y;
-    var r = p.city === 'airbnb' ? 18 : 10;
+    var dx, dy, r;
+    if (p.city === 'airbnb') {
+      // Pin is drawn centered ~14px above the geo point — shift hit zone to match
+      dx = mx - (pos.x + 2);
+      dy = my - (pos.y - 14);
+      r = 16;
+    } else {
+      dx = mx - pos.x;
+      dy = my - pos.y;
+      r = 10;
+    }
     if (dx*dx + dy*dy < r*r) hit = p;
   });
   return hit;
@@ -990,6 +999,13 @@ window.focusPlace = function(id) {
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); });
   var tabEl = document.getElementById('tab-'+cityTab);
   if (tabEl) tabEl.classList.add('on');
+  // Set active airbnb for walk rings (find key in AIRBNBS by id)
+  if (p.city === 'airbnb') {
+    var key = Object.keys(AIRBNBS).filter(function(k){ return AIRBNBS[k].id === id; })[0];
+    state.activeAirbnb = key || null;
+  } else {
+    state.activeAirbnb = null;
+  }
   setView(p.lat, p.lng, 15);
   setTimeout(function(){
     var pos = geo2px(p.lat, p.lng);
@@ -1064,7 +1080,16 @@ window.addEventListener('load', function() {
       var rect = canvas.getBoundingClientRect();
       var mx = e.clientX - rect.left, my = e.clientY - rect.top;
       var hit = findMarkerAt(mx, my);
-      if (hit) showPopup(hit, mx, my); else closePopup();
+      if (hit) {
+        if (hit.city === 'airbnb') {
+          var key = Object.keys(AIRBNBS).filter(function(k){ return AIRBNBS[k].id === hit.id; })[0];
+          state.activeAirbnb = key || null;
+        } else {
+          state.activeAirbnb = null;
+        }
+        showPopup(hit, mx, my);
+        draw();
+      } else { closePopup(); state.activeAirbnb = null; draw(); }
     }
   });
 
@@ -1100,7 +1125,16 @@ window.addEventListener('load', function() {
         var mx = e.changedTouches[0].clientX - rect.left;
         var my = e.changedTouches[0].clientY - rect.top;
         var hit = findMarkerAt(mx, my);
-        if (hit) showPopup(hit, mx, my); else closePopup();
+        if (hit) {
+          if (hit.city === 'airbnb') {
+            var key = Object.keys(AIRBNBS).filter(function(k){ return AIRBNBS[k].id === hit.id; })[0];
+            state.activeAirbnb = key || null;
+          } else {
+            state.activeAirbnb = null;
+          }
+          showPopup(hit, mx, my);
+          draw();
+        } else { closePopup(); state.activeAirbnb = null; draw(); }
       }
     }
     drag.active = false; touch0 = null;
