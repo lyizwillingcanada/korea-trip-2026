@@ -221,12 +221,12 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 
   <div class="sh" onclick="tog('ab')">🏠 Airbnb Options <span id="ar-ab">▾</span></div>
   <div class="sb-b open" id="sec-ab">
-    <div style="padding:4px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Seoul</div>
+    <div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px">🗺 Seoul</div>
     <div class="pi" onclick="focusPlace('a1')"><div><div class="pi-n">Option A — Bukchon area</div><div class="pi-s">Anguk stn (Line 3) ~5 min walk<br>Sep 26–Oct 1 &amp; Oct 8–11</div></div></div>
     <div class="pi" onclick="focusPlace('a2')"><div><div class="pi-n">Option B — Gwanghwamun</div><div class="pi-s">Gyeongbokgung stn (Line 3) ~8 min<br>Sep 26–Oct 1 &amp; Oct 8–11</div></div></div>
-    <div style="padding:4px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;border-top:1px solid #e8e0d4;margin-top:4px">Busan</div>
-    <div class="pi" onclick="focusPlace('b1')"><div><div class="pi-n">Option C — Roots House Busan Stn</div><div class="pi-s">Choryang Ibagu-Gil · near Busan Stn<br>Sep 30 – Oct 4 · $2,241 CAD total</div></div></div>
-    <div class="pi" onclick="focusPlace('b2')"><div><div class="pi-n">Option D — Busan Port Bridge</div><div class="pi-s">Harbor Bridge area · Taejong-Ro<br>Sep 30 – Oct 4 · $2,352 CAD total</div></div></div>
+    <div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;border-top:1px solid #e8e0d4;margin-top:3px">🗺 Busan</div>
+    <div class="pi" onclick="focusPlace('ba1')"><div><div class="pi-n">Option C — Roots House Busan Stn</div><div class="pi-s">Choryang Ibagu-Gil Alley<br>Sep 30–Oct 4 · $2,241 CAD total</div></div></div>
+    <div class="pi" onclick="focusPlace('ba2')"><div><div class="pi-n">Option D — Busan Port Bridge</div><div class="pi-s">Busan Harbor Bridge · Taejong-Ro<br>Sep 30–Oct 4 · $2,352 CAD total</div></div></div>
   </div>
 
   <div class="sh" onclick="tog('sub')">🚇 Subway Lines <span id="ar-sub">▾</span></div>
@@ -390,11 +390,11 @@ var AIRBNBS = {
   a2:{id:'a2',lat:37.5667,lng:126.9780,city:'airbnb',name:'Airbnb Option B',sub:'Gwanghwamun · Gyeongbokgung stn (Line 3) ~8 min',
     rows:[{l:'Nearest metro',v:'Gyeongbokgung (Line 3)'},{l:'Walk to metro',v:'~8 min'},{l:'To Myeongdong',v:'3 stops ~10 min'},{l:'To Gangnam',v:'6 stops ~20 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],
     url:'https://www.airbnb.ca/rooms/52696974'},
-  b1:{id:'b1',lat:35.1138,lng:129.0344,city:'airbnb',name:'Roots House Busan Station',sub:'Choryang Ibagu-Gil Alley · near Busan Stn',
-    rows:[{l:'Neighbourhood',v:'Choryang Ibagu-Gil'},{l:'Near landmark',v:'Busan Station'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,241'},{l:'Per person',v:'~$187 CAD'}],
+  b1:{id:'ba1',lat:35.1138,lng:129.0344,city:'airbnb',name:'Option C — Roots House Busan Stn',sub:'Choryang Ibagu-Gil Alley · near Busan Station',
+    rows:[{l:'Neighbourhood',v:'Choryang Ibagu-Gil Alley'},{l:'Near',v:'Busan Station'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,241'},{l:'Per person',v:'~$187 CAD'}],
     url:'https://www.airbnb.ca/rooms/1602494588154383516'},
-  b2:{id:'b2',lat:35.1068,lng:129.0361,city:'airbnb',name:'Busan Port Bridge Taejong-Ro',sub:'Busan Harbor Bridge views · Yeongdo',
-    rows:[{l:'Neighbourhood',v:'Busan Harbor Bridge area'},{l:'Near landmark',v:'Busan Port Bridge'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,352'},{l:'Per person',v:'~$196 CAD'}],
+  b2:{id:'ba2',lat:35.1020,lng:129.0400,city:'airbnb',name:'Option D — Busan Port Bridge Taejong-Ro',sub:'Busan Harbor Bridge area · Yeongdo',
+    rows:[{l:'Neighbourhood',v:'Busan Harbor Bridge'},{l:'Near',v:'Busan Port Bridge'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,352'},{l:'Per person',v:'~$196 CAD'}],
     url:'https://www.airbnb.ca/rooms/1457528950582135704'}
 };
 
@@ -647,7 +647,7 @@ function drawSubway() {
 
 function drawTransportRoutes() {
   if (!showTransportRoutes) return;
-  if (state.filter !== 'all' && state.filter !== 'seoul' && state.filter !== 'airbnb') { ctx.setLineDash([]); return; }
+  if (state.filter !== 'all' && state.filter !== 'seoul' && state.filter !== 'airbnb') return;
 
   TRANSPORT_ROUTES.forEach(function(route) {
     var pts = route.pts.map(function(p){ return geo2px(p[0], p[1]); });
@@ -741,7 +741,7 @@ function drawTransportToggleBtn() {
 }
 
 function drawWalkRings() {
-  // Always draw walk rings for any airbnb that is visible on screen
+  // Draw rings around every Airbnb — no filter gate, so both Seoul & Busan rings show
   var radii = [400, 800, 1200];
   var labels = ['5 min', '10 min', '15 min'];
   var nums = ['①','②','③'];
@@ -853,7 +853,7 @@ function drawMarkers() {
       ctx.font = 'bold 9px DM Sans,sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText({'a1':'A','a2':'B','b1':'C','b2':'D'}[p.id]||p.id.toUpperCase(), pos.x + 2, pos.y - 12);
+      ctx.fillText({a1:'A',a2:'B',ba1:'C',ba2:'D'}[p.id] || '?', pos.x + 2, pos.y - 12);
       ctx.restore();
     } else if (p.id === 'icn') {
       // Airport — dark pill with ✈ icon
@@ -981,14 +981,12 @@ window.focusPlace = function(id) {
   document.querySelectorAll('.pi').forEach(function(e){ e.classList.remove('on'); });
   var el = document.getElementById('pi-'+id);
   if (el) el.classList.add('on');
-  // For busan airbnbs, snap to busan view first then zoom to marker
-  var zoomLvl = 15;
-  if (id === 'b1' || id === 'b2') {
-    var tabEl = document.getElementById('tab-busan');
-    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); });
-    if (tabEl) tabEl.classList.add('on');
-  }
-  setView(p.lat, p.lng, zoomLvl);
+  // Snap tab highlight to match city
+  var cityTab = (id==='ba1'||id==='ba2') ? 'busan' : 'seoul';
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); });
+  var tabEl = document.getElementById('tab-'+cityTab);
+  if (tabEl) tabEl.classList.add('on');
+  setView(p.lat, p.lng, 15);
   setTimeout(function(){
     var pos = geo2px(p.lat, p.lng);
     showPopup(p, pos.x, pos.y);
