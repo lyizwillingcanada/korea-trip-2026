@@ -647,7 +647,7 @@ function drawSubway() {
 
 function drawTransportRoutes() {
   if (!showTransportRoutes) return;
-  if (state.filter !== 'all' && state.filter !== 'seoul' && state.filter !== 'airbnb') return;
+  if (state.filter !== 'all' && state.filter !== 'seoul' && state.filter !== 'airbnb') { ctx.setLineDash([]); return; }
 
   TRANSPORT_ROUTES.forEach(function(route) {
     var pts = route.pts.map(function(p){ return geo2px(p[0], p[1]); });
@@ -741,7 +741,7 @@ function drawTransportToggleBtn() {
 }
 
 function drawWalkRings() {
-  if (state.filter !== 'all' && state.filter !== 'airbnb' && state.filter !== 'seoul' && state.filter !== 'busan') return;
+  // Always draw walk rings for any airbnb that is visible on screen
   var radii = [400, 800, 1200];
   var labels = ['5 min', '10 min', '15 min'];
   var nums = ['①','②','③'];
