@@ -11,7 +11,7 @@
 /* iPad/iOS: use 100dvh so address bar is accounted for */
 html{height:100%;height:100dvh}
 body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;background:#f5f0ea}
-#hdr{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--ink);border-bottom:1px solid rgba(212,168,83,.3);padding:0 14px;height:50px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+#hdr{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--ink);border-bottom:1px solid rgba(212,168,83,.3);padding:0 10px;height:50px;display:flex;align-items:center;justify-content:space-between;gap:6px}
 #hdr h1{font-size:15px;font-weight:700;color:var(--paper);white-space:nowrap}
 .sub{font-size:10px;color:var(--gold);letter-spacing:.7px;text-transform:uppercase}
 .tabs{display:flex;gap:3px}
@@ -21,17 +21,22 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .hleg{display:flex;gap:8px}
 .hleg-i{display:flex;align-items:center;gap:4px;font-size:9px;color:rgba(250,247,242,.55);text-transform:uppercase;letter-spacing:.4px}
 .hleg-d{width:8px;height:8px;border-radius:50%}
-/* Body layout — fixed height using dvh so iPad safari chrome is excluded */
+/* Mobile menu toggle button */
+#menu-toggle{display:none;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;background:rgba(212,168,83,.2);border:1.5px solid rgba(212,168,83,.4);cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+#menu-toggle svg{width:18px;height:18px;stroke:var(--gold);stroke-width:2;stroke-linecap:round;fill:none}
+/* Dim overlay behind drawer on mobile */
+#sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:149;-webkit-tap-highlight-color:transparent}
+#sb-overlay.vis{display:block}
+/* Body layout */
 #body{
   display:flex;
   position:fixed;
   top:50px;
   left:0;right:0;bottom:0;
-  /* fallback for older iOS */
   height:calc(100% - 50px);
   height:calc(100dvh - 50px);
 }
-/* Sidebar — full height, independent scroll with iOS momentum */
+/* Sidebar */
 #sb{
   width:260px;
   flex-shrink:0;
@@ -39,17 +44,31 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
   border-right:1px solid #ddd5c8;
   overflow-y:scroll;
   overflow-x:hidden;
-  -webkit-overflow-scrolling:touch; /* iOS momentum scroll */
-  overscroll-behavior:contain;      /* prevent scroll bleed to map */
-  z-index:100;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  z-index:150;
   height:100%;
-  /* Ensure bottom items are reachable — add safe area padding for iPad home bar */
   padding-bottom:env(safe-area-inset-bottom, 20px);
+  transition:transform .25s ease;
 }
 #sb::-webkit-scrollbar{width:3px}
 #sb::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
 /* Map wrap fills remaining space */
 #mapwrap{flex:1;position:relative;overflow:hidden;background:#e8e0d4;height:100%}
+/* ══ MOBILE portrait ══ */
+@media(max-width:600px){
+  .hleg{display:none}
+  #menu-toggle{display:flex}
+  #sb{
+    position:fixed;
+    top:50px;bottom:0;left:0;
+    width:285px;
+    transform:translateX(-100%);
+    box-shadow:4px 0 20px rgba(0,0,0,.3);
+  }
+  #sb.open{transform:translateX(0)}
+  #mapwrap{width:100%}
+}
 #mapcanvas{position:absolute;top:0;left:0;cursor:grab}
 #mapcanvas.dragging{cursor:grabbing}
 .sh{padding:11px 12px;font-size:9px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;color:var(--muted);background:var(--cream);border-top:1px solid #ddd5c8;border-bottom:1px solid #ddd5c8;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;min-height:44px;-webkit-tap-highlight-color:rgba(212,168,83,.2);touch-action:manipulation}
@@ -95,6 +114,9 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 <body>
 <div id="hdr">
   <div style="display:flex;align-items:center;gap:8px">
+    <div id="menu-toggle" onclick="toggleSidebar()" aria-label="Menu">
+      <svg viewBox="0 0 18 14"><line x1="0" y1="2" x2="18" y2="2"/><line x1="0" y1="7" x2="18" y2="7"/><line x1="0" y1="12" x2="18" y2="12"/></svg>
+    </div>
     <span style="font-size:20px">🇰🇷</span>
     <div><h1>South Korea Trip 2026</h1><div class="sub">Sep 25–Oct 12 · Seoul · Busan · Jeju · ~10 People</div></div>
   </div>
@@ -112,6 +134,7 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 </div>
 
 <div id="body">
+<div id="sb-overlay" onclick="toggleSidebar()"></div>
 <div id="sb">
   <!-- ══ BUDGET PANEL ══ -->
   <div id="budget-bar" style="background:var(--ink);border-bottom:2px solid rgba(212,168,83,.4);padding:10px 12px 8px">
@@ -225,9 +248,8 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
     <div class="pi" onclick="focusPlace('a1')"><div><div class="pi-n">Option A — Bukchon area</div><div class="pi-s">Anguk stn (Line 3) ~5 min walk<br>Sep 26–Oct 1 &amp; Oct 8–11</div></div></div>
     <div class="pi" onclick="focusPlace('a2')"><div><div class="pi-n">Option B — Gwanghwamun</div><div class="pi-s">Gyeongbokgung stn (Line 3) ~8 min<br>Sep 26–Oct 1 &amp; Oct 8–11</div></div></div>
     <div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;border-top:1px solid #e8e0d4;margin-top:3px">🗺 Busan</div>
-    <div class="pi" onclick="focusPlace('ba1')"><div><div class="pi-n">Option C — Roots House Busan Stn</div><div class="pi-s">Choryang Ibagu-Gil Alley<br>Sep 30–Oct 4 · $2,241 CAD total</div></div></div>
-    <div class="pi" onclick="focusPlace('ba2')"><div><div class="pi-n">Option D — Busan Port Bridge</div><div class="pi-s">Busan Harbor Bridge · Taejong-Ro<br>Sep 30–Oct 4 · $2,352 CAD total</div></div></div>
-    <div class="pi" onclick="focusPlace('ba3')"><div><div class="pi-n">Option E — Jeongonjae CHO</div><div class="pi-s">Choryang · 2 min from Busan Station<br>Sep 30–Oct 4 · $1,974 CAD total</div></div></div>
+    <div class="pi" id="pi-ba1" onclick="focusPlace('ba1')"><div><div class="pi-n">Option C — Roots House Busan Stn</div><div class="pi-s">Choryang Ibagu-Gil Alley<br>Sep 30–Oct 4 · $2,241 CAD total</div></div></div>
+    <div class="pi" id="pi-ba2" onclick="focusPlace('ba2')"><div><div class="pi-n">Option D — Busan Port Bridge</div><div class="pi-s">Busan Harbor Bridge · Taejong-Ro<br>Sep 30–Oct 4 · $2,352 CAD total</div></div></div>
   </div>
 
   <div class="sh" onclick="tog('sub')">🚇 Subway Lines <span id="ar-sub">▾</span></div>
@@ -396,9 +418,6 @@ var AIRBNBS = {
     url:'https://www.airbnb.ca/rooms/1602494588154383516'},
   b2:{id:'ba2',lat:35.1020,lng:129.0400,city:'airbnb',name:'Option D — Busan Port Bridge Taejong-Ro',sub:'Busan Harbor Bridge area · Yeongdo',
     rows:[{l:'Neighbourhood',v:'Busan Harbor Bridge'},{l:'Near',v:'Busan Port Bridge'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,352'},{l:'Per person',v:'~$196 CAD'}],
-    url:'https://www.airbnb.ca/rooms/1457528950582135704'},
-  b3:{id:'ba3',lat:35.1125,lng:129.0355,city:'airbnb',name:'Option E — Jeongonjae CHO',sub:'Choryang · 2 min from Busan Station · Traditional guesthouse',
-    rows:[{l:'Neighbourhood',v:'Choryang · Dong-gu'},{l:'Near',v:'Busan Station (2 min walk)'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$1,974'},{l:'Per person',v:'~$165 CAD'}],
     url:'https://www.airbnb.ca/rooms/1457528950582135704'}
 };
 
@@ -466,7 +485,7 @@ var VIEWS = {
   all:   [36.5,   127.8,   8]
 };
 
-var state = {zoom:13, offX:0, offY:0, showWalk:true, filter:'all', activeAirbnb:null};
+var state = {zoom:13, offX:0, offY:0, showWalk:true, filter:'all'};
 var tileCache = {};
 var canvas, ctx, wrap;
 
@@ -745,20 +764,19 @@ function drawTransportToggleBtn() {
 }
 
 function drawWalkRings() {
-  // Only draw rings around the currently selected Airbnb pin to avoid overlap
-  if (!state.activeAirbnb) return;
-  var ab = AIRBNBS[state.activeAirbnb];
-  if (!ab) return;
+  // Draw rings around every Airbnb — no filter gate, so both Seoul & Busan rings show
   var radii = [400, 800, 1200];
   var labels = ['5 min', '10 min', '15 min'];
   var nums = ['①','②','③'];
+  // Stronger fill + stroke opacities
   var fillOps  = [0.13, 0.08, 0.04];
   var strokeOps = [1.0,  0.75, 0.45];
 
-  radii.forEach(function(r, i) {
-    var center = geo2px(ab.lat, ab.lng);
-    var pxPerMeter = (TILE_SIZE * Math.pow(2, Math.round(state.zoom))) / (111320 * 360);
-    var pxR = r * pxPerMeter;
+  Object.values(AIRBNBS).forEach(function(ab) {
+    radii.forEach(function(r, i) {
+      var center = geo2px(ab.lat, ab.lng);
+      var pxPerMeter = (TILE_SIZE * Math.pow(2, Math.round(state.zoom))) / (111320 * 360);
+      var pxR = r * pxPerMeter;
 
       // ── Ring fill ──
       ctx.save();
@@ -827,17 +845,30 @@ function drawWalkRings() {
       ctx.textBaseline = 'middle';
       ctx.fillText(bLabel, bx, btop + bh/2);
       ctx.restore();
+    });
   });
+}
+
+// Helper: does a marker belong to a given city filter?
+function markerMatchesFilter(p, f) {
+  if (f === 'all') return true;
+  if (f === p.city) return true;
+  if (f === 'airbnb' && p.city === 'airbnb') return true;
+  // Airbnb markers are tagged city:'airbnb' but physically live in a city.
+  // Show Busan/Seoul airbnbs when their geographic city filter is active.
+  if (p.city === 'airbnb') {
+    var busanAirbnbs = ['ba1','ba2'];
+    var seoulAirbnbs = ['a1','a2'];
+    if (f === 'busan' && busanAirbnbs.indexOf(p.id) !== -1) return true;
+    if (f === 'seoul' && seoulAirbnbs.indexOf(p.id) !== -1) return true;
+  }
+  return false;
 }
 
 function drawMarkers() {
   var f = state.filter;
   ALL_MARKERS.forEach(function(p) {
-    if (f !== 'all' && f !== p.city && !(f==='airbnb' && p.city==='airbnb')) {
-      if (!(f === 'airbnb' && p.city === 'airbnb')) {
-        if (f !== p.city) return;
-      }
-    }
+    if (!markerMatchesFilter(p, f)) return;
     var pos = geo2px(p.lat, p.lng);
     var color = COLORS[p.city] || '#c0392b';
     if (p.city === 'airbnb') {
@@ -857,7 +888,7 @@ function drawMarkers() {
       ctx.font = 'bold 9px DM Sans,sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText({a1:'A',a2:'B',ba1:'C',ba2:'D',ba3:'E'}[p.id] || '?', pos.x + 2, pos.y - 12);
+      ctx.fillText({a1:'A',a2:'B',ba1:'C',ba2:'D'}[p.id] || '?', pos.x + 2, pos.y - 12);
       ctx.restore();
     } else if (p.id === 'icn') {
       // Airport — dark pill with ✈ icon
@@ -907,21 +938,12 @@ function drawMarkers() {
 // ── HIT TESTING ──────────────────────────────────────
 function findMarkerAt(mx, my) {
   var hit = null;
+  var f = state.filter;
   ALL_MARKERS.forEach(function(p) {
-    var f = state.filter;
-    if (f !== 'all' && f !== p.city) return;
+    if (!markerMatchesFilter(p, f)) return;
     var pos = geo2px(p.lat, p.lng);
-    var dx, dy, r;
-    if (p.city === 'airbnb') {
-      // Pin is drawn centered ~14px above the geo point — shift hit zone to match
-      dx = mx - (pos.x + 2);
-      dy = my - (pos.y - 14);
-      r = 16;
-    } else {
-      dx = mx - pos.x;
-      dy = my - pos.y;
-      r = 10;
-    }
+    var dx = mx - pos.x, dy = my - pos.y;
+    var r = p.city === 'airbnb' ? 18 : 10;
     if (dx*dx + dy*dy < r*r) hit = p;
   });
   return hit;
@@ -994,18 +1016,14 @@ window.focusPlace = function(id) {
   document.querySelectorAll('.pi').forEach(function(e){ e.classList.remove('on'); });
   var el = document.getElementById('pi-'+id);
   if (el) el.classList.add('on');
-  // Snap tab highlight to match city
-  var cityTab = (id==='ba1'||id==='ba2'||id==='ba3') ? 'busan' : 'seoul';
+  // Derive the geographic city tab from the marker's coordinates
+  var busanAirbnbs = ['ba1','ba2'];
+  var cityTab = busanAirbnbs.indexOf(id) !== -1 ? 'busan' : 'seoul';
   document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); });
   var tabEl = document.getElementById('tab-'+cityTab);
   if (tabEl) tabEl.classList.add('on');
-  // Set active airbnb for walk rings (find key in AIRBNBS by id)
-  if (p.city === 'airbnb') {
-    var key = Object.keys(AIRBNBS).filter(function(k){ return AIRBNBS[k].id === id; })[0];
-    state.activeAirbnb = key || null;
-  } else {
-    state.activeAirbnb = null;
-  }
+  // Also update the map filter state so the pin stays visible
+  state.filter = cityTab;
   setView(p.lat, p.lng, 15);
   setTimeout(function(){
     var pos = geo2px(p.lat, p.lng);
@@ -1080,16 +1098,7 @@ window.addEventListener('load', function() {
       var rect = canvas.getBoundingClientRect();
       var mx = e.clientX - rect.left, my = e.clientY - rect.top;
       var hit = findMarkerAt(mx, my);
-      if (hit) {
-        if (hit.city === 'airbnb') {
-          var key = Object.keys(AIRBNBS).filter(function(k){ return AIRBNBS[k].id === hit.id; })[0];
-          state.activeAirbnb = key || null;
-        } else {
-          state.activeAirbnb = null;
-        }
-        showPopup(hit, mx, my);
-        draw();
-      } else { closePopup(); state.activeAirbnb = null; draw(); }
+      if (hit) showPopup(hit, mx, my); else closePopup();
     }
   });
 
@@ -1125,16 +1134,7 @@ window.addEventListener('load', function() {
         var mx = e.changedTouches[0].clientX - rect.left;
         var my = e.changedTouches[0].clientY - rect.top;
         var hit = findMarkerAt(mx, my);
-        if (hit) {
-          if (hit.city === 'airbnb') {
-            var key = Object.keys(AIRBNBS).filter(function(k){ return AIRBNBS[k].id === hit.id; })[0];
-            state.activeAirbnb = key || null;
-          } else {
-            state.activeAirbnb = null;
-          }
-          showPopup(hit, mx, my);
-          draw();
-        } else { closePopup(); state.activeAirbnb = null; draw(); }
+        if (hit) showPopup(hit, mx, my); else closePopup();
       }
     }
     drag.active = false; touch0 = null;
@@ -1163,7 +1163,27 @@ window.addEventListener('load', function() {
   setView(37.562, 126.978, 13);
 });
 
-// ── BUDGET CALCULATOR ────────────────────────────────
+// ── MOBILE SIDEBAR TOGGLE ────────────────────────────
+window.toggleSidebar = function() {
+  var sb = document.getElementById('sb');
+  var overlay = document.getElementById('sb-overlay');
+  var isOpen = sb.classList.toggle('open');
+  overlay.classList.toggle('vis', isOpen);
+};
+
+// Auto-close sidebar on mobile after selecting a place
+var _origFocusPlace = window.focusPlace;
+window.focusPlace = function(id) {
+  _origFocusPlace(id);
+  if (window.innerWidth <= 600) {
+    var sb = document.getElementById('sb');
+    var overlay = document.getElementById('sb-overlay');
+    sb.classList.remove('open');
+    overlay.classList.remove('vis');
+  }
+};
+
+
 var BUDGET = {
   // All values in USD — CAD = USD * 1.37 (1 USD ≈ 1.37 CAD as of Mar 2026)
   nights: 17,
