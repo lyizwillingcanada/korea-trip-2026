@@ -361,6 +361,68 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
     </div>
   </div>
 
+  <div class="sh" onclick="tog('busjeju')">✈ Busan → Jeju Island <span id="ar-busjeju">▶</span></div>
+  <div class="sb-b" id="sec-busjeju">
+    <div style="padding:10px 12px 4px;font-size:9px;color:var(--muted);line-height:1.5">Gimhae Intl (PUS) → Jeju Intl (CJU) · ~55 min flight · Oct 5</div>
+
+    <div style="margin:2px 10px 8px;background:var(--cream);border-radius:7px;padding:7px 10px;border:1px solid #e0d8cc">
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px">💡 Booking Tips</div>
+      <div style="font-size:9px;color:#555;line-height:1.7">
+        <div>📱 Book via <b>Naver Flight</b> or <b>Trip.com</b> for best rates</div>
+        <div>🗓 Book 4–8 weeks ahead for cheapest fares</div>
+        <div>🧳 Budget airlines charge extra for checked bags</div>
+      </div>
+    </div>
+
+    <div style="margin:0 10px 8px;border-radius:8px;overflow:hidden;border:1px solid #e0d8cc">
+      <div style="background:#e85d04;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:11px;font-weight:700">✈ Jeju Air · Air Busan</div>
+        <div style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:10px">₩50,000–80,000</div>
+      </div>
+      <div style="background:#faf7f2;padding:7px 10px;font-size:9.5px;color:#444;line-height:1.7">
+        <div>⏱ <b>~55 min</b> flight time</div>
+        <div>🕐 Multiple daily departures · 06:00–21:00</div>
+        <div>💳 Book direct: jejuair.com · airbusan.com</div>
+        <div style="margin-top:4px;font-size:9px;color:var(--muted)">Budget carriers · Carry-on included · Checked bag extra ~₩15,000</div>
+      </div>
+    </div>
+
+    <div style="margin:0 10px 8px;border-radius:8px;overflow:hidden;border:1px solid #e0d8cc">
+      <div style="background:#003499;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:11px;font-weight:700">✈ Korean Air · Asiana</div>
+        <div style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:10px">₩90,000–150,000</div>
+      </div>
+      <div style="background:#faf7f2;padding:7px 10px;font-size:9.5px;color:#444;line-height:1.7">
+        <div>⏱ <b>~55 min</b> flight time</div>
+        <div>🕐 ~6–8 flights daily · Full service</div>
+        <div>💳 Book: koreanair.com · flyasiana.com</div>
+        <div style="margin-top:4px;font-size:9px;color:var(--muted)">Checked bag included · Miles earn · More flexibility</div>
+      </div>
+    </div>
+
+    <div style="margin:0 10px 12px;background:var(--cream);border-radius:8px;padding:8px 10px;border:1px solid #e0d8cc">
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Quick Compare — 10 people · one-way</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;text-align:center">
+        <div style="background:#e85d04;color:#fff;border-radius:5px;padding:5px 4px">
+          <div style="font-size:8px;opacity:0.85">Jeju Air</div>
+          <div style="font-size:11px;font-weight:700">₩500k–</div>
+          <div style="font-size:8px;opacity:0.85">10 tickets</div>
+        </div>
+        <div style="background:#e85d04;color:#fff;border-radius:5px;padding:5px 4px">
+          <div style="font-size:8px;opacity:0.85">Air Busan</div>
+          <div style="font-size:11px;font-weight:700">₩600k–</div>
+          <div style="font-size:8px;opacity:0.85">10 tickets</div>
+        </div>
+        <div style="background:#003499;color:#fff;border-radius:5px;padding:5px 4px">
+          <div style="font-size:8px;opacity:0.85">Korean Air</div>
+          <div style="font-size:11px;font-weight:700">₩1M–</div>
+          <div style="font-size:8px;opacity:0.85">10 tickets</div>
+        </div>
+      </div>
+      <div style="margin-top:6px;font-size:8.5px;color:var(--muted);text-align:center">Prices vary · Book early for best rates · Oct 5 departure</div>
+    </div>
+  </div>
+
   <div class="sh" onclick="tog('sa')">📍 Seoul <span class="bdg" style="background:#c0392b">5+3 nights</span></div>
   <div class="sb-b open" id="sec-sa"><div id="list-seoul"></div></div>
   <div class="sh" onclick="tog('ba')">📍 Busan <span class="bdg" style="background:#1a5276">4 nights</span></div>
@@ -519,20 +581,52 @@ var PLACES = [
   {id:'s15',city:'seoul',lat:37.5672,lng:127.0090,name:'Dongdaemun Design Plaza',sub:'Line 2/4/5 · DDP stn · Zaha Hadid'},
   {id:'s16',city:'seoul',lat:37.5285,lng:126.9942,name:'Han River Park (Banpo)',sub:'Banpo Bridge Rainbow Fountain'},
   {id:'s17',city:'seoul',lat:37.5796,lng:127.0074,name:'Ihwa Mural Village',sub:'Hillside murals · Walk from Hyehwa stn'},
-  {id:'b1',city:'busan',lat:35.0970,lng:129.0350,name:'Jagalchi Fish Market',sub:"Korea's largest seafood market"},
-  {id:'b2',city:'busan',lat:35.1588,lng:129.1603,name:'Haeundae Beach',sub:'Famous beach & waterfront'},
-  {id:'b3',city:'busan',lat:35.0980,lng:129.0107,name:'Gamcheon Culture Village',sub:'Colourful hillside art village'},
-  {id:'b4',city:'busan',lat:35.1879,lng:129.2209,name:'Haedong Yonggungsa',sub:'Coastal temple on rocky cliffs'},
+  {id:'b1',city:'busan',lat:35.0970,lng:129.0350,name:'Jagalchi Fish Market',sub:"Korea's largest seafood market · Pick downstairs, eat upstairs"},
+  {id:'b2',city:'busan',lat:35.1588,lng:129.1603,name:'Haeundae Beach',sub:'Famous beach & waterfront · Markets + street food nearby'},
+  {id:'b3',city:'busan',lat:35.0980,lng:129.0107,name:'Gamcheon Culture Village',sub:'Colourful hillside art village · Iconic stairways'},
+  {id:'b4',city:'busan',lat:35.1879,lng:129.2209,name:'Haedong Yonggungsa',sub:'Coastal temple on rocky cliffs · Stunning sunrise views'},
   {id:'b5',city:'busan',lat:35.1560,lng:129.1340,name:'Zest Bar',sub:'Cocktails, Haeundae area'},
-  {id:'j1',city:'jeju',lat:33.3617,lng:126.5292,name:'Hallasan',sub:"South Korea's highest peak"},
-  {id:'j2',city:'jeju',lat:33.4609,lng:126.9424,name:'Seongsan Ilchulbong',sub:'UNESCO Sunrise Peak'},
-  {id:'j3',city:'jeju',lat:33.5283,lng:126.7710,name:'Manjanggul Lava Tube',sub:"One of world's longest lava caves"},
-  {id:'j4',city:'jeju',lat:33.2450,lng:126.4117,name:'Jeju Beaches',sub:'Hyeopjae, Hamdeok, Gwakji'},
+  {id:'b6',city:'busan',lat:35.1579,lng:129.0581,name:'Seomyeon',sub:'🔥 Local downtown · Shopping, nightlife, food alleys · Hidden underground malls'},
+  {id:'b7',city:'busan',lat:35.0684,lng:129.0161,name:'Songdo Beach',sub:'🔥 Quieter coastal gem · Cable cars over ocean · Coastal walkways'},
+  {id:'b8',city:'busan',lat:35.0453,lng:129.0843,name:'Taejongdae Resort Park',sub:'🔥 Dramatic cliffs + lighthouse + ocean views · Feels like Jeju'},
+  {id:'b9',city:'busan',lat:35.0837,lng:129.0354,name:'Huinnyeoul Culture Village',sub:'🔥 Hidden gem · Artsy coastal village · Santorini vibes, less crowded than Gamcheon'},
+  {id:'b10',city:'busan',lat:35.1955,lng:129.0758,name:'Dongnae District',sub:'🔥 Old-school Busan · Traditional restaurants · Less touristy local vibe'},
+  {id:'b11',city:'busan',lat:35.1595,lng:129.0581,name:'Seomyeon Food Alley',sub:'🍜 Korean + international eats · Great for hopping between spots'},
+  {id:'b12',city:'busan',lat:35.0977,lng:129.0296,name:'Nampo-dong Food Streets',sub:'🍜 Street food, local joints · Less polished, more authentic'},
+  {id:'b13',city:'busan',lat:35.1011,lng:129.0337,name:'Geumsubokguk',sub:'🏆 Famous pufferfish soup (bok-uh-guk) · Iconic Busan dish'},
+  {id:'b14',city:'busan',lat:35.1551,lng:129.1198,name:'Haeundae Market Food Stalls',sub:'🏆 Street food heaven · 150+ vendors · Great variety'},
+  {id:'b15',city:'busan',lat:35.2439,lng:129.2197,name:'Gijang Son Kalguksu',sub:'🔥 Tiny noodle shop · Market alley · Handmade noodles locals swear by'},
+  {id:'b16',city:'busan',lat:35.1033,lng:129.0312,name:'Deulnyeok',sub:'🔥 Local no-frills BBQ · Very authentic · Neighbourhood gem'},
+  {id:'b17',city:'busan',lat:35.1566,lng:129.1221,name:'Gwangalli Beach & Hidden Spots',sub:'🔥 Local BBQ + seafood joints · Great views · Less touristy than Haeundae'},
+  {id:'j1',city:'jeju',lat:33.3617,lng:126.5292,name:'Hallasan National Park',sub:'🏔 Korea\'s highest peak · Volcanic · Hike or scenic trails · Must-see'},
+  {id:'j2',city:'jeju',lat:33.4609,lng:126.9424,name:'Seongsan Ilchulbong',sub:'🌅 Iconic crater rising from the sea · Go early for sunrise · Less crowded'},
+  {id:'j3',city:'jeju',lat:33.5283,lng:126.7710,name:'Manjanggul Lava Tube',sub:'🌋 Massive underground lava cave · Cool + unique · UNESCO'},
+  {id:'j4',city:'jeju',lat:33.2450,lng:126.4117,name:'Jeju Beaches',sub:'Hyeopjae, Hamdeok, Gwakji · Various coastal spots'},
+  {id:'j5',city:'jeju',lat:33.2494,lng:126.5780,name:'Jeongbang Waterfall',sub:'🌊 Waterfall that falls directly into the ocean · Rare natural wonder'},
+  {id:'j6',city:'jeju',lat:33.2463,lng:126.5559,name:'Cheonjiyeon Waterfall',sub:'🌊 Best visited at night with lighting · Stunning atmosphere'},
+  {id:'j7',city:'jeju',lat:33.2407,lng:126.3138,name:'Jusangjeolli Cliff',sub:'🌊 Hexagonal volcanic rock formations · Dramatic coastal scenery'},
+  {id:'j8',city:'jeju',lat:33.5028,lng:126.9520,name:'Udo Island',sub:'🔥 Rent a bike/scooter · Explore quiet backside beaches · Don\'t rush it'},
+  {id:'j9',city:'jeju',lat:33.4302,lng:126.9302,name:'Seopjikoji',sub:'🔥 Rolling hills + ocean cliffs · Very peaceful · Less crowded than Seongsan'},
+  {id:'j10',city:'jeju',lat:33.3148,lng:126.1979,name:'Aewol Coast',sub:'🔥 Chill cafés, sunsets, local vibe · Less touristy · Great for slow days'},
+  {id:'j11',city:'jeju',lat:33.4967,lng:126.7982,name:'Bijarim Forest',sub:'🔥 Ancient nutmeg tree forest · Quiet, shaded, very peaceful'},
+  {id:'j12',city:'jeju',lat:33.2541,lng:126.5604,name:'Seogwipo',sub:'🔥 South side · Less crowded than Jeju City · Base for waterfalls + local food'},
+  {id:'j13',city:'jeju',lat:33.3150,lng:126.2130,name:'Jeju Olle Trail (Route 16)',sub:'🔥 Coastal walking path near Aewol · Quiet, scenic, local feel'},
+  {id:'j14',city:'jeju',lat:33.5094,lng:126.5219,name:'Donsadon',sub:'🏆 Famous charcoal-grilled black pork · Go early · Very popular'},
+  {id:'j15',city:'jeju',lat:33.5097,lng:126.5231,name:'Heukdonga',sub:'🏆 Excellent black pork · Slightly more polished · Top quality'},
+  {id:'j16',city:'jeju',lat:33.2446,lng:126.5659,name:'Myeongjin Jeonbok',sub:'🏆 Famous abalone dishes · Simple but top quality · Very local'},
+  {id:'j17',city:'jeju',lat:33.2545,lng:126.5020,name:'Dongmun Market',sub:'🍜 Night market · Black pork skewers, fresh juice, seafood pancakes · Must visit'},
+  {id:'j18',city:'jeju',lat:33.2530,lng:126.4900,name:'Nolman',sub:'🔥 Tiny seaside ramen + seafood · Ocean view · Very casual local vibe'},
+  {id:'j19',city:'jeju',lat:33.2558,lng:126.5580,name:'Gozip Dol Wooluck',sub:'🔥 Hidden gem black pork · Less touristy than big-name spots'},
+  {id:'j20',city:'jeju',lat:33.3113,lng:126.2097,name:'Aewol Coastal Cafés',sub:'☕ Scenic cafés · Better + less crowded than famous spots · Walk 5 min off-strip'},
   {id:'d1',city:'daytrip',lat:35.1935,lng:128.1060,name:'Jinju',sub:'Lantern Festival – week of Oct 9!'},
-  {id:'d2',city:'daytrip',lat:35.8562,lng:129.2247,name:'Gyeongju',sub:'UNESCO site, Bulguksa Temple'},
+  {id:'d2',city:'daytrip',lat:35.8562,lng:129.2247,name:'Gyeongju',sub:"Korea's Kyoto · Ancient Silla capital · Bulguksa Temple · Seokguram Grotto · 1hr from Busan"},
+  {id:'d2b',city:'daytrip',lat:35.7947,lng:129.3317,name:'Bulguksa Temple',sub:'UNESCO · Gyeongju · Silla Kingdom masterpiece'},
+  {id:'d2c',city:'daytrip',lat:35.7896,lng:129.3567,name:'Daereungwon Tomb Complex',sub:'Gyeongju · Ancient royal burial mounds · Atmospheric walk'},
   {id:'d3',city:'daytrip',lat:35.5383,lng:129.3114,name:'Ulsan',sub:'Whale Museum, Grand Park'},
   {id:'d4',city:'daytrip',lat:38.1194,lng:128.4658,name:'Sokcho / Seoraksan',sub:'Fall foliage, national park'},
   {id:'d5',city:'daytrip',lat:37.2893,lng:127.0134,name:'Suwon',sub:'Hwaseong Fortress (UNESCO)'},
+  {id:'d6',city:'daytrip',lat:34.8799,lng:128.6216,name:'Geoje Island',sub:'Less touristy than Jeju · Coastal cliffs, beaches, scenic drives'},
+  {id:'d7',city:'daytrip',lat:34.8544,lng:128.4333,name:'Tongyeong',sub:'"Naples of Korea" · Cable car views + island hopping · Hidden coastal gem'},
   {id:'icn',city:'seoul',lat:37.4602,lng:126.4407,name:'Incheon Airport (ICN)',sub:'International airport · 55km from Seoul · AREX train to Seoul Stn'},
 ];
 
@@ -645,8 +739,8 @@ function draw(){
       }
     }
   }
-  if(z>=11){drawSubway();drawTransportRoutes();if(state.showWalk)drawWalkRings();drawMarkers();}
-  else{drawMarkers();}
+  if(z>=11){drawSubway();drawTransportRoutes();if(state.showWalk)drawWalkRings();drawJejuRings();drawMarkers();}
+  else{drawJejuRings();drawMarkers();}
 }
 
 function drawSubway(){
@@ -729,6 +823,77 @@ function drawWalkRings(){
   });
 }
 
+function drawJejuRings(){
+  if(state.filter!=='jeju'&&state.filter!=='all')return;
+  // Centre of Jeju Island (Jeju City area)
+  var cLat=33.4996,cLng=126.5312;
+  var center=geo2px(cLat,cLng);
+  var metersPerPx=111320/(TILE_SIZE*Math.pow(2,state.zoom)/360);
+  var radii=[5000,15000,25000];
+  var labels=['5 km','15 km','25 km'];
+  var ringColors=['rgba(39,174,96,','rgba(39,174,96,','rgba(39,174,96,'];
+  var fillOps=[0.07,0.05,0.03];
+  var strokeOps=[0.9,0.7,0.5];
+  var dashPats=[[14,7],[10,6],[6,5]];
+
+  radii.forEach(function(r,i){
+    var pxR=r/metersPerPx;
+
+    // Filled area
+    ctx.save();
+    ctx.beginPath();ctx.arc(center.x,center.y,pxR,0,Math.PI*2);
+    ctx.fillStyle=ringColors[i]+fillOps[i]+')';
+    ctx.fill();
+    ctx.restore();
+
+    // Glow halo
+    ctx.save();
+    ctx.beginPath();ctx.arc(center.x,center.y,pxR,0,Math.PI*2);
+    ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=7;ctx.setLineDash([]);ctx.stroke();
+    ctx.restore();
+
+    // Dashed ring
+    ctx.save();
+    ctx.beginPath();ctx.arc(center.x,center.y,pxR,0,Math.PI*2);
+    ctx.strokeStyle=ringColors[i]+strokeOps[i]+')';
+    ctx.lineWidth=2;ctx.setLineDash(dashPats[i]);ctx.stroke();
+    ctx.restore();
+
+    // Label badge — positioned at top of each ring
+    ctx.save();
+    var bx=center.x, by=center.y-pxR;
+    var bLabel=labels[i];
+    ctx.font='bold 10px DM Sans,sans-serif';
+    var tw=ctx.measureText(bLabel).width,bw=tw+16,bh=19,br=9;
+    var bleft=bx-bw/2,btop=by-bh-2;
+    ctx.beginPath();
+    ctx.moveTo(bleft+br,btop);ctx.lineTo(bleft+bw-br,btop);
+    ctx.arcTo(bleft+bw,btop,bleft+bw,btop+bh,br);
+    ctx.lineTo(bleft+bw,btop+bh-br);
+    ctx.arcTo(bleft+bw,btop+bh,bleft+bw-br,btop+bh,br);
+    ctx.lineTo(bleft+br,btop+bh);
+    ctx.arcTo(bleft,btop+bh,bleft,btop+bh-br,br);
+    ctx.lineTo(bleft,btop+br);
+    ctx.arcTo(bleft,btop,bleft+br,btop,br);
+    ctx.closePath();
+    ctx.fillStyle='rgba(27,140,68,0.9)';
+    ctx.shadowColor='rgba(0,0,0,0.3)';ctx.shadowBlur=5;ctx.fill();
+    ctx.shadowBlur=0;
+    ctx.strokeStyle='rgba(255,255,255,0.5)';ctx.lineWidth=1;ctx.setLineDash([]);ctx.stroke();
+    ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(bLabel,bx,btop+bh/2);
+    ctx.restore();
+  });
+
+  // Centre marker dot
+  ctx.save();
+  ctx.beginPath();ctx.arc(center.x,center.y,5,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,0.9)';ctx.shadowColor='rgba(0,0,0,0.4)';ctx.shadowBlur=4;ctx.fill();
+  ctx.beginPath();ctx.arc(center.x,center.y,3.5,0,Math.PI*2);
+  ctx.fillStyle='rgba(27,140,68,1)';ctx.shadowBlur=0;ctx.fill();
+  ctx.restore();
+}
+
 function markerMatchesFilter(p,f){
   if(f==='all')return true;
   if(f===p.city)return true;
@@ -806,7 +971,7 @@ window.focusPlace=function(id){
   var p=ALL_MARKERS.filter(function(x){return x.id===id;})[0];if(!p)return;
   document.querySelectorAll('.pi').forEach(function(e){e.classList.remove('on');});
   var el=document.getElementById('pi-'+id);if(el)el.classList.add('on');
-  var busanAirbnbs=['ba1','ba2'];var cityTab=busanAirbnbs.indexOf(id)!==-1?'busan':'seoul';
+  var cityTab=p.city==='airbnb'?(['ba1','ba2'].indexOf(id)!==-1?'busan':'seoul'):p.city==='daytrip'?'all':p.city;
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
   var tabEl=document.getElementById('tab-'+cityTab);if(tabEl)tabEl.classList.add('on');
   state.filter=cityTab;setView(p.lat,p.lng,15);
@@ -826,9 +991,68 @@ function renderList(elId,city){
   }).join('');
 }
 renderList('list-seoul','seoul');
-renderList('list-busan','busan');
-renderList('list-jeju','jeju');
-renderList('list-daytrip','daytrip');
+
+// Custom grouped render for Busan
+(function(){
+  var busanGroups=[
+    {label:'🏖 Classic Attractions',ids:['b1','b2','b3','b4','b5']},
+    {label:'🔥 Underrated / Hidden Gems',ids:['b6','b7','b8','b9','b10']},
+    {label:'🍜 Restaurants & Food Streets',ids:['b11','b12','b13','b14','b15','b16','b17']}
+  ];
+  var all=PLACES.filter(function(p){return p.city==='busan';});
+  var byId={};all.forEach(function(p){byId[p.id]=p;});
+  var html='';
+  busanGroups.forEach(function(g){
+    html+='<div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;border-top:1px solid #e8e0d4;margin-top:2px">'+g.label+'</div>';
+    g.ids.forEach(function(id){
+      var p=byId[id];if(!p)return;
+      html+='<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')"><div style="width:8px;height:8px;border-radius:50%;background:#1a5276;flex-shrink:0;margin-top:4px"></div><div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div></div>';
+    });
+  });
+  document.getElementById('list-busan').innerHTML=html;
+})();
+
+// Custom grouped render for Jeju
+(function(){
+  var jejuGroups=[
+    {label:'🏔 Must-See Natural Highlights',ids:['j1','j2','j3','j4']},
+    {label:'🌊 Waterfalls & Coastal Icons',ids:['j5','j6','j7']},
+    {label:'🔥 Underrated / Hidden Gems',ids:['j8','j9','j10','j11','j12','j13']},
+    {label:'🏆 Restaurants — Classic',ids:['j14','j15','j16']},
+    {label:'🍜 Local Food & Markets',ids:['j17','j18','j19']},
+    {label:'☕ Cafés & Coastal Vibes',ids:['j20']}
+  ];
+  var all=PLACES.filter(function(p){return p.city==='jeju';});
+  var byId={};all.forEach(function(p){byId[p.id]=p;});
+  var html='';
+  jejuGroups.forEach(function(g){
+    html+='<div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;border-top:1px solid #e8e0d4;margin-top:2px">'+g.label+'</div>';
+    g.ids.forEach(function(id){
+      var p=byId[id];if(!p)return;
+      html+='<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')"><div style="width:8px;height:8px;border-radius:50%;background:#27ae60;flex-shrink:0;margin-top:4px"></div><div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div></div>';
+    });
+  });
+  document.getElementById('list-jeju').innerHTML=html;
+})();
+
+// Custom grouped render for Day Trips
+(function(){
+  var dtGroups=[
+    {label:'📍 Near Busan',ids:['d2','d2b','d2c','d6','d7']},
+    {label:'📍 Other Day Trips',ids:['d1','d3','d4','d5']}
+  ];
+  var all=PLACES.filter(function(p){return p.city==='daytrip';});
+  var byId={};all.forEach(function(p){byId[p.id]=p;});
+  var html='';
+  dtGroups.forEach(function(g){
+    html+='<div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;border-top:1px solid #e8e0d4;margin-top:2px">'+g.label+'</div>';
+    g.ids.forEach(function(id){
+      var p=byId[id];if(!p)return;
+      html+='<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')"><div style="width:8px;height:8px;border-radius:50%;background:#7d6608;flex-shrink:0;margin-top:4px"></div><div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div></div>';
+    });
+  });
+  document.getElementById('list-daytrip').innerHTML=html;
+})();
 
 window.addEventListener('load',function(){
   wrap=document.getElementById('mapwrap');
