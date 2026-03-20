@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Korea Trip 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
 :root{--ink:#1a1a2e;--paper:#faf7f2;--gold:#d4a853;--muted:#7a7060;--cream:#f0ebe2}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -22,120 +24,33 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .hleg-d{width:8px;height:8px;border-radius:50%}
 #menu-toggle{display:none;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;background:rgba(212,168,83,.2);border:1.5px solid rgba(212,168,83,.4);cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent}
 #menu-toggle svg{width:18px;height:18px;stroke:var(--gold);stroke-width:2;stroke-linecap:round;fill:none}
-
-/* ── Air Canada Pricing Banner ── */
-#ac-banner{
-  position:fixed;
-  top:50px;
-  left:0;right:0;
-  z-index:199;
-  background:#12172a;
-  border-bottom:1px solid rgba(212,168,83,.25);
-  padding:6px 12px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
-#ac-banner .ac-label{
-  font-size:9px;font-weight:700;color:var(--gold);
-  text-transform:uppercase;letter-spacing:.9px;
-  white-space:nowrap;
-  flex-shrink:0;
-}
-#ac-banner .ac-date{
-  font-size:8px;color:rgba(212,168,83,.55);
-  white-space:nowrap;flex-shrink:0;
-}
-#ac-banner .ac-divider{
-  width:1px;height:18px;
-  background:rgba(212,168,83,.2);
-  flex-shrink:0;
-}
-.ac-ticket{
-  display:flex;align-items:center;gap:7px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(212,168,83,.2);
-  border-radius:5px;
-  padding:4px 9px;
-  flex-shrink:0;
-}
-.ac-ticket-label{
-  font-size:9px;color:rgba(250,247,242,.5);
-  line-height:1.3;
-  max-width:120px;
-}
-.ac-ticket-price{
-  font-size:13px;font-weight:700;color:#faf7f2;
-  border-bottom:1.5px dashed rgba(212,168,83,.5);
-  outline:none;
-  cursor:text;
-  min-width:70px;
-  white-space:nowrap;
-}
-.ac-ticket-price:focus{
-  border-bottom-color:var(--gold);
-  color:var(--gold);
-}
-.ac-edit-hint{
-  font-size:8px;color:rgba(212,168,83,.35);
-  margin-top:1px;
-}
+#ac-banner{position:fixed;top:50px;left:0;right:0;z-index:199;background:#12172a;border-bottom:1px solid rgba(212,168,83,.25);padding:6px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#ac-banner .ac-label{font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.9px;white-space:nowrap;flex-shrink:0}
+.ac-ticket{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.04);border:1px solid rgba(212,168,83,.2);border-radius:5px;padding:4px 9px;flex-shrink:0}
+.ac-ticket-label{font-size:9px;color:rgba(250,247,242,.5);line-height:1.3;max-width:120px}
+.ac-ticket-price{font-size:13px;font-weight:700;color:#faf7f2;border-bottom:1.5px dashed rgba(212,168,83,.5);outline:none;cursor:text;min-width:70px;white-space:nowrap}
+.ac-ticket-price:focus{border-bottom-color:var(--gold);color:var(--gold)}
+.ac-edit-hint{font-size:8px;color:rgba(212,168,83,.35);margin-top:1px}
+#sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:149}
+#sb-overlay.vis{display:block}
+#body{display:flex;position:fixed;top:92px;left:0;right:0;bottom:0;height:calc(100dvh - 92px)}
+#sb{width:260px;flex-shrink:0;background:var(--paper);border-right:1px solid #ddd5c8;overflow-y:scroll;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;z-index:150;height:100%;padding-bottom:env(safe-area-inset-bottom,20px);transition:transform .25s ease}
+#sb::-webkit-scrollbar{width:3px}
+#sb::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+#mapwrap{flex:1;position:relative;overflow:hidden}
 @media(max-width:600px){
   .hleg{display:none}
   #menu-toggle{display:flex}
-  #ac-banner{gap:6px;padding:5px 8px}
-  .ac-ticket-label{max-width:90px;font-size:8px}
-  .ac-ticket-price{font-size:12px}
-}
-
-#sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:149;-webkit-tap-highlight-color:transparent}
-#sb-overlay.vis{display:block}
-
-/* Body layout — pushed down by hdr (50px) + ac-banner (~42px) */
-#body{
-  display:flex;
-  position:fixed;
-  top:92px;
-  left:0;right:0;bottom:0;
-  height:calc(100% - 92px);
-  height:calc(100dvh - 92px);
-}
-#sb{
-  width:260px;
-  flex-shrink:0;
-  background:var(--paper);
-  border-right:1px solid #ddd5c8;
-  overflow-y:scroll;
-  overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
-  overscroll-behavior:contain;
-  z-index:150;
-  height:100%;
-  padding-bottom:env(safe-area-inset-bottom, 20px);
-  transition:transform .25s ease;
-}
-#sb::-webkit-scrollbar{width:3px}
-#sb::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
-#mapwrap{flex:1;position:relative;overflow:hidden;background:#e8e0d4;height:100%}
-@media(max-width:600px){
   #body{top:92px;height:calc(100dvh - 92px)}
-  #sb{
-    position:fixed;
-    top:92px;bottom:0;left:0;
-    width:285px;
-    transform:translateX(-100%);
-    box-shadow:4px 0 20px rgba(0,0,0,.3);
-  }
+  #sb{position:fixed;top:92px;bottom:0;left:0;width:285px;transform:translateX(-100%);box-shadow:4px 0 20px rgba(0,0,0,.3)}
   #sb.open{transform:translateX(0)}
   #mapwrap{width:100%}
 }
-#mapcanvas{position:absolute;top:0;left:0;cursor:grab}
-#mapcanvas.dragging{cursor:grabbing}
+#mapcanvas{position:absolute;inset:0}
 .sh{padding:11px 12px;font-size:9px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;color:var(--muted);background:var(--cream);border-top:1px solid #ddd5c8;border-bottom:1px solid #ddd5c8;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;min-height:44px;-webkit-tap-highlight-color:rgba(212,168,83,.2);touch-action:manipulation}
 .sh:hover{background:#e8ddd0}
 .sb-b{display:none}.sb-b.open{display:block}
-.pi{padding:8px 12px;cursor:pointer;display:flex;gap:7px;align-items:flex-start;border-left:3px solid transparent;transition:background .1s;min-height:44px;-webkit-tap-highlight-color:rgba(192,57,43,.1);touch-action:manipulation}
+.pi{padding:8px 12px;cursor:pointer;display:flex;gap:7px;align-items:flex-start;border-left:3px solid transparent;transition:background .1s;min-height:44px;touch-action:manipulation}
 .pi:hover{background:rgba(0,0,0,.04)}
 .pi.on{background:rgba(192,57,43,.07);border-left-color:#c0392b}
 .pi-n{font-size:11px;font-weight:600;color:var(--ink);line-height:1.3}
@@ -148,7 +63,7 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .tl-s{font-size:10px;color:var(--muted)}
 .fb{padding:8px 12px;background:var(--cream);border-bottom:1px solid #ddd5c8;display:flex;gap:4px;flex-wrap:wrap}
 .fbl{width:100%;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:3px}
-.fbtn{padding:6px 10px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;border:1.5px solid transparent;background:rgba(0,0,0,.06);color:var(--muted);transition:all .12s;min-height:36px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.fbtn{padding:6px 10px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;border:1.5px solid transparent;background:rgba(0,0,0,.06);color:var(--muted);transition:all .12s;min-height:36px;touch-action:manipulation}
 .fbtn.on,.fbtn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
 .bdg{padding:2px 6px;border-radius:20px;font-size:8px;font-weight:700;text-transform:uppercase;color:#fff}
 #popup{position:absolute;z-index:150;display:none;background:var(--paper);border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.25);min-width:220px;max-width:270px;overflow:hidden}
@@ -168,11 +83,10 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .zbtn{width:30px;height:30px;background:#1a1a2e;color:#faf7f2;border:none;border-radius:5px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.3);font-weight:300;line-height:1}
 .zbtn:hover{background:#2d2d4a}
 #wbtn{margin-top:4px;width:auto;padding:0 8px;font-size:8px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;height:24px}
+.leaflet-control-zoom{display:none!important}.leaflet-control-attribution{font-size:8px!important;opacity:0.6}
 </style>
 </head>
 <body>
-
-<!-- ══ MAIN HEADER ══ -->
 <div id="hdr">
   <div style="display:flex;align-items:center;gap:8px">
     <div id="menu-toggle" onclick="toggleSidebar()" aria-label="Menu">
@@ -194,44 +108,29 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
   </div>
 </div>
 
-<!-- ══ AIR CANADA PRICING BANNER ══ -->
 <div id="ac-banner">
   <div class="ac-label">✈ Air Canada &nbsp;YYZ → ICN</div>
-  <div class="ac-date" contenteditable="true" spellcheck="false" title="Click to edit date" style="border-bottom:1.5px dashed rgba(212,168,83,.4);outline:none;cursor:text;padding-bottom:1px;min-width:60px;color:#ffffff;font-weight:700;" onfocus="this.style.borderBottomColor='var(--gold)'" onblur="this.style.borderBottomColor='rgba(212,168,83,.4)'">as at Mar 20</div>
-  <div class="ac-divider"></div>
-
+  <div contenteditable="true" spellcheck="false" title="Click to edit date" style="font-size:8px;white-space:nowrap;flex-shrink:0;color:#ffffff;font-weight:700;border-bottom:1.5px dashed rgba(212,168,83,.4);outline:none;cursor:text;padding-bottom:1px;min-width:60px;" onfocus="this.style.borderBottomColor='var(--gold)'" onblur="this.style.borderBottomColor='rgba(212,168,83,.4)'">as at Mar 20</div>
+  <div style="width:1px;height:18px;background:rgba(212,168,83,.2);flex-shrink:0"></div>
   <div class="ac-ticket">
     <div>
       <div class="ac-ticket-label">1 Econ Ticket<br>No Refund / Cancellation</div>
       <div class="ac-edit-hint">click to edit</div>
     </div>
-    <div
-      id="ac-price-1"
-      contenteditable="true"
-      class="ac-ticket-price"
-      spellcheck="false"
-      title="Click to edit price">$1,956.62</div>
+    <div contenteditable="true" class="ac-ticket-price" spellcheck="false">$1,956.62</div>
   </div>
-
   <div class="ac-ticket">
     <div>
       <div class="ac-ticket-label">1 Prem Econ Ticket<br>Refund / Cancellation for a fee</div>
       <div class="ac-edit-hint">click to edit</div>
     </div>
-    <div
-      id="ac-price-2"
-      contenteditable="true"
-      class="ac-ticket-price"
-      spellcheck="false"
-      title="Click to edit price">$4,335.62</div>
+    <div contenteditable="true" class="ac-ticket-price" spellcheck="false">$4,335.62</div>
   </div>
 </div>
-<!-- ══ END AIR CANADA BANNER ══ -->
 
 <div id="body">
 <div id="sb-overlay" onclick="toggleSidebar()"></div>
 <div id="sb">
-  <!-- ══ BUDGET PANEL ══ -->
   <div id="budget-bar" style="background:var(--ink);border-bottom:2px solid rgba(212,168,83,.4);padding:10px 12px 8px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
       <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px">💰 Trip Budget — 12 People · 17 Nights</div>
@@ -240,7 +139,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
         <div id="cur-usd" onclick="setCur('usd')" style="cursor:pointer;padding:2px 7px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(212,168,83,.2);color:var(--gold)">USD</div>
       </div>
     </div>
-
     <div style="background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.3);border-radius:7px;padding:6px 10px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center">
       <div>
         <div style="font-size:8px;color:rgba(250,247,242,.55);text-transform:uppercase;letter-spacing:.6px">Est. per person (excl. flights)</div>
@@ -253,7 +151,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
         <div style="font-size:9px;color:rgba(250,247,242,.5)">excl. flights</div>
       </div>
     </div>
-
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:7px">
       <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #FF5A5F">
         <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">🏠 Lodging</div>
@@ -286,8 +183,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
         <div id="cat-icn-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">AREX x2 · pp</div>
       </div>
     </div>
-
-    <!-- Total Trip per person callout -->
     <div style="background:rgba(212,168,83,.15);border:1.5px solid rgba(212,168,83,.5);border-radius:6px;padding:7px 10px;display:flex;justify-content:space-between;align-items:center">
       <div>
         <div style="font-size:8px;color:var(--gold);text-transform:uppercase;letter-spacing:.5px">💰 Total Trip per person (incl. flights)</div>
@@ -299,13 +194,11 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
         <div style="font-size:8px;color:rgba(250,247,242,.4)">group total · 12 pax</div>
       </div>
     </div>
-
     <div style="margin-top:6px;font-size:8px;color:rgba(250,247,242,.35);line-height:1.5;text-align:center">
       Estimates based on mid-range spending · Sep 2026 rates<br>
       <span id="rate-note">1 CAD ≈ ₩1,070 · 1 USD ≈ ₩1,460</span>
     </div>
   </div>
-  <!-- ══ END BUDGET PANEL ══ -->
 
   <div class="sh" onclick="tog('tl')">📅 Trip Itinerary <span id="ar-tl">▶</span></div>
   <div class="sb-b" id="sec-tl">
@@ -361,68 +254,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
     </div>
   </div>
 
-  <div class="sh" onclick="tog('busjeju')">✈ Busan → Jeju Island <span id="ar-busjeju">▶</span></div>
-  <div class="sb-b" id="sec-busjeju">
-    <div style="padding:10px 12px 4px;font-size:9px;color:var(--muted);line-height:1.5">Gimhae Intl (PUS) → Jeju Intl (CJU) · ~55 min flight · Oct 5</div>
-
-    <div style="margin:2px 10px 8px;background:var(--cream);border-radius:7px;padding:7px 10px;border:1px solid #e0d8cc">
-      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px">💡 Booking Tips</div>
-      <div style="font-size:9px;color:#555;line-height:1.7">
-        <div>📱 Book via <b>Naver Flight</b> or <b>Trip.com</b> for best rates</div>
-        <div>🗓 Book 4–8 weeks ahead for cheapest fares</div>
-        <div>🧳 Budget airlines charge extra for checked bags</div>
-      </div>
-    </div>
-
-    <div style="margin:0 10px 8px;border-radius:8px;overflow:hidden;border:1px solid #e0d8cc">
-      <div style="background:#e85d04;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
-        <div style="font-size:11px;font-weight:700">✈ Jeju Air · Air Busan</div>
-        <div style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:10px">₩50,000–80,000</div>
-      </div>
-      <div style="background:#faf7f2;padding:7px 10px;font-size:9.5px;color:#444;line-height:1.7">
-        <div>⏱ <b>~55 min</b> flight time</div>
-        <div>🕐 Multiple daily departures · 06:00–21:00</div>
-        <div>💳 Book direct: jejuair.com · airbusan.com</div>
-        <div style="margin-top:4px;font-size:9px;color:var(--muted)">Budget carriers · Carry-on included · Checked bag extra ~₩15,000</div>
-      </div>
-    </div>
-
-    <div style="margin:0 10px 8px;border-radius:8px;overflow:hidden;border:1px solid #e0d8cc">
-      <div style="background:#003499;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
-        <div style="font-size:11px;font-weight:700">✈ Korean Air · Asiana</div>
-        <div style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:10px">₩90,000–150,000</div>
-      </div>
-      <div style="background:#faf7f2;padding:7px 10px;font-size:9.5px;color:#444;line-height:1.7">
-        <div>⏱ <b>~55 min</b> flight time</div>
-        <div>🕐 ~6–8 flights daily · Full service</div>
-        <div>💳 Book: koreanair.com · flyasiana.com</div>
-        <div style="margin-top:4px;font-size:9px;color:var(--muted)">Checked bag included · Miles earn · More flexibility</div>
-      </div>
-    </div>
-
-    <div style="margin:0 10px 12px;background:var(--cream);border-radius:8px;padding:8px 10px;border:1px solid #e0d8cc">
-      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Quick Compare — 10 people · one-way</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;text-align:center">
-        <div style="background:#e85d04;color:#fff;border-radius:5px;padding:5px 4px">
-          <div style="font-size:8px;opacity:0.85">Jeju Air</div>
-          <div style="font-size:11px;font-weight:700">₩500k–</div>
-          <div style="font-size:8px;opacity:0.85">10 tickets</div>
-        </div>
-        <div style="background:#e85d04;color:#fff;border-radius:5px;padding:5px 4px">
-          <div style="font-size:8px;opacity:0.85">Air Busan</div>
-          <div style="font-size:11px;font-weight:700">₩600k–</div>
-          <div style="font-size:8px;opacity:0.85">10 tickets</div>
-        </div>
-        <div style="background:#003499;color:#fff;border-radius:5px;padding:5px 4px">
-          <div style="font-size:8px;opacity:0.85">Korean Air</div>
-          <div style="font-size:11px;font-weight:700">₩1M–</div>
-          <div style="font-size:8px;opacity:0.85">10 tickets</div>
-        </div>
-      </div>
-      <div style="margin-top:6px;font-size:8.5px;color:var(--muted);text-align:center">Prices vary · Book early for best rates · Oct 5 departure</div>
-    </div>
-  </div>
-
   <div class="sh" onclick="tog('sa')">📍 Seoul <span class="bdg" style="background:#c0392b">5+3 nights</span></div>
   <div class="sb-b open" id="sec-sa"><div id="list-seoul"></div></div>
   <div class="sh" onclick="tog('ba')">📍 Busan <span class="bdg" style="background:#1a5276">4 nights</span></div>
@@ -438,460 +269,288 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
     <div style="margin:2px 10px 8px;background:var(--cream);border-radius:7px;padding:7px 10px;border:1px solid #e0d8cc">
       <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Routes shown on map</div>
       <div style="display:flex;flex-direction:column;gap:5px">
-        <div style="display:flex;align-items:center;gap:8px">
-          <svg width="40" height="8"><rect x="0" y="2" width="40" height="4" rx="2" fill="#1a1a2e"/><line x1="0" y1="4" x2="40" y2="4" stroke="#d4a853" stroke-width="1.5" stroke-dasharray="8,4"/></svg>
-          <span style="font-size:9.5px;font-weight:600;color:#1a1a2e">AREX Express</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <svg width="40" height="8"><rect x="0" y="2" width="40" height="4" rx="2" fill="#2e7d7d"/><line x1="0" y1="4" x2="40" y2="4" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-dasharray="3,7"/></svg>
-          <span style="font-size:9.5px;font-weight:600;color:#2e7d7d">AREX All-Stop</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <svg width="40" height="8"><line x1="0" y1="4" x2="40" y2="4" stroke="#8b6914" stroke-width="4" stroke-dasharray="12,5" stroke-linecap="round"/></svg>
-          <span style="font-size:9.5px;font-weight:600;color:#8b6914">Limo Bus</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <svg width="40" height="8"><line x1="0" y1="4" x2="40" y2="4" stroke="#555e6e" stroke-width="3" stroke-dasharray="3,7" stroke-linecap="round"/></svg>
-          <span style="font-size:9.5px;font-weight:600;color:#555e6e">Taxi</span>
-        </div>
+        <div style="display:flex;align-items:center;gap:8px"><svg width="40" height="8"><rect x="0" y="2" width="40" height="4" rx="2" fill="#1a1a2e"/><line x1="0" y1="4" x2="40" y2="4" stroke="#d4a853" stroke-width="1.5" stroke-dasharray="8,4"/></svg><span style="font-size:9.5px;font-weight:600;color:#1a1a2e">AREX Express</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><svg width="40" height="8"><rect x="0" y="2" width="40" height="4" rx="2" fill="#2e7d7d"/><line x1="0" y1="4" x2="40" y2="4" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-dasharray="3,7"/></svg><span style="font-size:9.5px;font-weight:600;color:#2e7d7d">AREX All-Stop</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><svg width="40" height="8"><line x1="0" y1="4" x2="40" y2="4" stroke="#8b6914" stroke-width="4" stroke-dasharray="12,5" stroke-linecap="round"/></svg><span style="font-size:9.5px;font-weight:600;color:#8b6914">Limo Bus</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><svg width="40" height="8"><line x1="0" y1="4" x2="40" y2="4" stroke="#555e6e" stroke-width="3" stroke-dasharray="3,7" stroke-linecap="round"/></svg><span style="font-size:9.5px;font-weight:600;color:#555e6e">Taxi</span></div>
       </div>
     </div>
-
     <div style="margin:0 10px 8px;border-radius:8px;overflow:hidden;border:1px solid #e0d8cc">
-      <div style="background:#003499;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
-        <div style="font-size:11px;font-weight:700">🚄 AREX Express Train</div>
-        <div style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:10px">₩9,500</div>
-      </div>
-      <div style="background:#faf7f2;padding:7px 10px;font-size:9.5px;color:#444;line-height:1.7">
-        <div>⏱ <b>43 min</b> (T1) · 51 min (T2) to Seoul Stn</div>
-        <div>🕐 Every 20–40 min · 5:23am–10:48pm</div>
-        <div>💳 Card/cash · Book at <b>airportrailroad.com</b></div>
-        <div style="margin-top:4px;font-size:9px;color:var(--muted)">Non-stop · Free Wi-Fi · Luggage space · Best for speed</div>
-      </div>
+      <div style="background:#003499;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center"><div style="font-size:11px;font-weight:700">🚄 AREX Express Train</div><div style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:10px">₩9,500</div></div>
+      <div style="background:#faf7f2;padding:7px 10px;font-size:9.5px;color:#444;line-height:1.7"><div>⏱ <b>43 min</b> (T1) · 51 min (T2) to Seoul Stn</div><div>🕐 Every 20–40 min · 5:23am–10:48pm</div><div>💳 Card/cash · Book at <b>airportrailroad.com</b></div><div style="margin-top:4px;font-size:9px;color:var(--muted)">Non-stop · Free Wi-Fi · Luggage space · Best for speed</div></div>
     </div>
-
     <div style="margin:0 10px 8px;border-radius:8px;overflow:hidden;border:1px solid #e0d8cc">
-      <div style="background:#37b42d;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
-        <div style="font-size:11px;font-weight:700">🚇 AREX All-Stop Train</div>
-        <div style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:10px">₩4,150–4,750</div>
-      </div>
-      <div style="background:#faf7f2;padding:7px 10px;font-size:9.5px;color:#444;line-height:1.7">
-        <div>⏱ <b>59 min</b> (T1) · 66 min (T2) to Seoul Stn</div>
-        <div>🕐 Every 5–10 min · 5:24am–11:38pm</div>
-        <div>💳 T-Money card or single-use ticket</div>
-        <div style="margin-top:4px;font-size:9px;color:var(--muted)">Stops at Hongik Univ, Gongdeok, DMC · Best value</div>
-      </div>
+      <div style="background:#37b42d;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center"><div style="font-size:11px;font-weight:700">🚇 AREX All-Stop Train</div><div style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:10px">₩4,150–4,750</div></div>
+      <div style="background:#faf7f2;padding:7px 10px;font-size:9.5px;color:#444;line-height:1.7"><div>⏱ <b>59 min</b> (T1) · 66 min (T2) to Seoul Stn</div><div>🕐 Every 5–10 min · 5:24am–11:38pm</div><div>💳 T-Money card or single-use ticket</div><div style="margin-top:4px;font-size:9px;color:var(--muted)">Stops at Hongik Univ, Gongdeok, DMC · Best value</div></div>
     </div>
-
     <div style="margin:0 10px 8px;border-radius:8px;overflow:hidden;border:1px solid #e0d8cc">
-      <div style="background:#7d6608;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
-        <div style="font-size:11px;font-weight:700">🚌 Airport Limousine Bus</div>
-        <div style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:10px">₩9,000–18,000</div>
-      </div>
-      <div style="background:#faf7f2;padding:7px 10px;font-size:9.5px;color:#444;line-height:1.7">
-        <div>⏱ <b>60–80 min</b> depending on traffic</div>
-        <div>🕐 Every 10–30 min · Multiple routes</div>
-        <div>🗺 Route 6701: Myeongdong · Route 6703: Gangnam</div>
-        <div style="margin-top:4px;font-size:9px;color:var(--muted)">Drops at major hotels · Under-bus luggage · Free Wi-Fi</div>
-      </div>
+      <div style="background:#7d6608;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center"><div style="font-size:11px;font-weight:700">🚌 Airport Limousine Bus</div><div style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:10px">₩9,000–18,000</div></div>
+      <div style="background:#faf7f2;padding:7px 10px;font-size:9.5px;color:#444;line-height:1.7"><div>⏱ <b>60–80 min</b> depending on traffic</div><div>🕐 Every 10–30 min · Multiple routes</div><div>🗺 Route 6701: Myeongdong · Route 6703: Gangnam</div><div style="margin-top:4px;font-size:9px;color:var(--muted)">Drops at major hotels · Under-bus luggage · Free Wi-Fi</div></div>
     </div>
-
     <div style="margin:0 10px 8px;border-radius:8px;overflow:hidden;border:1px solid #e0d8cc">
-      <div style="background:#c0392b;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
-        <div style="font-size:11px;font-weight:700">🚕 Taxi</div>
-        <div style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:10px">₩55,000–75,000</div>
-      </div>
-      <div style="background:#faf7f2;padding:7px 10px;font-size:9.5px;color:#444;line-height:1.7">
-        <div>⏱ <b>60–90 min</b> depending on traffic</div>
-        <div>🕐 Available 24/7 · Standard or jumbo (up to 9)</div>
-        <div>⚠ +₩7,900 expressway toll · +20% surcharge 10pm–4am</div>
-        <div style="margin-top:4px;font-size:9px;color:var(--muted)">Door-to-door · Best for groups with heavy luggage</div>
-      </div>
+      <div style="background:#c0392b;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center"><div style="font-size:11px;font-weight:700">🚕 Taxi</div><div style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:10px">₩55,000–75,000</div></div>
+      <div style="background:#faf7f2;padding:7px 10px;font-size:9.5px;color:#444;line-height:1.7"><div>⏱ <b>60–90 min</b> depending on traffic</div><div>🕐 Available 24/7 · Standard or jumbo (up to 9)</div><div>⚠ +₩7,900 expressway toll · +20% surcharge 10pm–4am</div><div style="margin-top:4px;font-size:9px;color:var(--muted)">Door-to-door · Best for groups with heavy luggage</div></div>
     </div>
-
     <div style="margin:0 10px 12px;background:var(--cream);border-radius:8px;padding:8px 10px;border:1px solid #e0d8cc">
       <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Quick Compare — ~10 people</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;text-align:center">
-        <div style="background:#003499;color:#fff;border-radius:5px;padding:5px 4px">
-          <div style="font-size:8px;opacity:0.8">AREX Express</div>
-          <div style="font-size:11px;font-weight:700">₩95,000</div>
-          <div style="font-size:8px;opacity:0.8">10 tickets</div>
-        </div>
-        <div style="background:#7d6608;color:#fff;border-radius:5px;padding:5px 4px">
-          <div style="font-size:8px;opacity:0.8">Limo Bus</div>
-          <div style="font-size:11px;font-weight:700">₩180,000</div>
-          <div style="font-size:8px;opacity:0.8">10 tickets</div>
-        </div>
-        <div style="background:#c0392b;color:#fff;border-radius:5px;padding:5px 4px">
-          <div style="font-size:8px;opacity:0.8">2× Taxis</div>
-          <div style="font-size:11px;font-weight:700">₩130,000</div>
-          <div style="font-size:8px;opacity:0.8">est. 2 cabs</div>
-        </div>
+        <div style="background:#003499;color:#fff;border-radius:5px;padding:5px 4px"><div style="font-size:8px;opacity:0.8">AREX Express</div><div style="font-size:11px;font-weight:700">₩95,000</div><div style="font-size:8px;opacity:0.8">10 tickets</div></div>
+        <div style="background:#7d6608;color:#fff;border-radius:5px;padding:5px 4px"><div style="font-size:8px;opacity:0.8">Limo Bus</div><div style="font-size:11px;font-weight:700">₩180,000</div><div style="font-size:8px;opacity:0.8">10 tickets</div></div>
+        <div style="background:#c0392b;color:#fff;border-radius:5px;padding:5px 4px"><div style="font-size:8px;opacity:0.8">2× Taxis</div><div style="font-size:11px;font-weight:700">₩130,000</div><div style="font-size:8px;opacity:0.8">est. 2 cabs</div></div>
       </div>
     </div>
   </div>
+
+  <div class="sh" onclick="tog('tg')">🚌 Group Transport Guide <span id="ar-tg">▶</span></div>
+  <div class="sb-b" id="sec-tg">
+    <div style="padding:8px 12px 4px;display:flex;gap:4px;flex-wrap:wrap">
+      <div class="fbtn on" id="tg-seoul" onclick="tgCity('seoul',this)" style="border-radius:20px">Seoul</div>
+      <div class="fbtn" id="tg-busan" onclick="tgCity('busan',this)" style="border-radius:20px">Busan</div>
+      <div class="fbtn" id="tg-jeju" onclick="tgCity('jeju',this)" style="border-radius:20px">Jeju</div>
+      <div class="fbtn" id="tg-tips" onclick="tgCity('tips',this)" style="border-radius:20px">Best Picks</div>
+    </div>
+
+    <div id="tg-c-seoul" style="padding:4px 12px 10px">
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Tourist areas + transport</div>
+      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Myeongdong / Seoul Tower</b> → Line 4, Myeongdong Stn</div>
+      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Gyeongbokgung / Bukchon</b> → Line 3, Anguk Stn</div>
+      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Hongdae / Mangwon</b> → AREX or Line 2</div>
+      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Gangnam / COEX</b> → Line 2 or Line 9</div>
+      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Lotte World / Jamsil</b> → Line 2 or Line 8</div>
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:8px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Group costs — 12 people</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px">
+        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border-left:3px solid #d4a853;border:1px solid #e8e0d4">
+          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Subway / trip</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩18,600</div>
+          <div style="font-size:8px;color:var(--muted)">₩1,550 × 12</div>
+        </div>
+        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
+          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">2 rides / day</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩37,200</div>
+          <div style="font-size:8px;color:var(--muted)">typical daily</div>
+        </div>
+        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
+          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">AREX all-stop</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩57,000</div>
+          <div style="font-size:8px;color:var(--muted)">₩4,750 × 12</div>
+        </div>
+        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
+          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Jumbo taxi</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩35–60k</div>
+          <div style="font-size:8px;color:var(--muted)">central Seoul</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4;margin-bottom:6px">
+        <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Private 12-seat van · full day</div>
+        <div style="font-size:12px;font-weight:700;color:var(--ink)">₩250,000–400,000</div>
+      </div>
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Restaurant areas</div>
+      <div style="display:flex;flex-wrap:wrap;gap:3px;padding-bottom:4px">
+        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(192,57,43,.1);color:#c0392b">Myeongdong Kyoja → Myeongdong Stn</span>
+        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(192,57,43,.1);color:#c0392b">Ikseon-dong → Anguk Stn</span>
+        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(192,57,43,.1);color:#c0392b">Hongdae BBQ → Hongik Univ Stn</span>
+        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(192,57,43,.1);color:#c0392b">Gwangjang Market → Jongno 5-ga</span>
+      </div>
+    </div>
+
+    <div id="tg-c-busan" style="display:none;padding:4px 12px 10px">
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Tourist areas + transport</div>
+      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Seomyeon</b> → central metro hub, ideal group base</div>
+      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Haeundae / Gwangalli</b> → Metro Line 2</div>
+      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Songdo Cable Car</b> → taxi recommended</div>
+      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Taejongdae / Huinnyeoul</b> → taxi or charter van</div>
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:8px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Group costs — 12 people</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px">
+        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
+          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Metro / trip</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩18,600</div>
+          <div style="font-size:8px;color:var(--muted)">₩1,550 × 12</div>
+        </div>
+        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
+          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">3 regular taxis</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩30–45k</div>
+          <div style="font-size:8px;color:var(--muted)">across city</div>
+        </div>
+        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
+          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Jumbo taxi</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩50–80k</div>
+          <div style="font-size:8px;color:var(--muted)">coastal routes</div>
+        </div>
+        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
+          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Private van · day</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩220–350k</div>
+          <div style="font-size:8px;color:var(--muted)">full day hire</div>
+        </div>
+      </div>
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Restaurant areas</div>
+      <div style="display:flex;flex-wrap:wrap;gap:3px;padding-bottom:4px">
+        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(26,82,118,.1);color:#1a5276">Jagalchi seafood → Jagalchi Stn</span>
+        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(26,82,118,.1);color:#1a5276">Seomyeon food alley → Seomyeon Stn</span>
+        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(26,82,118,.1);color:#1a5276">Nampo-dong → Nampo Stn</span>
+        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(26,82,118,.1);color:#1a5276">Gijang seafood → van/taxi</span>
+      </div>
+    </div>
+
+    <div id="tg-c-jeju" style="display:none;padding:4px 12px 10px">
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Getting around</div>
+      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Hallasan / Seongsan / Seopjikoji</b> → road transport required</div>
+      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px">Public buses are slow for large groups</div>
+      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #27ae60;margin-bottom:2px"><b>Best option:</b> private van or two rental vehicles</div>
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:8px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Group costs — 12 people</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px">
+        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
+          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Private van · full day</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩300–500k</div>
+          <div style="font-size:8px;color:var(--muted)">route-dependent</div>
+        </div>
+        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
+          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">2 taxis / day</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩120–180k</div>
+          <div style="font-size:8px;color:var(--muted)">major routes</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4;margin-bottom:6px">
+        <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Airport limo bus (point-to-point)</div>
+        <div style="font-size:12px;font-weight:700;color:var(--ink)">₩60,000–72,000</div>
+        <div style="font-size:8px;color:var(--muted)">₩5–6k × 12 people</div>
+      </div>
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Restaurant areas</div>
+      <div style="display:flex;flex-wrap:wrap;gap:3px;padding-bottom:4px">
+        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(39,174,96,.1);color:#27ae60">Black pork (Donsadon) → taxi</span>
+        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(39,174,96,.1);color:#27ae60">Dongmun Market → taxi/bus</span>
+        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(39,174,96,.1);color:#27ae60">Seogwipo seafood → van preferred</span>
+      </div>
+    </div>
+
+    <div id="tg-c-tips" style="display:none;padding:4px 12px 10px">
+      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:6px 0 5px;font-size:9px;color:#7a6030;line-height:1.7">
+        <b>Seoul</b> — public transit is most efficient unless moving late at night.
+      </div>
+      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7">
+        <b>Busan</b> — mix metro + taxis for coastal destinations.
+      </div>
+      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7">
+        <b>Jeju</b> — private van strongly recommended; public transit adds major travel time for groups.
+      </div>
+      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7">
+        <b>Restaurant evenings</b> — taxis often cheaper than splitting subway transfers for 12 people.
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <div id="mapwrap">
-  <canvas id="mapcanvas"></canvas>
+  <div id="mapcanvas"></div>
   <div id="zctrl">
     <button class="zbtn" onclick="zoom(1)">+</button>
     <button class="zbtn" onclick="zoom(-1)">−</button>
     <button class="zbtn" id="wbtn" onclick="toggleWalk()">① hide</button>
     <button class="zbtn" id="tbtn" onclick="toggleTransport()" style="font-size:8px;width:auto;padding:0 8px;height:24px;margin-top:2px;letter-spacing:.3px;text-transform:uppercase;font-weight:700;white-space:nowrap">✈ hide</button>
   </div>
-  <div id="popup">
-    <span class="pu-close" onclick="closePopup()">×</span>
-    <div id="pu-inner"></div>
-  </div>
+  <div id="popup"><span class="pu-close" onclick="closePopup()">×</span><div id="pu-inner"></div></div>
 </div>
 </div>
 
 <script>
-var AIRBNBS = {
-  a1:{id:'a1',lat:37.5800,lng:126.9840,city:'airbnb',name:'Airbnb Option A',sub:'Bukchon area · Anguk stn (Line 3) ~5 min',
-    rows:[{l:'Nearest metro',v:'Anguk (Line 3)'},{l:'Walk to metro',v:'~5 min'},{l:'To Myeongdong',v:'2 stops ~8 min'},{l:'To Gangnam',v:'5 stops ~15 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],
-    url:'https://www.airbnb.ca/rooms/1071219924971118739'},
-  a2:{id:'a2',lat:37.5667,lng:126.9780,city:'airbnb',name:'Airbnb Option B',sub:'Gwanghwamun · Gyeongbokgung stn (Line 3) ~8 min',
-    rows:[{l:'Nearest metro',v:'Gyeongbokgung (Line 3)'},{l:'Walk to metro',v:'~8 min'},{l:'To Myeongdong',v:'3 stops ~10 min'},{l:'To Gangnam',v:'6 stops ~20 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],
-    url:'https://www.airbnb.ca/rooms/52696974'},
-  b1:{id:'ba1',lat:35.1138,lng:129.0344,city:'airbnb',name:'Option C — Roots House Busan Stn',sub:'Choryang Ibagu-Gil Alley · near Busan Station',
-    rows:[{l:'Neighbourhood',v:'Choryang Ibagu-Gil Alley'},{l:'Near',v:'Busan Station'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,241'},{l:'Per person',v:'~$187 CAD'}],
-    url:'https://www.airbnb.ca/rooms/1602494588154383516'},
-  b2:{id:'ba2',lat:35.1020,lng:129.0400,city:'airbnb',name:'Option D — Busan Port Bridge Taejong-Ro',sub:'Busan Harbor Bridge area · Yeongdo',
-    rows:[{l:'Neighbourhood',v:'Busan Harbor Bridge'},{l:'Near',v:'Busan Port Bridge'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,352'},{l:'Per person',v:'~$196 CAD'}],
-    url:'https://www.airbnb.ca/rooms/1457528950582135704'}
-};
-
-var PLACES = [
-  {id:'s1',city:'seoul',lat:37.5797,lng:126.9770,name:'Gyeongbokgung Palace',sub:'Line 3 · Gyeongbokgung stn'},
-  {id:'s2',city:'seoul',lat:37.5826,lng:126.9850,name:'Bukchon Hanok Village',sub:'Line 3 · Anguk stn'},
-  {id:'s3',city:'seoul',lat:37.5793,lng:126.9910,name:'Changdeokgung Palace',sub:'Line 3 · Anguk stn'},
-  {id:'s4',city:'seoul',lat:37.5512,lng:126.9882,name:'Namsan Tower',sub:'Walk from Myeongdong'},
-  {id:'s5',city:'seoul',lat:37.5563,lng:126.9237,name:'Hongdae',sub:'Line 2 · Hongik Univ stn'},
-  {id:'s6',city:'seoul',lat:37.5172,lng:127.0473,name:'Gangnam',sub:'Line 2 · Gangnam stn'},
-  {id:'s7',city:'seoul',lat:37.5131,lng:127.0589,name:'COEX & Starfield',sub:'Line 9 · Bongeunsa stn'},
-  {id:'s8',city:'seoul',lat:37.5636,lng:126.9827,name:'Myeongdong',sub:'Line 4 · Myeongdong stn'},
-  {id:'s9',city:'seoul',lat:37.5755,lng:127.0610,name:'Gyeongdong Market',sub:'Line 1 · Jegi-dong stn'},
-  {id:'s10',city:'seoul',lat:37.5500,lng:126.9075,name:'Mangwon Market',sub:'Line 6 · Mangwon stn'},
-  {id:'s11',city:'seoul',lat:37.5583,lng:126.9763,name:'Namdaemun Market',sub:'Line 4 · Hoehyeon stn'},
-  {id:'s12',city:'seoul',lat:37.5700,lng:126.9990,name:'Gwangjang Market',sub:'Line 1 · Jongno 5-ga stn'},
-  {id:'s13',city:'seoul',lat:37.5346,lng:126.9940,name:'Itaewon',sub:'Line 6 · Itaewon stn'},
-  {id:'s14',city:'seoul',lat:37.5702,lng:126.9994,name:'Cheonggyecheon Stream',sub:'Restored urban stream · Cheonggye Plaza'},
-  {id:'s15',city:'seoul',lat:37.5672,lng:127.0090,name:'Dongdaemun Design Plaza',sub:'Line 2/4/5 · DDP stn · Zaha Hadid'},
-  {id:'s16',city:'seoul',lat:37.5285,lng:126.9942,name:'Han River Park (Banpo)',sub:'Banpo Bridge Rainbow Fountain'},
-  {id:'s17',city:'seoul',lat:37.5796,lng:127.0074,name:'Ihwa Mural Village',sub:'Hillside murals · Walk from Hyehwa stn'},
-  {id:'b1',city:'busan',lat:35.0970,lng:129.0350,name:'Jagalchi Fish Market',sub:"Korea's largest seafood market · Pick downstairs, eat upstairs"},
-  {id:'b2',city:'busan',lat:35.1588,lng:129.1603,name:'Haeundae Beach',sub:'Famous beach & waterfront · Markets + street food nearby'},
-  {id:'b3',city:'busan',lat:35.0980,lng:129.0107,name:'Gamcheon Culture Village',sub:'Colourful hillside art village · Iconic stairways'},
-  {id:'b4',city:'busan',lat:35.1879,lng:129.2209,name:'Haedong Yonggungsa',sub:'Coastal temple on rocky cliffs · Stunning sunrise views'},
-  {id:'b5',city:'busan',lat:35.1560,lng:129.1340,name:'Zest Bar',sub:'Cocktails, Haeundae area'},
-  {id:'b6',city:'busan',lat:35.1579,lng:129.0581,name:'Seomyeon',sub:'🔥 Local downtown · Shopping, nightlife, food alleys · Hidden underground malls'},
-  {id:'b7',city:'busan',lat:35.0684,lng:129.0161,name:'Songdo Beach',sub:'🔥 Quieter coastal gem · Cable cars over ocean · Coastal walkways'},
-  {id:'b8',city:'busan',lat:35.0453,lng:129.0843,name:'Taejongdae Resort Park',sub:'🔥 Dramatic cliffs + lighthouse + ocean views · Feels like Jeju'},
-  {id:'b9',city:'busan',lat:35.0837,lng:129.0354,name:'Huinnyeoul Culture Village',sub:'🔥 Hidden gem · Artsy coastal village · Santorini vibes, less crowded than Gamcheon'},
-  {id:'b10',city:'busan',lat:35.1955,lng:129.0758,name:'Dongnae District',sub:'🔥 Old-school Busan · Traditional restaurants · Less touristy local vibe'},
-  {id:'b11',city:'busan',lat:35.1595,lng:129.0581,name:'Seomyeon Food Alley',sub:'🍜 Korean + international eats · Great for hopping between spots'},
-  {id:'b12',city:'busan',lat:35.0977,lng:129.0296,name:'Nampo-dong Food Streets',sub:'🍜 Street food, local joints · Less polished, more authentic'},
-  {id:'b13',city:'busan',lat:35.1011,lng:129.0337,name:'Geumsubokguk',sub:'🏆 Famous pufferfish soup (bok-uh-guk) · Iconic Busan dish'},
-  {id:'b14',city:'busan',lat:35.1551,lng:129.1198,name:'Haeundae Market Food Stalls',sub:'🏆 Street food heaven · 150+ vendors · Great variety'},
-  {id:'b15',city:'busan',lat:35.2439,lng:129.2197,name:'Gijang Son Kalguksu',sub:'🔥 Tiny noodle shop · Market alley · Handmade noodles locals swear by'},
-  {id:'b16',city:'busan',lat:35.1033,lng:129.0312,name:'Deulnyeok',sub:'🔥 Local no-frills BBQ · Very authentic · Neighbourhood gem'},
-  {id:'b17',city:'busan',lat:35.1566,lng:129.1221,name:'Gwangalli Beach & Hidden Spots',sub:'🔥 Local BBQ + seafood joints · Great views · Less touristy than Haeundae'},
-  {id:'j1',city:'jeju',lat:33.3617,lng:126.5292,name:'Hallasan National Park',sub:'🏔 Korea\'s highest peak · Volcanic · Hike or scenic trails · Must-see'},
-  {id:'j2',city:'jeju',lat:33.4609,lng:126.9424,name:'Seongsan Ilchulbong',sub:'🌅 Iconic crater rising from the sea · Go early for sunrise · Less crowded'},
-  {id:'j3',city:'jeju',lat:33.5283,lng:126.7710,name:'Manjanggul Lava Tube',sub:'🌋 Massive underground lava cave · Cool + unique · UNESCO'},
-  {id:'j4',city:'jeju',lat:33.2450,lng:126.4117,name:'Jeju Beaches',sub:'Hyeopjae, Hamdeok, Gwakji · Various coastal spots'},
-  {id:'j5',city:'jeju',lat:33.2494,lng:126.5780,name:'Jeongbang Waterfall',sub:'🌊 Waterfall that falls directly into the ocean · Rare natural wonder'},
-  {id:'j6',city:'jeju',lat:33.2463,lng:126.5559,name:'Cheonjiyeon Waterfall',sub:'🌊 Best visited at night with lighting · Stunning atmosphere'},
-  {id:'j7',city:'jeju',lat:33.2407,lng:126.3138,name:'Jusangjeolli Cliff',sub:'🌊 Hexagonal volcanic rock formations · Dramatic coastal scenery'},
-  {id:'j8',city:'jeju',lat:33.5028,lng:126.9520,name:'Udo Island',sub:'🔥 Rent a bike/scooter · Explore quiet backside beaches · Don\'t rush it'},
-  {id:'j9',city:'jeju',lat:33.4302,lng:126.9302,name:'Seopjikoji',sub:'🔥 Rolling hills + ocean cliffs · Very peaceful · Less crowded than Seongsan'},
-  {id:'j10',city:'jeju',lat:33.3148,lng:126.1979,name:'Aewol Coast',sub:'🔥 Chill cafés, sunsets, local vibe · Less touristy · Great for slow days'},
-  {id:'j11',city:'jeju',lat:33.4967,lng:126.7982,name:'Bijarim Forest',sub:'🔥 Ancient nutmeg tree forest · Quiet, shaded, very peaceful'},
-  {id:'j12',city:'jeju',lat:33.2541,lng:126.5604,name:'Seogwipo',sub:'🔥 South side · Less crowded than Jeju City · Base for waterfalls + local food'},
-  {id:'j13',city:'jeju',lat:33.3150,lng:126.2130,name:'Jeju Olle Trail (Route 16)',sub:'🔥 Coastal walking path near Aewol · Quiet, scenic, local feel'},
-  {id:'j14',city:'jeju',lat:33.5094,lng:126.5219,name:'Donsadon',sub:'🏆 Famous charcoal-grilled black pork · Go early · Very popular'},
-  {id:'j15',city:'jeju',lat:33.5097,lng:126.5231,name:'Heukdonga',sub:'🏆 Excellent black pork · Slightly more polished · Top quality'},
-  {id:'j16',city:'jeju',lat:33.2446,lng:126.5659,name:'Myeongjin Jeonbok',sub:'🏆 Famous abalone dishes · Simple but top quality · Very local'},
-  {id:'j17',city:'jeju',lat:33.2545,lng:126.5020,name:'Dongmun Market',sub:'🍜 Night market · Black pork skewers, fresh juice, seafood pancakes · Must visit'},
-  {id:'j18',city:'jeju',lat:33.2530,lng:126.4900,name:'Nolman',sub:'🔥 Tiny seaside ramen + seafood · Ocean view · Very casual local vibe'},
-  {id:'j19',city:'jeju',lat:33.2558,lng:126.5580,name:'Gozip Dol Wooluck',sub:'🔥 Hidden gem black pork · Less touristy than big-name spots'},
-  {id:'j20',city:'jeju',lat:33.3113,lng:126.2097,name:'Aewol Coastal Cafés',sub:'☕ Scenic cafés · Better + less crowded than famous spots · Walk 5 min off-strip'},
-  {id:'d1',city:'daytrip',lat:35.1935,lng:128.1060,name:'Jinju',sub:'Lantern Festival – week of Oct 9!'},
-  {id:'d2',city:'daytrip',lat:35.8562,lng:129.2247,name:'Gyeongju',sub:"Korea's Kyoto · Ancient Silla capital · Bulguksa Temple · Seokguram Grotto · 1hr from Busan"},
-  {id:'d2b',city:'daytrip',lat:35.7947,lng:129.3317,name:'Bulguksa Temple',sub:'UNESCO · Gyeongju · Silla Kingdom masterpiece'},
-  {id:'d2c',city:'daytrip',lat:35.7896,lng:129.3567,name:'Daereungwon Tomb Complex',sub:'Gyeongju · Ancient royal burial mounds · Atmospheric walk'},
-  {id:'d3',city:'daytrip',lat:35.5383,lng:129.3114,name:'Ulsan',sub:'Whale Museum, Grand Park'},
-  {id:'d4',city:'daytrip',lat:38.1194,lng:128.4658,name:'Sokcho / Seoraksan',sub:'Fall foliage, national park'},
-  {id:'d5',city:'daytrip',lat:37.2893,lng:127.0134,name:'Suwon',sub:'Hwaseong Fortress (UNESCO)'},
-  {id:'d6',city:'daytrip',lat:34.8799,lng:128.6216,name:'Geoje Island',sub:'Less touristy than Jeju · Coastal cliffs, beaches, scenic drives'},
-  {id:'d7',city:'daytrip',lat:34.8544,lng:128.4333,name:'Tongyeong',sub:'"Naples of Korea" · Cable car views + island hopping · Hidden coastal gem'},
-  {id:'icn',city:'seoul',lat:37.4602,lng:126.4407,name:'Incheon Airport (ICN)',sub:'International airport · 55km from Seoul · AREX train to Seoul Stn'},
-];
-
-var ALL_MARKERS = PLACES.concat(Object.values(AIRBNBS));
-var COLORS = {seoul:'#c0392b',busan:'#1a5276',jeju:'#27ae60',daytrip:'#7d6608',airbnb:'#FF5A5F',airport:'#2c3e50'};
-
-var TILE_SIZE = 256;
-function lng2tile(lng,z){return Math.floor((lng+180)/360*Math.pow(2,z));}
-function lat2tile(lat,z){return Math.floor((1-Math.log(Math.tan(lat*Math.PI/180)+1/Math.cos(lat*Math.PI/180))/Math.PI)/2*Math.pow(2,z));}
-function tile2lng(x,z){return x/Math.pow(2,z)*360-180;}
-function tile2lat(y,z){var n=Math.PI-2*Math.PI*y/Math.pow(2,z);return 180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n)));}
-
-function geo2px(lat,lng){
-  var scale=TILE_SIZE*Math.pow(2,state.zoom);
-  var x=(lng+180)/360*scale-state.offX;
-  var sinLat=Math.sin(lat*Math.PI/180);
-  var y=(0.5-Math.log((1+sinLat)/(1-sinLat))/(4*Math.PI))*scale-state.offY;
-  return{x:x,y:y};
-}
-
-var VIEWS={seoul:[37.562,126.978,13],busan:[35.138,129.082,13],jeju:[33.390,126.550,12],all:[36.5,127.8,8]};
-var state={zoom:13,offX:0,offY:0,showWalk:true,filter:'all'};
-var tileCache={};
-var canvas,ctx,wrap;
-
-function setView(lat,lng,z){
-  state.zoom=z;
-  var scale=TILE_SIZE*Math.pow(2,z);
-  var sinLat=Math.sin(lat*Math.PI/180);
-  state.offX=(lng+180)/360*scale-wrap.clientWidth/2;
-  state.offY=(0.5-Math.log((1+sinLat)/(1-sinLat))/(4*Math.PI))*scale-wrap.clientHeight/2;
-  draw();
-}
-
-var tileSubdomains=['a','b','c'];
-var tileIdx=0;
-function getTileUrl(x,y,z){var s=tileSubdomains[tileIdx%tileSubdomains.length];tileIdx++;return'https://'+s+'.tile.openstreetmap.org/'+z+'/'+x+'/'+y+'.png';}
-function loadTile(x,y,z){
-  var key=z+'/'+x+'/'+y;
-  if(tileCache[key])return tileCache[key];
-  tileCache[key]='loading';
-  var img=new Image();
-  img.onload=function(){tileCache[key]=img;draw();};
-  img.onerror=function(){delete tileCache[key];};
-  img.src=getTileUrl(x,y,z);
-  return null;
-}
-
+var AIRBNBS={a1:{id:'a1',lat:37.5800,lng:126.9840,city:'airbnb',name:'Airbnb Option A',sub:'Bukchon area · Anguk stn (Line 3) ~5 min',rows:[{l:'Nearest metro',v:'Anguk (Line 3)'},{l:'Walk to metro',v:'~5 min'},{l:'To Myeongdong',v:'2 stops ~8 min'},{l:'To Gangnam',v:'5 stops ~15 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],url:'https://www.airbnb.ca/rooms/1071219924971118739'},a2:{id:'a2',lat:37.5667,lng:126.9780,city:'airbnb',name:'Airbnb Option B',sub:'Gwanghwamun · Gyeongbokgung stn (Line 3) ~8 min',rows:[{l:'Nearest metro',v:'Gyeongbokgung (Line 3)'},{l:'Walk to metro',v:'~8 min'},{l:'To Myeongdong',v:'3 stops ~10 min'},{l:'To Gangnam',v:'6 stops ~20 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],url:'https://www.airbnb.ca/rooms/52696974'},b1:{id:'ba1',lat:35.1138,lng:129.0344,city:'airbnb',name:'Option C — Roots House Busan Stn',sub:'Choryang Ibagu-Gil Alley · near Busan Station',rows:[{l:'Neighbourhood',v:'Choryang Ibagu-Gil Alley'},{l:'Near',v:'Busan Station'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,241'},{l:'Per person',v:'~$187 CAD'}],url:'https://www.airbnb.ca/rooms/1602494588154383516'},b2:{id:'ba2',lat:35.1020,lng:129.0400,city:'airbnb',name:'Option D — Busan Port Bridge Taejong-Ro',sub:'Busan Harbor Bridge area · Yeongdo',rows:[{l:'Neighbourhood',v:'Busan Harbor Bridge'},{l:'Near',v:'Busan Port Bridge'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,352'},{l:'Per person',v:'~$196 CAD'}],url:'https://www.airbnb.ca/rooms/1457528950582135704'}};
+var PLACES=[{id:'s1',city:'seoul',lat:37.5797,lng:126.9770,name:'Gyeongbokgung Palace',sub:'Line 3 · Gyeongbokgung stn'},{id:'s2',city:'seoul',lat:37.5826,lng:126.9850,name:'Bukchon Hanok Village',sub:'Line 3 · Anguk stn'},{id:'s3',city:'seoul',lat:37.5793,lng:126.9910,name:'Changdeokgung Palace',sub:'Line 3 · Anguk stn'},{id:'s4',city:'seoul',lat:37.5512,lng:126.9882,name:'Namsan Tower',sub:'Walk from Myeongdong'},{id:'s5',city:'seoul',lat:37.5563,lng:126.9237,name:'Hongdae',sub:'Line 2 · Hongik Univ stn'},{id:'s6',city:'seoul',lat:37.5172,lng:127.0473,name:'Gangnam',sub:'Line 2 · Gangnam stn'},{id:'s7',city:'seoul',lat:37.5131,lng:127.0589,name:'COEX & Starfield',sub:'Line 9 · Bongeunsa stn'},{id:'s8',city:'seoul',lat:37.5636,lng:126.9827,name:'Myeongdong',sub:'Line 4 · Myeongdong stn'},{id:'s9',city:'seoul',lat:37.5755,lng:127.0610,name:'Gyeongdong Market',sub:'Line 1 · Jegi-dong stn'},{id:'s10',city:'seoul',lat:37.5500,lng:126.9075,name:'Mangwon Market',sub:'Line 6 · Mangwon stn'},{id:'s11',city:'seoul',lat:37.5583,lng:126.9763,name:'Namdaemun Market',sub:'Line 4 · Hoehyeon stn'},{id:'s12',city:'seoul',lat:37.5700,lng:126.9990,name:'Gwangjang Market',sub:'Line 1 · Jongno 5-ga stn'},{id:'s13',city:'seoul',lat:37.5346,lng:126.9940,name:'Itaewon',sub:'Line 6 · Itaewon stn'},{id:'s14',city:'seoul',lat:37.5702,lng:126.9994,name:'Cheonggyecheon Stream',sub:'Restored urban stream'},{id:'s15',city:'seoul',lat:37.5672,lng:127.0090,name:'Dongdaemun Design Plaza',sub:'Line 2/4/5 · DDP stn'},{id:'s16',city:'seoul',lat:37.5285,lng:126.9942,name:'Han River Park (Banpo)',sub:'Banpo Bridge Rainbow Fountain'},{id:'s17',city:'seoul',lat:37.5796,lng:127.0074,name:'Ihwa Mural Village',sub:'Hillside murals · Walk from Hyehwa stn'},{id:'b1',city:'busan',lat:35.0970,lng:129.0350,name:'Jagalchi Fish Market',sub:"Korea's largest seafood market"},{id:'b2',city:'busan',lat:35.1588,lng:129.1603,name:'Haeundae Beach',sub:'Famous beach & waterfront'},{id:'b3',city:'busan',lat:35.0980,lng:129.0107,name:'Gamcheon Culture Village',sub:'Colourful hillside art village'},{id:'b4',city:'busan',lat:35.1879,lng:129.2209,name:'Haedong Yonggungsa',sub:'Coastal temple on rocky cliffs'},{id:'b5',city:'busan',lat:35.1560,lng:129.1340,name:'Zest Bar',sub:'Cocktails, Haeundae area'},{id:'j1',city:'jeju',lat:33.3617,lng:126.5292,name:'Hallasan',sub:"South Korea's highest peak"},{id:'j2',city:'jeju',lat:33.4609,lng:126.9424,name:'Seongsan Ilchulbong',sub:'UNESCO Sunrise Peak'},{id:'j3',city:'jeju',lat:33.5283,lng:126.7710,name:'Manjanggul Lava Tube',sub:"One of world's longest lava caves"},{id:'j4',city:'jeju',lat:33.2450,lng:126.4117,name:'Jeju Beaches',sub:'Hyeopjae, Hamdeok, Gwakji'},{id:'d1',city:'daytrip',lat:35.1935,lng:128.1060,name:'Jinju',sub:'Lantern Festival – week of Oct 9!'},{id:'d2',city:'daytrip',lat:35.8562,lng:129.2247,name:'Gyeongju',sub:'UNESCO site, Bulguksa Temple'},{id:'d3',city:'daytrip',lat:35.5383,lng:129.3114,name:'Ulsan',sub:'Whale Museum, Grand Park'},{id:'d4',city:'daytrip',lat:38.1194,lng:128.4658,name:'Sokcho / Seoraksan',sub:'Fall foliage, national park'},{id:'d5',city:'daytrip',lat:37.2893,lng:127.0134,name:'Suwon',sub:'Hwaseong Fortress (UNESCO)'},{id:'icn',city:'seoul',lat:37.4602,lng:126.4407,name:'Incheon Airport (ICN)',sub:'International airport · 55km from Seoul'}];
+var ALL_PLACES=PLACES.concat(Object.values(AIRBNBS));
+var COLORS={seoul:'#c0392b',busan:'#1a5276',jeju:'#27ae60',daytrip:'#7d6608',airbnb:'#FF5A5F'};
+var VIEWS={seoul:{lat:37.562,lng:126.978,z:13},busan:{lat:35.138,lng:129.082,z:13},jeju:{lat:33.390,lng:126.550,z:12},all:{lat:36.5,lng:127.8,z:8}};
 var SUBWAY=[
-  {name:'Line 1',color:'#003499',pts:[[37.5112,126.9424],[37.5298,126.9643],[37.5548,126.9707],[37.5709,126.9981],[37.5715,127.0095],[37.5805,127.0449]]},
-  {name:'Line 2',color:'#37b42d',pts:[[37.5574,126.9252],[37.5601,126.9641],[37.5645,126.9769],[37.5668,127.0048],[37.5659,127.0191],[37.5612,127.0359],[37.5130,127.1000],[37.4979,127.0277],[37.4769,126.9812],[37.4840,126.9295],[37.5343,126.9010],[37.5497,126.9148],[37.5574,126.9252]]},
-  {name:'Line 3',color:'#fe5d10',pts:[[37.4848,127.1027],[37.5048,127.0054],[37.5390,127.0186],[37.5607,126.9979],[37.5660,126.9924],[37.5762,126.9852],[37.5793,126.9773],[37.5724,126.9590],[37.6092,126.9328]]},
-  {name:'Line 4',color:'#00a2d1',pts:[[37.6373,127.0137],[37.5887,127.0031],[37.5828,127.0017],[37.5636,126.9826],[37.5548,126.9707],[37.5363,126.9727],[37.5124,126.9819],[37.4769,126.9812]]},
-  {name:'Line 5',color:'#996cac',pts:[[37.5219,126.9241],[37.5455,126.9519],[37.5716,126.9770],[37.5706,126.9919],[37.5668,127.0048],[37.5553,127.0358]]},
-  {name:'Line 6',color:'#cd7c2f',pts:[[37.6092,126.9328],[37.5384,126.9504],[37.5346,126.9940],[37.5519,127.0047],[37.5659,127.0191],[37.5747,127.0165]]},
-  {name:'Line 7',color:'#747f00',pts:[[37.5343,126.9010],[37.4956,126.9251],[37.4939,126.9786],[37.5424,127.0547],[37.5511,127.0793]]},
-  {name:'Line 9',color:'#e6186c',pts:[[37.5219,126.9241],[37.5124,126.9819],[37.5048,127.0054],[37.5087,127.0620],[37.5124,127.0827]]},
+  {color:'#003499',pts:[[37.5112,126.9424],[37.5298,126.9643],[37.5548,126.9707],[37.5709,126.9981],[37.5715,127.0095],[37.5805,127.0449]]},
+  {color:'#37b42d',pts:[[37.5574,126.9252],[37.5601,126.9641],[37.5645,126.9769],[37.5668,127.0048],[37.5659,127.0191],[37.5612,127.0359],[37.5130,127.1000],[37.4979,127.0277],[37.4769,126.9812],[37.4840,126.9295],[37.5343,126.9010],[37.5497,126.9148],[37.5574,126.9252]]},
+  {color:'#fe5d10',pts:[[37.4848,127.1027],[37.5048,127.0054],[37.5390,127.0186],[37.5607,126.9979],[37.5660,126.9924],[37.5762,126.9852],[37.5793,126.9773],[37.5724,126.9590],[37.6092,126.9328]]},
+  {color:'#00a2d1',pts:[[37.6373,127.0137],[37.5887,127.0031],[37.5828,127.0017],[37.5636,126.9826],[37.5548,126.9707],[37.5363,126.9727],[37.5124,126.9819],[37.4769,126.9812]]},
+  {color:'#996cac',pts:[[37.5219,126.9241],[37.5455,126.9519],[37.5716,126.9770],[37.5706,126.9919],[37.5668,127.0048],[37.5553,127.0358]]},
+  {color:'#cd7c2f',pts:[[37.6092,126.9328],[37.5384,126.9504],[37.5346,126.9940],[37.5519,127.0047],[37.5659,127.0191],[37.5747,127.0165]]},
+  {color:'#747f00',pts:[[37.5343,126.9010],[37.4956,126.9251],[37.4939,126.9786],[37.5424,127.0547],[37.5511,127.0793]]},
+  {color:'#e6186c',pts:[[37.5219,126.9241],[37.5124,126.9819],[37.5048,127.0054],[37.5087,127.0620],[37.5124,127.0827]]}
+];
+var TRANSPORT=[
+  {color:'#1a1a2e',weight:5,dash:'8 4',pts:[[37.4602,126.4407],[37.4560,126.4800],[37.5048,126.7539],[37.5441,126.8557],[37.5574,126.9252],[37.5455,126.9519],[37.5548,126.9707]]},
+  {color:'#2e7d7d',weight:4,dash:'4 8',pts:[[37.4602,126.4407],[37.4560,126.4800],[37.5048,126.7539],[37.5441,126.8557],[37.5574,126.9252],[37.5455,126.9519],[37.5645,126.9769],[37.5548,126.9707]]},
+  {color:'#8b6914',weight:4,dash:'12 6',pts:[[37.4602,126.4407],[37.5050,126.7610],[37.5200,126.8800],[37.5500,126.9550],[37.5636,126.9827]]},
+  {color:'#555e6e',weight:3,dash:'3 9',pts:[[37.4602,126.4407],[37.4900,126.6200],[37.5050,126.7610],[37.5300,126.8900],[37.5548,126.9707]]}
 ];
 
-var TRANSPORT_ROUTES=[
-  {id:'arex_express',name:'AREX Express',color:'#1a1a2e',style:'express',pts:[[37.4602,126.4407],[37.4560,126.4800],[37.5048,126.7539],[37.5441,126.8557],[37.5574,126.9252],[37.5455,126.9519],[37.5548,126.9707]]},
-  {id:'arex_allstop',name:'AREX All-Stop',color:'#2e7d7d',style:'allstop',pts:[[37.4602,126.4407],[37.4560,126.4800],[37.5048,126.7539],[37.5441,126.8557],[37.5574,126.9252],[37.5455,126.9519],[37.5645,126.9769],[37.5548,126.9707]]},
-  {id:'limo_bus',name:'Limo Bus',color:'#8b6914',style:'bus',pts:[[37.4602,126.4407],[37.5050,126.7610],[37.5200,126.8800],[37.5500,126.9550],[37.5636,126.9827]]},
-  {id:'taxi',name:'Taxi',color:'#555e6e',style:'taxi',pts:[[37.4602,126.4407],[37.4900,126.6200],[37.5050,126.7610],[37.5300,126.8900],[37.5548,126.9707]]}
-];
+var map, markersLayer, subwayLines=[], transportLines=[], walkCircles=[];
+var currentFilter='all', showWalk=true, showTransport=true;
 
-var showTransportRoutes=true;
+function initMap(){
+  if(map)return;
+  map=L.map('mapcanvas',{zoomControl:false,preferCanvas:false}).setView([37.562,126.978],13);
 
-var lastGoodCanvas=null;
-
-function draw(){
-  var W=wrap.clientWidth,H=wrap.clientHeight;
-  if(canvas.width!==W)canvas.width=W;
-  if(canvas.height!==H)canvas.height=H;
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='#e8e0d4';ctx.fillRect(0,0,W,H);
-  var z=Math.round(state.zoom);
-  var scaleFactor=Math.pow(2,state.zoom-z);
-  var tScaled=Math.round(TILE_SIZE*scaleFactor);
-  var offXz=state.offX*Math.pow(2,z)/Math.pow(2,state.zoom);
-  var offYz=state.offY*Math.pow(2,z)/Math.pow(2,state.zoom);
-  var tileX0=Math.floor(offXz/TILE_SIZE);
-  var tileY0=Math.floor(offYz/TILE_SIZE);
-  var tilesX=Math.ceil(W/tScaled)+2;
-  var tilesY=Math.ceil(H/tScaled)+2;
-  var maxTile=Math.pow(2,z)-1;
-  for(var tx=tileX0;tx<=tileX0+tilesX;tx++){
-    for(var ty=tileY0;ty<=tileY0+tilesY;ty++){
-      var wx=((tx%(maxTile+1))+(maxTile+1))%(maxTile+1);
-      var wy=Math.max(0,Math.min(maxTile,ty));
-      var px=Math.round(tx*tScaled-offXz*scaleFactor);
-      var py=Math.round(ty*tScaled-offYz*scaleFactor);
-      var img=tileCache[z+'/'+wx+'/'+wy];
-      if(img&&img.complete&&img.naturalWidth>10){
-        ctx.drawImage(img,px,py,tScaled,tScaled);
-      } else {
-        loadTile(wx,wy,z);
-        // fallback: find best available parent tile at lower zoom
-        for(var dz=1;dz<=3;dz++){
-          var pz=z-dz;if(pz<1)break;
-          var scale=Math.pow(2,dz);
-          var ptx=Math.floor(wx/scale),pty=Math.floor(wy/scale);
-          var pimg=tileCache[pz+'/'+ptx+'/'+pty];
-          if(pimg&&pimg.complete&&pimg.naturalWidth>10){
-            var srcX=(wx%scale)/scale*TILE_SIZE,srcY=(wy%scale)/scale*TILE_SIZE,srcS=TILE_SIZE/scale;
-            ctx.drawImage(pimg,srcX,srcY,srcS,srcS,px,py,tScaled,tScaled);
-            break;
-          }
-        }
-      }
+  // Try OSM tiles, fall back to CartoDB if blocked
+  var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    maxZoom:19,
+    subdomains:'abc',
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  });
+  var tileErrorCount=0;
+  tileLayer.on('tileerror',function(){
+    tileErrorCount++;
+    if(tileErrorCount===3){
+      map.removeLayer(tileLayer);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
+        maxZoom:19,subdomains:'abcd',
+        attribution:'&copy; OSM &copy; CARTO'
+      }).addTo(map);
     }
-  }
-  if(z>=11){drawSubway();drawTransportRoutes();if(state.showWalk)drawWalkRings();drawJejuRings();drawMarkers();}
-  else{drawJejuRings();drawMarkers();}
+  });
+  tileLayer.addTo(map);
+
+  markersLayer=L.layerGroup().addTo(map);
+  drawSubway();
+  drawTransport();
+  drawWalkRings();
+  drawMarkers();
+
+  renderList('list-seoul','seoul');
+  renderList('list-busan','busan');
+  renderList('list-jeju','jeju');
+  renderList('list-daytrip','daytrip');
 }
+
+window.addEventListener('load',function(){
+  applyTopOffset();
+  setTimeout(function(){
+    initMap();
+  },50);
+});
 
 function drawSubway(){
-  if(state.filter!=='all'&&state.filter!=='seoul')return;
-  SUBWAY.forEach(function(line){
-    ctx.save();
-    ctx.strokeStyle='#fff';ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';
-    ctx.beginPath();line.pts.forEach(function(pt,i){var p=geo2px(pt[0],pt[1]);i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
-    ctx.strokeStyle=line.color;ctx.lineWidth=3;
-    ctx.beginPath();line.pts.forEach(function(pt,i){var p=geo2px(pt[0],pt[1]);i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
-    ctx.restore();
+  subwayLines.forEach(function(l){if(map.hasLayer(l))map.removeLayer(l);});
+  subwayLines=[];
+  if(currentFilter!=='all'&&currentFilter!=='seoul'&&currentFilter!=='airbnb')return;
+  SUBWAY.forEach(function(s){
+    subwayLines.push(L.polyline(s.pts,{color:'#fff',weight:5,opacity:1}).addTo(map));
+    subwayLines.push(L.polyline(s.pts,{color:s.color,weight:3,opacity:1}).addTo(map));
   });
 }
 
-function drawTransportRoutes(){
-  if(!showTransportRoutes)return;
-  if(state.filter!=='all'&&state.filter!=='seoul'&&state.filter!=='airbnb')return;
-  TRANSPORT_ROUTES.forEach(function(route){
-    var pts=route.pts.map(function(p){return geo2px(p[0],p[1]);});
-    ctx.save();ctx.lineCap='round';ctx.lineJoin='round';
-    if(route.style==='express'){
-      ctx.strokeStyle='rgba(255,255,255,0.85)';ctx.lineWidth=9;ctx.setLineDash([]);
-      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
-      ctx.strokeStyle=route.color;ctx.lineWidth=5;
-      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
-      ctx.strokeStyle='#d4a853';ctx.lineWidth=1.5;ctx.setLineDash([12,6]);
-      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
-    }else if(route.style==='allstop'){
-      ctx.strokeStyle='rgba(255,255,255,0.8)';ctx.lineWidth=7;ctx.setLineDash([]);
-      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
-      ctx.strokeStyle=route.color;ctx.lineWidth=4;
-      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
-      ctx.strokeStyle='rgba(255,255,255,0.7)';ctx.lineWidth=1.5;ctx.setLineDash([3,9]);
-      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
-    }else if(route.style==='bus'){
-      ctx.strokeStyle='rgba(255,255,255,0.75)';ctx.lineWidth=7;ctx.setLineDash([]);
-      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
-      ctx.strokeStyle=route.color;ctx.lineWidth=4;ctx.setLineDash([16,7]);
-      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
-    }else if(route.style==='taxi'){
-      ctx.strokeStyle='rgba(255,255,255,0.7)';ctx.lineWidth=6;ctx.setLineDash([]);
-      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
-      ctx.strokeStyle=route.color;ctx.lineWidth=3;ctx.setLineDash([4,8]);
-      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
-    }
-    var mid=pts[Math.floor(pts.length/2)];
-    ctx.setLineDash([]);
-    ctx.font='bold 9px DM Sans,sans-serif';
-    var tw=ctx.measureText(route.name).width;
-    var pw=tw+10,ph=15,pr=4,px=mid.x-pw/2,py=mid.y-ph-4;
-    ctx.fillStyle=route.color;ctx.shadowColor='rgba(0,0,0,0.3)';ctx.shadowBlur=4;
-    ctx.beginPath();ctx.roundRect(px,py,pw,ph,pr);ctx.fill();
-    ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(route.name,mid.x,py+ph/2);
-    ctx.restore();
+function drawTransport(){
+  transportLines.forEach(function(l){if(map.hasLayer(l))map.removeLayer(l);});
+  transportLines=[];
+  if(!showTransport)return;
+  if(currentFilter!=='all'&&currentFilter!=='seoul'&&currentFilter!=='airbnb')return;
+  TRANSPORT.forEach(function(r){
+    transportLines.push(L.polyline(r.pts,{color:'#fff',weight:r.weight+3,opacity:0.6}).addTo(map));
+    transportLines.push(L.polyline(r.pts,{color:r.color,weight:r.weight,dashArray:r.dash,opacity:1}).addTo(map));
   });
 }
 
 function drawWalkRings(){
-  var radii=[400,800,1200],labels=['5 min','10 min','15 min'],nums=['①','②','③'];
-  var fillOps=[0.13,0.08,0.04],strokeOps=[1.0,0.75,0.45];
+  walkCircles.forEach(function(c){if(map.hasLayer(c))map.removeLayer(c);});
+  walkCircles=[];
+  if(!showWalk)return;
   Object.values(AIRBNBS).forEach(function(ab){
-    radii.forEach(function(r,i){
-      var center=geo2px(ab.lat,ab.lng);
-      var pxPerMeter=(TILE_SIZE*Math.pow(2,Math.round(state.zoom)))/(111320*360);
-      var pxR=r*pxPerMeter;
-      ctx.save();ctx.beginPath();ctx.arc(center.x,center.y,pxR,0,Math.PI*2);ctx.fillStyle='rgba(255,75,85,'+fillOps[i]+')';ctx.fill();ctx.restore();
-      ctx.save();ctx.beginPath();ctx.arc(center.x,center.y,pxR,0,Math.PI*2);
-      ctx.strokeStyle='rgba(255,75,85,0.25)';ctx.lineWidth=8;ctx.setLineDash([]);ctx.stroke();
-      ctx.strokeStyle='rgba(255,75,85,'+strokeOps[i]+')';ctx.lineWidth=2.5;ctx.setLineDash([8,5]);ctx.stroke();ctx.restore();
-      ctx.save();
-      var bx=center.x,by=center.y-pxR-1,bLabel=nums[i]+'  '+labels[i];
-      ctx.font='bold 11px DM Sans,sans-serif';
-      var tw=ctx.measureText(bLabel).width,bw=tw+18,bh=20,br=10,bleft=bx-bw/2,btop=by-bh;
-      ctx.beginPath();ctx.moveTo(bleft+br,btop);ctx.lineTo(bleft+bw-br,btop);ctx.arcTo(bleft+bw,btop,bleft+bw,btop+bh,br);ctx.lineTo(bleft+bw,btop+bh-br);ctx.arcTo(bleft+bw,btop+bh,bleft+bw-br,btop+bh,br);ctx.lineTo(bleft+br,btop+bh);ctx.arcTo(bleft,btop+bh,bleft,btop+bh-br,br);ctx.lineTo(bleft,btop+br);ctx.arcTo(bleft,btop,bleft+br,btop,br);ctx.closePath();
-      ctx.fillStyle='rgba(220,50,60,0.92)';ctx.shadowColor='rgba(0,0,0,0.35)';ctx.shadowBlur=6;ctx.fill();
-      ctx.shadowBlur=0;ctx.strokeStyle='rgba(255,255,255,0.6)';ctx.lineWidth=1.5;ctx.setLineDash([]);ctx.stroke();
-      ctx.fillStyle='#fff';ctx.shadowColor='rgba(0,0,0,0.3)';ctx.shadowBlur=3;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(bLabel,bx,btop+bh/2);ctx.restore();
+    [[400,0.12],[800,0.08],[1200,0.05]].forEach(function(rc){
+      var c=L.circle([ab.lat,ab.lng],{radius:rc[0],color:'rgba(255,75,85,0.8)',weight:2,dashArray:'8 5',fillColor:'rgba(255,75,85,1)',fillOpacity:rc[1]}).addTo(map);
+      walkCircles.push(c);
     });
   });
-}
-
-function drawJejuRings(){
-  if(state.filter!=='jeju'&&state.filter!=='all')return;
-  // Centre of Jeju Island (Jeju City area)
-  var cLat=33.4996,cLng=126.5312;
-  var center=geo2px(cLat,cLng);
-  var metersPerPx=111320/(TILE_SIZE*Math.pow(2,state.zoom)/360);
-  var radii=[5000,15000,25000];
-  var labels=['5 km','15 km','25 km'];
-  var ringColors=['rgba(39,174,96,','rgba(39,174,96,','rgba(39,174,96,'];
-  var fillOps=[0.07,0.05,0.03];
-  var strokeOps=[0.9,0.7,0.5];
-  var dashPats=[[14,7],[10,6],[6,5]];
-
-  radii.forEach(function(r,i){
-    var pxR=r/metersPerPx;
-
-    // Filled area
-    ctx.save();
-    ctx.beginPath();ctx.arc(center.x,center.y,pxR,0,Math.PI*2);
-    ctx.fillStyle=ringColors[i]+fillOps[i]+')';
-    ctx.fill();
-    ctx.restore();
-
-    // Glow halo
-    ctx.save();
-    ctx.beginPath();ctx.arc(center.x,center.y,pxR,0,Math.PI*2);
-    ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=7;ctx.setLineDash([]);ctx.stroke();
-    ctx.restore();
-
-    // Dashed ring
-    ctx.save();
-    ctx.beginPath();ctx.arc(center.x,center.y,pxR,0,Math.PI*2);
-    ctx.strokeStyle=ringColors[i]+strokeOps[i]+')';
-    ctx.lineWidth=2;ctx.setLineDash(dashPats[i]);ctx.stroke();
-    ctx.restore();
-
-    // Label badge — positioned at top of each ring
-    ctx.save();
-    var bx=center.x, by=center.y-pxR;
-    var bLabel=labels[i];
-    ctx.font='bold 10px DM Sans,sans-serif';
-    var tw=ctx.measureText(bLabel).width,bw=tw+16,bh=19,br=9;
-    var bleft=bx-bw/2,btop=by-bh-2;
-    ctx.beginPath();
-    ctx.moveTo(bleft+br,btop);ctx.lineTo(bleft+bw-br,btop);
-    ctx.arcTo(bleft+bw,btop,bleft+bw,btop+bh,br);
-    ctx.lineTo(bleft+bw,btop+bh-br);
-    ctx.arcTo(bleft+bw,btop+bh,bleft+bw-br,btop+bh,br);
-    ctx.lineTo(bleft+br,btop+bh);
-    ctx.arcTo(bleft,btop+bh,bleft,btop+bh-br,br);
-    ctx.lineTo(bleft,btop+br);
-    ctx.arcTo(bleft,btop,bleft+br,btop,br);
-    ctx.closePath();
-    ctx.fillStyle='rgba(27,140,68,0.9)';
-    ctx.shadowColor='rgba(0,0,0,0.3)';ctx.shadowBlur=5;ctx.fill();
-    ctx.shadowBlur=0;
-    ctx.strokeStyle='rgba(255,255,255,0.5)';ctx.lineWidth=1;ctx.setLineDash([]);ctx.stroke();
-    ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(bLabel,bx,btop+bh/2);
-    ctx.restore();
-  });
-
-  // Centre marker dot
-  ctx.save();
-  ctx.beginPath();ctx.arc(center.x,center.y,5,0,Math.PI*2);
-  ctx.fillStyle='rgba(255,255,255,0.9)';ctx.shadowColor='rgba(0,0,0,0.4)';ctx.shadowBlur=4;ctx.fill();
-  ctx.beginPath();ctx.arc(center.x,center.y,3.5,0,Math.PI*2);
-  ctx.fillStyle='rgba(27,140,68,1)';ctx.shadowBlur=0;ctx.fill();
-  ctx.restore();
 }
 
 function markerMatchesFilter(p,f){
@@ -899,209 +558,103 @@ function markerMatchesFilter(p,f){
   if(f===p.city)return true;
   if(f==='airbnb'&&p.city==='airbnb')return true;
   if(p.city==='airbnb'){
-    var busanAirbnbs=['ba1','ba2'],seoulAirbnbs=['a1','a2'];
-    if(f==='busan'&&busanAirbnbs.indexOf(p.id)!==-1)return true;
-    if(f==='seoul'&&seoulAirbnbs.indexOf(p.id)!==-1)return true;
+    if(f==='busan'&&(p.id==='ba1'||p.id==='ba2'))return true;
+    if(f==='seoul'&&(p.id==='a1'||p.id==='a2'))return true;
   }
   return false;
 }
 
 function drawMarkers(){
-  var f=state.filter;
-  ALL_MARKERS.forEach(function(p){
-    if(!markerMatchesFilter(p,f))return;
-    var pos=geo2px(p.lat,p.lng);
+  markersLayer.clearLayers();
+  ALL_PLACES.forEach(function(p){
+    if(!markerMatchesFilter(p,currentFilter))return;
     var color=COLORS[p.city]||'#c0392b';
+    var el=document.createElement('div');
     if(p.city==='airbnb'){
-      ctx.save();ctx.translate(pos.x,pos.y-14);ctx.rotate(-Math.PI/4);ctx.fillStyle='#FF5A5F';ctx.shadowColor='rgba(0,0,0,0.35)';ctx.shadowBlur=6;ctx.beginPath();ctx.roundRect(0,0,18,20,[9,9,9,0]);ctx.fill();ctx.restore();
-      ctx.save();ctx.fillStyle='#fff';ctx.font='bold 9px DM Sans,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText({a1:'A',a2:'B',ba1:'C',ba2:'D'}[p.id]||'?',pos.x+2,pos.y-12);ctx.restore();
-    }else if(p.id==='icn'){
-      ctx.save();ctx.font='bold 11px DM Sans,sans-serif';var label='✈ ICN';var tw=ctx.measureText(label).width;var bw=tw+16,bh=22,br=11,bx=pos.x-bw/2,by=pos.y-bh/2;
-      ctx.shadowColor='rgba(0,0,0,0.4)';ctx.shadowBlur=8;ctx.fillStyle='#1a1a2e';ctx.beginPath();ctx.roundRect(bx,by,bw,bh,br);ctx.fill();
-      ctx.shadowBlur=0;ctx.strokeStyle='rgba(212,168,83,0.9)';ctx.lineWidth=1.5;ctx.stroke();ctx.fillStyle='#faf7f2';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,pos.x,pos.y);ctx.restore();
-    }else{
-      ctx.save();ctx.shadowColor='rgba(0,0,0,0.35)';ctx.shadowBlur=4;ctx.beginPath();ctx.arc(pos.x,pos.y,7,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.beginPath();ctx.arc(pos.x,pos.y,5.5,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.restore();
+      var lbl={a1:'A',a2:'B',ba1:'C',ba2:'D'}[p.id]||'?';
+      el.innerHTML='<div style="background:#FF5A5F;color:#fff;width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.4)"><span style="transform:rotate(45deg)">'+lbl+'</span></div>';
+    } else if(p.id==='icn'){
+      el.innerHTML='<div style="background:#1a1a2e;color:#d4a853;padding:3px 7px;border-radius:10px;font-size:9px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.4);border:1px solid #d4a853">✈ ICN</div>';
+    } else {
+      el.innerHTML='<div style="width:14px;height:14px;border-radius:50%;background:'+color+';border:2.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,0.4)"></div>';
     }
+    el.style.cursor='pointer';
+    var anchor=p.city==='airbnb'?[12,24]:p.id==='icn'?[20,10]:[7,7];
+    var icon=L.divIcon({html:el.innerHTML,className:'',iconAnchor:anchor});
+    var m=L.marker([p.lat,p.lng],{icon:icon}).addTo(markersLayer);
+    m.on('click',function(){showPopup(p);});
   });
 }
 
-function findMarkerAt(mx,my){
-  var hit=null,f=state.filter;
-  ALL_MARKERS.forEach(function(p){
-    if(!markerMatchesFilter(p,f))return;
-    var pos=geo2px(p.lat,p.lng);var dx=mx-pos.x,dy=my-pos.y;var r=p.city==='airbnb'?18:10;
-    if(dx*dx+dy*dy<r*r)hit=p;
-  });
-  return hit;
-}
-
-function showPopup(p,cx,cy){
+function showPopup(p){
   var color=COLORS[p.city]||'#888';
   var cityLabel={seoul:'Seoul',busan:'Busan',jeju:'Jeju Island',daytrip:'Day Trip',airbnb:'Airbnb'}[p.city]||p.city;
-  var inner='<div class="pu-h"><div><span class="pu-tag" style="background:'+color+'">'+cityLabel+'</span></div><div class="pu-ti">'+p.name+'</div></div>';
-  inner+='<div class="pu-bd">';
-  if(p.rows){inner+='<div class="pu-rows">'+p.rows.map(function(r){return'<div class="pu-row"><span class="pu-lbl">'+r.l+'</span><span class="pu-val">'+r.v+'</span></div>';}).join('')+'</div>';inner+='<a href="'+p.url+'" target="_blank" class="pu-btn">View on Airbnb →</a>';}
+  var inner='<div class="pu-h"><span class="pu-tag" style="background:'+color+'">'+cityLabel+'</span><div class="pu-ti">'+p.name+'</div></div><div class="pu-bd">';
+  if(p.rows){inner+='<div class="pu-rows">'+p.rows.map(function(r){return'<div class="pu-row"><span class="pu-lbl">'+r.l+'</span><span class="pu-val">'+r.v+'</span></div>';}).join('')+'</div><a href="'+p.url+'" target="_blank" class="pu-btn">View on Airbnb →</a>';}
   else{inner+='<div class="pu-desc">'+p.sub+'</div>';}
   inner+='</div>';
-  var pu=document.getElementById('popup');
   document.getElementById('pu-inner').innerHTML=inner;
-  var W=wrap.clientWidth,H=wrap.clientHeight;
-  var pw=240,ph=160,left=cx+12;if(left+pw>W-10)left=cx-pw-12;
-  var top=cy-20;if(top+ph>H-10)top=H-ph-10;if(top<5)top=5;
-  pu.style.left=left+'px';pu.style.top=top+'px';pu.style.display='block';
+  document.getElementById('popup').style.display='block';
 }
 function closePopup(){document.getElementById('popup').style.display='none';}
 
-var drag={active:false,startX:0,startY:0,offX0:0,offY0:0};
-var touch0=null;
+window.zoom=function(dir){if(map)map.setZoom(map.getZoom()+dir);};
+window.toggleWalk=function(){showWalk=!showWalk;document.getElementById('wbtn').textContent=showWalk?'① hide':'① show';drawWalkRings();};
+window.toggleTransport=function(){showTransport=!showTransport;document.getElementById('tbtn').textContent=showTransport?'✈ hide':'✈ show';drawTransport();};
 
-window.zoom=function(dir){
-  var cx=wrap.clientWidth/2,cy=wrap.clientHeight/2;
-  var latLngX=(state.offX+cx)/(TILE_SIZE*Math.pow(2,state.zoom));
-  var latLngY=(state.offY+cy)/(TILE_SIZE*Math.pow(2,state.zoom));
-  state.zoom=Math.max(5,Math.min(18,state.zoom+dir));
-  state.offX=latLngX*TILE_SIZE*Math.pow(2,state.zoom)-cx;
-  state.offY=latLngY*TILE_SIZE*Math.pow(2,state.zoom)-cy;
-  draw();
+window.goView=function(v,btn){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  var vd=VIEWS[v];
+  if(map)map.flyTo([vd.lat,vd.lng],vd.z,{duration:0.8});
+  closePopup();
 };
-window.toggleTransport=function(){showTransportRoutes=!showTransportRoutes;document.getElementById('tbtn').textContent=showTransportRoutes?'✈ hide':'✈ show';draw();};
-window.toggleWalk=function(){state.showWalk=!state.showWalk;document.getElementById('wbtn').textContent=state.showWalk?'① hide':'① show';draw();};
-window.goView=function(v,btn){document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});if(btn)btn.classList.add('on');var vd=VIEWS[v];setView(vd[0],vd[1],vd[2]);closePopup();};
+
 window.focusPlace=function(id){
-  var p=ALL_MARKERS.filter(function(x){return x.id===id;})[0];if(!p)return;
+  var p=ALL_PLACES.filter(function(x){return x.id===id;})[0];
+  if(!p)return;
   document.querySelectorAll('.pi').forEach(function(e){e.classList.remove('on');});
   var el=document.getElementById('pi-'+id);if(el)el.classList.add('on');
-  var cityTab=p.city==='airbnb'?(['ba1','ba2'].indexOf(id)!==-1?'busan':'seoul'):p.city==='daytrip'?'all':p.city;
+  var busanAirbnbs=['ba1','ba2'];
+  var cityTab=busanAirbnbs.indexOf(id)!==-1?'busan':'seoul';
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
   var tabEl=document.getElementById('tab-'+cityTab);if(tabEl)tabEl.classList.add('on');
-  state.filter=cityTab;setView(p.lat,p.lng,15);
-  setTimeout(function(){var pos=geo2px(p.lat,p.lng);showPopup(p,pos.x,pos.y);},50);
+  currentFilter=cityTab;
+  drawSubway();drawTransport();drawMarkers();
+  if(map)map.flyTo([p.lat,p.lng],15,{duration:0.8});
+  setTimeout(function(){showPopup(p);},900);
+  if(window.innerWidth<=600){var sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');sb.classList.remove('open');ov.classList.remove('vis');}
 };
+
 window.doFilter=function(f,btn){
-  document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');
-  state.filter=f;var viewMap={all:'all',seoul:'seoul',busan:'busan',jeju:'jeju',airbnb:'all',daytrip:'all'};
-  var vk=viewMap[f];if(vk){var tabEl=document.getElementById('tab-'+vk);window.goView(vk,tabEl||null);}draw();
+  document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  currentFilter=f;
+  drawSubway();drawTransport();drawMarkers();
+  var viewMap={all:'all',seoul:'seoul',busan:'busan',jeju:'jeju',airbnb:'all',daytrip:'all'};
+  var vk=viewMap[f];
+  if(vk){var tabEl=document.getElementById('tab-'+vk);window.goView(vk,tabEl||null);}
 };
+
 window.tog=function(n){var b=document.getElementById('sec-'+n);var a=document.getElementById('ar-'+n);if(!b)return;b.classList.toggle('open');if(a)a.innerHTML=b.classList.contains('open')?'▾':'▶';};
 
 function renderList(elId,city){
   var items=PLACES.filter(function(p){return p.city===city;});
   document.getElementById(elId).innerHTML=items.map(function(p){
-    return'<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')">'+'<div style="width:8px;height:8px;border-radius:50%;background:'+(COLORS[p.city]||'#c0392b')+';flex-shrink:0;margin-top:4px"></div>'+'<div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div>'+'</div>';
+    return'<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')">'+'<div style="width:8px;height:8px;border-radius:50%;background:'+(COLORS[p.city]||'#c0392b')+';flex-shrink:0;margin-top:4px"></div><div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div></div>';
   }).join('');
 }
-renderList('list-seoul','seoul');
 
-// Custom grouped render for Busan
-(function(){
-  var busanGroups=[
-    {label:'🏖 Classic Attractions',ids:['b1','b2','b3','b4','b5']},
-    {label:'🔥 Underrated / Hidden Gems',ids:['b6','b7','b8','b9','b10']},
-    {label:'🍜 Restaurants & Food Streets',ids:['b11','b12','b13','b14','b15','b16','b17']}
-  ];
-  var all=PLACES.filter(function(p){return p.city==='busan';});
-  var byId={};all.forEach(function(p){byId[p.id]=p;});
-  var html='';
-  busanGroups.forEach(function(g){
-    html+='<div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;border-top:1px solid #e8e0d4;margin-top:2px">'+g.label+'</div>';
-    g.ids.forEach(function(id){
-      var p=byId[id];if(!p)return;
-      html+='<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')"><div style="width:8px;height:8px;border-radius:50%;background:#1a5276;flex-shrink:0;margin-top:4px"></div><div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div></div>';
-    });
+
+window.tgCity=function(id,btn){
+  ['seoul','busan','jeju','tips'].forEach(function(c){
+    var el=document.getElementById('tg-c-'+c);
+    if(el)el.style.display=c===id?'block':'none';
   });
-  document.getElementById('list-busan').innerHTML=html;
-})();
-
-// Custom grouped render for Jeju
-(function(){
-  var jejuGroups=[
-    {label:'🏔 Must-See Natural Highlights',ids:['j1','j2','j3','j4']},
-    {label:'🌊 Waterfalls & Coastal Icons',ids:['j5','j6','j7']},
-    {label:'🔥 Underrated / Hidden Gems',ids:['j8','j9','j10','j11','j12','j13']},
-    {label:'🏆 Restaurants — Classic',ids:['j14','j15','j16']},
-    {label:'🍜 Local Food & Markets',ids:['j17','j18','j19']},
-    {label:'☕ Cafés & Coastal Vibes',ids:['j20']}
-  ];
-  var all=PLACES.filter(function(p){return p.city==='jeju';});
-  var byId={};all.forEach(function(p){byId[p.id]=p;});
-  var html='';
-  jejuGroups.forEach(function(g){
-    html+='<div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;border-top:1px solid #e8e0d4;margin-top:2px">'+g.label+'</div>';
-    g.ids.forEach(function(id){
-      var p=byId[id];if(!p)return;
-      html+='<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')"><div style="width:8px;height:8px;border-radius:50%;background:#27ae60;flex-shrink:0;margin-top:4px"></div><div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div></div>';
-    });
-  });
-  document.getElementById('list-jeju').innerHTML=html;
-})();
-
-// Custom grouped render for Day Trips
-(function(){
-  var dtGroups=[
-    {label:'📍 Near Busan',ids:['d2','d2b','d2c','d6','d7']},
-    {label:'📍 Other Day Trips',ids:['d1','d3','d4','d5']}
-  ];
-  var all=PLACES.filter(function(p){return p.city==='daytrip';});
-  var byId={};all.forEach(function(p){byId[p.id]=p;});
-  var html='';
-  dtGroups.forEach(function(g){
-    html+='<div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;border-top:1px solid #e8e0d4;margin-top:2px">'+g.label+'</div>';
-    g.ids.forEach(function(id){
-      var p=byId[id];if(!p)return;
-      html+='<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')"><div style="width:8px;height:8px;border-radius:50%;background:#7d6608;flex-shrink:0;margin-top:4px"></div><div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div></div>';
-    });
-  });
-  document.getElementById('list-daytrip').innerHTML=html;
-})();
-
-window.addEventListener('load',function(){
-  wrap=document.getElementById('mapwrap');
-  canvas=document.getElementById('mapcanvas');
-  ctx=canvas.getContext('2d');
-  canvas.width=wrap.clientWidth;canvas.height=wrap.clientHeight;
-
-  canvas.addEventListener('mousedown',function(e){drag.active=true;drag.startX=e.clientX;drag.startY=e.clientY;drag.offX0=state.offX;drag.offY0=state.offY;canvas.classList.add('dragging');closePopup();});
-  window.addEventListener('mousemove',function(e){if(!drag.active)return;state.offX=drag.offX0-(e.clientX-drag.startX);state.offY=drag.offY0-(e.clientY-drag.startY);draw();});
-  window.addEventListener('mouseup',function(e){
-    if(!drag.active)return;var moved=Math.abs(e.clientX-drag.startX)+Math.abs(e.clientY-drag.startY);drag.active=false;canvas.classList.remove('dragging');
-    if(moved<5){var rect=canvas.getBoundingClientRect();var mx=e.clientX-rect.left,my=e.clientY-rect.top;var hit=findMarkerAt(mx,my);if(hit)showPopup(hit,mx,my);else closePopup();}
-  });
-
-  canvas.addEventListener('touchstart',function(e){
-    var rect=canvas.getBoundingClientRect();var tx=e.touches[0].clientX,ty=e.touches[0].clientY;
-    if(tx<rect.left||tx>rect.right||ty<rect.top||ty>rect.bottom)return;
-    e.preventDefault();if(e.touches.length===1){drag.active=true;drag.startX=tx;drag.startY=ty;drag.offX0=state.offX;drag.offY0=state.offY;touch0={x:tx,y:ty};}
-  },{passive:false});
-  canvas.addEventListener('touchmove',function(e){e.preventDefault();if(drag.active&&e.touches.length===1){state.offX=drag.offX0-(e.touches[0].clientX-drag.startX);state.offY=drag.offY0-(e.touches[0].clientY-drag.startY);draw();}},{passive:false});
-  canvas.addEventListener('touchend',function(e){
-    e.preventDefault();if(touch0){var dx=e.changedTouches[0].clientX-touch0.x,dy=e.changedTouches[0].clientY-touch0.y;
-    if(Math.abs(dx)+Math.abs(dy)<8){var rect=canvas.getBoundingClientRect();var mx=e.changedTouches[0].clientX-rect.left,my=e.changedTouches[0].clientY-rect.top;var hit=findMarkerAt(mx,my);if(hit)showPopup(hit,mx,my);else closePopup();}}
-    drag.active=false;touch0=null;
-  },{passive:false});
-
-  canvas.addEventListener('wheel',function(e){
-    e.preventDefault();var rect=canvas.getBoundingClientRect();var mx=e.clientX-rect.left,my=e.clientY-rect.top;
-    var latLngX=(state.offX+mx)/(TILE_SIZE*Math.pow(2,state.zoom));var latLngY=(state.offY+my)/(TILE_SIZE*Math.pow(2,state.zoom));
-    state.zoom=Math.max(5,Math.min(18,state.zoom-e.deltaY*0.002));state.offX=latLngX*TILE_SIZE*Math.pow(2,state.zoom)-mx;state.offY=latLngY*TILE_SIZE*Math.pow(2,state.zoom)-my;draw();
-  },{passive:false});
-
-  var resizeTimer=null;
-  window.addEventListener('resize',function(){
-    clearTimeout(resizeTimer);
-    resizeTimer=setTimeout(function(){
-      var lat=tile2lat((state.offY+wrap.clientHeight/2)/(TILE_SIZE*Math.pow(2,state.zoom))*Math.pow(2,state.zoom),state.zoom);
-      var lng=(state.offX+wrap.clientWidth/2)/(TILE_SIZE*Math.pow(2,state.zoom))*360-180;
-      canvas.width=wrap.clientWidth;canvas.height=wrap.clientHeight;
-      setView(lat,lng,state.zoom);
-    },150);
-  });
-  setView(37.562,126.978,13);
-});
-
-window.toggleSidebar=function(){
-  var sb=document.getElementById('sb'),overlay=document.getElementById('sb-overlay');
-  var isOpen=sb.classList.toggle('open');overlay.classList.toggle('vis',isOpen);
+  document.querySelectorAll('#sec-tg .fbtn').forEach(function(b){b.classList.remove('on');});
+  if(btn)btn.classList.add('on');
 };
+window.toggleSidebar=function(){var sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');var isOpen=sb.classList.toggle('open');ov.classList.toggle('vis',isOpen);};
 
 function applyTopOffset(){
   var hdr=document.getElementById('hdr');
@@ -1111,32 +664,21 @@ function applyTopOffset(){
   var sb=document.getElementById('sb');
   if(body){body.style.top=offset+'px';body.style.height='calc(100dvh - '+offset+'px)';}
   if(sb&&window.innerWidth<=600){sb.style.top=offset+'px';}
+  if(map){setTimeout(function(){map.invalidateSize(true);},10);}
 }
-window.addEventListener('load',applyTopOffset);
-window.addEventListener('resize',applyTopOffset);
-// Re-measure after fonts/images settle
-setTimeout(applyTopOffset,300);
-
-var _origFocusPlace=window.focusPlace;
-window.focusPlace=function(id){
-  _origFocusPlace(id);
-  if(window.innerWidth<=600){var sb=document.getElementById('sb'),overlay=document.getElementById('sb-overlay');sb.classList.remove('open');overlay.classList.remove('vis');}
-};
+window.addEventListener('resize',function(){applyTopOffset();});
+setTimeout(applyTopOffset,100);
+setTimeout(applyTopOffset,500);
 
 var BUDGET={nights:17,days:17,pax:12,usdToCad:1.37,lodgePerNight:70,foodPerDay:45,transitPerDay:15,interCityPP:210,activitiesPerDay:15,icnTransferPP:13,flightsLow:1100,flightsHigh:1400};
-var currentCur='cad';
-
-function fmt(usd,cur){var val=cur==='cad'?usd*BUDGET.usdToCad:usd;if(val>=1000)return'$'+(val/1000).toFixed(1)+'k';return'$'+Math.round(val);}
 function fmtFull(usd,cur){var val=cur==='cad'?usd*BUDGET.usdToCad:usd;return'$'+Math.round(val).toLocaleString();}
-
 function updateBudget(cur){
-  var B=BUDGET;
+  var B=BUDGET,mul=cur==='cad'?B.usdToCad:1,sym='$';
   var lodgePP=B.lodgePerNight*B.nights,foodPP=B.foodPerDay*B.days,transitPP=B.transitPerDay*B.days,actPP=B.activitiesPerDay*B.days,icnPP=B.icnTransferPP*2;
-  var totalPP=lodgePP+foodPP+transitPP+B.interCityPP+actPP+icnPP,totalGrp=totalPP*B.pax,perDay=totalPP/B.days;
-  var mul=cur==='cad'?B.usdToCad:1,sym='$';
+  var totalPP=lodgePP+foodPP+transitPP+B.interCityPP+actPP+icnPP,perDay=totalPP/B.days;
   document.getElementById('pp-total').textContent=sym+Math.round(totalPP*mul).toLocaleString();
   document.getElementById('pp-day').textContent=sym+Math.round(perDay*mul)+' / day';
-  document.getElementById('grp-total').textContent=sym+Math.round(totalGrp*mul/1000).toFixed(0)+'k est.';
+  document.getElementById('grp-total').textContent=sym+Math.round(totalPP*B.pax*mul/1000).toFixed(0)+'k est.';
   document.getElementById('cat-lodge-pp').textContent=fmtFull(lodgePP,cur);
   document.getElementById('cat-lodge-day').textContent=sym+Math.round(B.lodgePerNight*mul)+'/night · pp';
   document.getElementById('cat-food-pp').textContent=fmtFull(foodPP,cur);
@@ -1148,21 +690,18 @@ function updateBudget(cur){
   document.getElementById('cat-act-day').textContent=sym+Math.round(B.activitiesPerDay*mul)+'/day · pp';
   document.getElementById('cat-icn-pp').textContent=fmtFull(icnPP,cur);
   document.getElementById('cat-icn-day').textContent='AREX x2 · pp';
-  var totalTripLow=Math.round((totalPP+B.flightsLow)*mul),totalTripHigh=Math.round((totalPP+B.flightsHigh)*mul);
-  document.getElementById('cat-total-pp').textContent=sym+totalTripLow.toLocaleString()+'–'+sym+totalTripHigh.toLocaleString()+' pp';
-  document.getElementById('cat-total-grp').textContent=sym+Math.round(totalTripLow*B.pax/1000)+'k–'+sym+Math.round(totalTripHigh*B.pax/1000)+'k';
+  var tLow=Math.round((totalPP+B.flightsLow)*mul),tHigh=Math.round((totalPP+B.flightsHigh)*mul);
+  document.getElementById('cat-total-pp').textContent=sym+tLow.toLocaleString()+'–'+sym+tHigh.toLocaleString()+' pp';
+  document.getElementById('cat-total-grp').textContent=sym+Math.round(tLow*B.pax/1000)+'k–'+sym+Math.round(tHigh*B.pax/1000)+'k';
   document.getElementById('rate-note').textContent=cur==='cad'?'1 CAD ≈ ₩1,070 · 1 USD ≈ ₩1,460 · Estimates mid-range spending':'1 USD ≈ ₩1,460 · 1 USD = '+(1/B.usdToCad).toFixed(2)+' CAD · Estimates mid-range';
 }
-
 window.setCur=function(cur){
-  currentCur=cur;
   document.getElementById('cur-cad').style.background=cur==='cad'?'var(--gold)':'rgba(212,168,83,.2)';
   document.getElementById('cur-cad').style.color=cur==='cad'?'var(--ink)':'var(--gold)';
   document.getElementById('cur-usd').style.background=cur==='usd'?'var(--gold)':'rgba(212,168,83,.2)';
   document.getElementById('cur-usd').style.color=cur==='usd'?'var(--ink)':'var(--gold)';
   updateBudget(cur);
 };
-
 window.addEventListener('load',function(){updateBudget('cad');});
 </script>
 </body>
