@@ -66,7 +66,7 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .fbtn{padding:6px 10px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;border:1.5px solid transparent;background:rgba(0,0,0,.06);color:var(--muted);transition:all .12s;min-height:36px;touch-action:manipulation}
 .fbtn.on,.fbtn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
 .bdg{padding:2px 6px;border-radius:20px;font-size:8px;font-weight:700;text-transform:uppercase;color:#fff}
-#popup{position:absolute;z-index:150;display:none;background:var(--paper);border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.25);min-width:220px;max-width:270px;overflow:hidden}
+#popup{position:absolute;z-index:1000;display:none;background:var(--paper);border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.25);min-width:220px;max-width:270px;overflow:hidden}
 .pu-h{padding:12px 14px 8px;border-bottom:1px solid #e8e0d4}
 .pu-tag{display:inline-block;padding:2px 7px;border-radius:20px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#fff;margin-bottom:4px}
 .pu-ti{font-size:14px;font-weight:700;color:var(--ink);line-height:1.3}
@@ -79,7 +79,7 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .pu-val{font-weight:600;color:var(--ink)}
 .pu-btn{display:flex;align-items:center;gap:6px;background:#FF5A5F;color:#fff;padding:8px 11px;border-radius:6px;text-decoration:none;font-size:11px;font-weight:600}
 .pu-close{position:absolute;top:8px;right:10px;cursor:pointer;font-size:18px;color:var(--muted);line-height:1}
-#zctrl{position:absolute;top:10px;right:10px;z-index:150;display:flex;flex-direction:column;gap:2px}
+#zctrl{position:absolute;top:10px;right:10px;z-index:1000;display:flex;flex-direction:column;gap:2px}
 .zbtn{width:30px;height:30px;background:#1a1a2e;color:#faf7f2;border:none;border-radius:5px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.3);font-weight:300;line-height:1}
 .zbtn:hover{background:#2d2d4a}
 #wbtn{margin-top:4px;width:auto;padding:0 8px;font-size:8px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;height:24px}
@@ -481,6 +481,12 @@ var currentFilter='all', showWalk=true, showTransport=true;
 function initMap(){
   if(map)return;
   map=L.map('mapcanvas',{zoomControl:false,preferCanvas:false}).setView([37.562,126.978],13);
+  map.getPane('tilePane').style.zIndex=200;
+  map.getPane('shadowPane').style.zIndex=400;
+  map.getPane('overlayPane').style.zIndex=500;
+  map.getPane('markerPane').style.zIndex=600;
+  map.getPane('tooltipPane').style.zIndex=700;
+  map.getPane('popupPane').style.zIndex=800;
 
   // Try OSM tiles, fall back to CartoDB if blocked
   var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
@@ -582,7 +588,7 @@ function drawMarkers(){
     var anchor=p.city==='airbnb'?[12,24]:p.id==='icn'?[20,10]:[7,7];
     var icon=L.divIcon({html:el.innerHTML,className:'',iconAnchor:anchor});
     var m=L.marker([p.lat,p.lng],{icon:icon}).addTo(markersLayer);
-    m.on('click',function(){showPopup(p);});
+    (function(place){m.on('click',function(){showPopup(place);});})(p);
   });
 }
 
@@ -593,8 +599,22 @@ function showPopup(p){
   if(p.rows){inner+='<div class="pu-rows">'+p.rows.map(function(r){return'<div class="pu-row"><span class="pu-lbl">'+r.l+'</span><span class="pu-val">'+r.v+'</span></div>';}).join('')+'</div><a href="'+p.url+'" target="_blank" class="pu-btn">View on Airbnb →</a>';}
   else{inner+='<div class="pu-desc">'+p.sub+'</div>';}
   inner+='</div>';
+  var pu=document.getElementById('popup');
   document.getElementById('pu-inner').innerHTML=inner;
-  document.getElementById('popup').style.display='block';
+  pu.style.display='block';
+  // Position popup relative to marker using Leaflet's container point
+  var pt=map.latLngToContainerPoint([p.lat,p.lng]);
+  var wrap=document.getElementById('mapwrap');
+  var W=wrap.clientWidth,H=wrap.clientHeight;
+  var pw=250,ph=180;
+  var left=pt.x+15;
+  var top=pt.y-20;
+  if(left+pw>W-10)left=pt.x-pw-15;
+  if(top+ph>H-10)top=H-ph-10;
+  if(top<5)top=5;
+  if(left<5)left=5;
+  pu.style.left=left+'px';
+  pu.style.top=top+'px';
 }
 function closePopup(){document.getElementById('popup').style.display='none';}
 
