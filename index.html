@@ -22,8 +22,8 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .hleg{display:flex;gap:8px}
 .hleg-i{display:flex;align-items:center;gap:4px;font-size:9px;color:rgba(250,247,242,.55);text-transform:uppercase;letter-spacing:.4px}
 .hleg-d{width:8px;height:8px;border-radius:50%}
-#menu-toggle{display:none;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px;background:rgba(212,168,83,.2);border:1.5px solid rgba(212,168,83,.4);cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;position:relative;z-index:300;touch-action:manipulation}
-#menu-toggle svg{width:18px;height:18px;stroke:var(--gold);stroke-width:2;stroke-linecap:round;fill:none}
+#menu-toggle{display:none;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px;background:rgba(212,168,83,.2);border:1.5px solid rgba(212,168,83,.4);cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;padding:0;outline:none}
+#menu-toggle svg{width:18px;height:18px;stroke:var(--gold);stroke-width:2;stroke-linecap:round;fill:none;pointer-events:none}
 #ac-banner{position:fixed;top:50px;left:0;right:0;z-index:199;background:#12172a;border-bottom:1px solid rgba(212,168,83,.25);padding:6px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 #ac-banner .ac-label{font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.9px;white-space:nowrap;flex-shrink:0}
 .ac-ticket{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.04);border:1px solid rgba(212,168,83,.2);border-radius:5px;padding:4px 9px;flex-shrink:0}
@@ -93,9 +93,9 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 <body>
 <div id="hdr">
   <div style="display:flex;align-items:center;gap:8px">
-    <div id="menu-toggle" onclick="toggleSidebar(event)" ontouchend="toggleSidebar(event)" aria-label="Menu">
+    <button id="menu-toggle" onclick="toggleSidebar()" aria-label="Menu" type="button">
       <svg viewBox="0 0 18 14"><line x1="0" y1="2" x2="18" y2="2"/><line x1="0" y1="7" x2="18" y2="7"/><line x1="0" y1="12" x2="18" y2="12"/></svg>
-    </div>
+    </button>
     <span style="font-size:20px">🇰🇷</span>
     <div><h1>South Korea Trip 2026</h1><div class="sub">Sep 25–Oct 12 · Seoul · Busan · Jeju · ~10 People</div></div>
   </div>
@@ -683,8 +683,7 @@ window.tgCity=function(id,btn){
   document.querySelectorAll('#sec-tg .fbtn').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
 };
-window.toggleSidebar=function(e){
-  if(e){e.preventDefault();e.stopPropagation();}
+window.toggleSidebar=function(){
   var sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');
   var isOpen=sb.classList.toggle('open');
   ov.classList.toggle('vis',isOpen);
