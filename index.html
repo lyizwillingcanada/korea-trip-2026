@@ -626,8 +626,11 @@ window.goView=function(v,btn){
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
   if(btn)btn.classList.add('on');
   var vd=VIEWS[v];
-  if(map)map.flyTo([vd.lat,vd.lng],vd.z,{duration:0.8});
   closePopup();
+  if(map){
+    map.flyTo([vd.lat,vd.lng],vd.z,{duration:0.5});
+    map.once('moveend',function(){drawMarkers();});
+  }
 };
 
 window.focusPlace=function(id){
@@ -650,10 +653,12 @@ window.doFilter=function(f,btn){
   document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
   currentFilter=f;
-  drawSubway();drawTransport();drawMarkers();
+  drawSubway();
+  drawTransport();
   var viewMap={all:'all',seoul:'seoul',busan:'busan',jeju:'jeju',airbnb:'all',daytrip:'all'};
   var vk=viewMap[f];
   if(vk){var tabEl=document.getElementById('tab-'+vk);window.goView(vk,tabEl||null);}
+  else{drawMarkers();}
 };
 
 window.tog=function(n){var b=document.getElementById('sec-'+n);var a=document.getElementById('ar-'+n);if(!b)return;b.classList.toggle('open');if(a)a.innerHTML=b.classList.contains('open')?'▾':'▶';};
