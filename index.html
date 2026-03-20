@@ -22,7 +22,7 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .hleg{display:flex;gap:8px}
 .hleg-i{display:flex;align-items:center;gap:4px;font-size:9px;color:rgba(250,247,242,.55);text-transform:uppercase;letter-spacing:.4px}
 .hleg-d{width:8px;height:8px;border-radius:50%}
-#menu-toggle{display:none;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;background:rgba(212,168,83,.2);border:1.5px solid rgba(212,168,83,.4);cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+#menu-toggle{display:none;align-items:center;justify-content:center;width:44px;height:44px;border-radius:6px;background:rgba(212,168,83,.2);border:1.5px solid rgba(212,168,83,.4);cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;position:relative;z-index:300;touch-action:manipulation}
 #menu-toggle svg{width:18px;height:18px;stroke:var(--gold);stroke-width:2;stroke-linecap:round;fill:none}
 #ac-banner{position:fixed;top:50px;left:0;right:0;z-index:199;background:#12172a;border-bottom:1px solid rgba(212,168,83,.25);padding:6px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 #ac-banner .ac-label{font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.9px;white-space:nowrap;flex-shrink:0}
@@ -45,6 +45,10 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
   #sb{position:fixed;top:92px;bottom:0;left:0;width:285px;transform:translateX(-100%);box-shadow:4px 0 20px rgba(0,0,0,.3)}
   #sb.open{transform:translateX(0)}
   #mapwrap{width:100%}
+  #ac-banner{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  #ac-banner .ac-label{font-size:8px}
+  .ac-ticket{padding:3px 6px}
+  .ac-ticket-price{font-size:11px}
 }
 #mapcanvas{position:absolute;inset:0}
 .sh{padding:11px 12px;font-size:9px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;color:var(--muted);background:var(--cream);border-top:1px solid #ddd5c8;border-bottom:1px solid #ddd5c8;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;min-height:44px;-webkit-tap-highlight-color:rgba(212,168,83,.2);touch-action:manipulation}
@@ -89,7 +93,7 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 <body>
 <div id="hdr">
   <div style="display:flex;align-items:center;gap:8px">
-    <div id="menu-toggle" onclick="toggleSidebar()" aria-label="Menu">
+    <div id="menu-toggle" onclick="toggleSidebar(event)" ontouchend="toggleSidebar(event)" aria-label="Menu">
       <svg viewBox="0 0 18 14"><line x1="0" y1="2" x2="18" y2="2"/><line x1="0" y1="7" x2="18" y2="7"/><line x1="0" y1="12" x2="18" y2="12"/></svg>
     </div>
     <span style="font-size:20px">🇰🇷</span>
@@ -679,7 +683,12 @@ window.tgCity=function(id,btn){
   document.querySelectorAll('#sec-tg .fbtn').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
 };
-window.toggleSidebar=function(){var sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');var isOpen=sb.classList.toggle('open');ov.classList.toggle('vis',isOpen);};
+window.toggleSidebar=function(e){
+  if(e){e.preventDefault();e.stopPropagation();}
+  var sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');
+  var isOpen=sb.classList.toggle('open');
+  ov.classList.toggle('vis',isOpen);
+};
 
 function applyTopOffset(){
   var hdr=document.getElementById('hdr');
