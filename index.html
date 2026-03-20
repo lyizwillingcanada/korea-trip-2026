@@ -8,7 +8,6 @@
 <style>
 :root{--ink:#1a1a2e;--paper:#faf7f2;--gold:#d4a853;--muted:#7a7060;--cream:#f0ebe2}
 *{margin:0;padding:0;box-sizing:border-box}
-/* iPad/iOS: use 100dvh so address bar is accounted for */
 html{height:100%;height:100dvh}
 body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;background:#f5f0ea}
 #hdr{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--ink);border-bottom:1px solid rgba(212,168,83,.3);padding:0 10px;height:50px;display:flex;align-items:center;justify-content:space-between;gap:6px}
@@ -21,22 +20,87 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .hleg{display:flex;gap:8px}
 .hleg-i{display:flex;align-items:center;gap:4px;font-size:9px;color:rgba(250,247,242,.55);text-transform:uppercase;letter-spacing:.4px}
 .hleg-d{width:8px;height:8px;border-radius:50%}
-/* Mobile menu toggle button */
 #menu-toggle{display:none;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;background:rgba(212,168,83,.2);border:1.5px solid rgba(212,168,83,.4);cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent}
 #menu-toggle svg{width:18px;height:18px;stroke:var(--gold);stroke-width:2;stroke-linecap:round;fill:none}
-/* Dim overlay behind drawer on mobile */
+
+/* ── Air Canada Pricing Banner ── */
+#ac-banner{
+  position:fixed;
+  top:50px;
+  left:0;right:0;
+  z-index:199;
+  background:#12172a;
+  border-bottom:1px solid rgba(212,168,83,.25);
+  padding:6px 12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+#ac-banner .ac-label{
+  font-size:9px;font-weight:700;color:var(--gold);
+  text-transform:uppercase;letter-spacing:.9px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+#ac-banner .ac-date{
+  font-size:8px;color:rgba(212,168,83,.55);
+  white-space:nowrap;flex-shrink:0;
+}
+#ac-banner .ac-divider{
+  width:1px;height:18px;
+  background:rgba(212,168,83,.2);
+  flex-shrink:0;
+}
+.ac-ticket{
+  display:flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(212,168,83,.2);
+  border-radius:5px;
+  padding:4px 9px;
+  flex-shrink:0;
+}
+.ac-ticket-label{
+  font-size:9px;color:rgba(250,247,242,.5);
+  line-height:1.3;
+  max-width:120px;
+}
+.ac-ticket-price{
+  font-size:13px;font-weight:700;color:#faf7f2;
+  border-bottom:1.5px dashed rgba(212,168,83,.5);
+  outline:none;
+  cursor:text;
+  min-width:70px;
+  white-space:nowrap;
+}
+.ac-ticket-price:focus{
+  border-bottom-color:var(--gold);
+  color:var(--gold);
+}
+.ac-edit-hint{
+  font-size:8px;color:rgba(212,168,83,.35);
+  margin-top:1px;
+}
+@media(max-width:600px){
+  .hleg{display:none}
+  #menu-toggle{display:flex}
+  #ac-banner{gap:6px;padding:5px 8px}
+  .ac-ticket-label{max-width:90px;font-size:8px}
+  .ac-ticket-price{font-size:12px}
+}
+
 #sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:149;-webkit-tap-highlight-color:transparent}
 #sb-overlay.vis{display:block}
-/* Body layout */
+
+/* Body layout — pushed down by hdr (50px) + ac-banner (~42px) */
 #body{
   display:flex;
   position:fixed;
-  top:50px;
+  top:92px;
   left:0;right:0;bottom:0;
-  height:calc(100% - 50px);
-  height:calc(100dvh - 50px);
+  height:calc(100% - 92px);
+  height:calc(100dvh - 92px);
 }
-/* Sidebar */
 #sb{
   width:260px;
   flex-shrink:0;
@@ -53,15 +117,12 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 }
 #sb::-webkit-scrollbar{width:3px}
 #sb::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
-/* Map wrap fills remaining space */
 #mapwrap{flex:1;position:relative;overflow:hidden;background:#e8e0d4;height:100%}
-/* ══ MOBILE portrait ══ */
 @media(max-width:600px){
-  .hleg{display:none}
-  #menu-toggle{display:flex}
+  #body{top:92px;height:calc(100dvh - 92px)}
   #sb{
     position:fixed;
-    top:50px;bottom:0;left:0;
+    top:92px;bottom:0;left:0;
     width:285px;
     transform:translateX(-100%);
     box-shadow:4px 0 20px rgba(0,0,0,.3);
@@ -90,7 +151,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .fbtn{padding:6px 10px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;border:1.5px solid transparent;background:rgba(0,0,0,.06);color:var(--muted);transition:all .12s;min-height:36px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .fbtn.on,.fbtn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
 .bdg{padding:2px 6px;border-radius:20px;font-size:8px;font-weight:700;text-transform:uppercase;color:#fff}
-/* Popup */
 #popup{position:absolute;z-index:150;display:none;background:var(--paper);border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.25);min-width:220px;max-width:270px;overflow:hidden}
 .pu-h{padding:12px 14px 8px;border-bottom:1px solid #e8e0d4}
 .pu-tag{display:inline-block;padding:2px 7px;border-radius:20px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#fff;margin-bottom:4px}
@@ -104,7 +164,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .pu-val{font-weight:600;color:var(--ink)}
 .pu-btn{display:flex;align-items:center;gap:6px;background:#FF5A5F;color:#fff;padding:8px 11px;border-radius:6px;text-decoration:none;font-size:11px;font-weight:600}
 .pu-close{position:absolute;top:8px;right:10px;cursor:pointer;font-size:18px;color:var(--muted);line-height:1}
-/* Zoom controls */
 #zctrl{position:absolute;top:10px;right:10px;z-index:150;display:flex;flex-direction:column;gap:2px}
 .zbtn{width:30px;height:30px;background:#1a1a2e;color:#faf7f2;border:none;border-radius:5px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.3);font-weight:300;line-height:1}
 .zbtn:hover{background:#2d2d4a}
@@ -112,6 +171,8 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 </style>
 </head>
 <body>
+
+<!-- ══ MAIN HEADER ══ -->
 <div id="hdr">
   <div style="display:flex;align-items:center;gap:8px">
     <div id="menu-toggle" onclick="toggleSidebar()" aria-label="Menu">
@@ -133,6 +194,40 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
   </div>
 </div>
 
+<!-- ══ AIR CANADA PRICING BANNER ══ -->
+<div id="ac-banner">
+  <div class="ac-label">✈ Air Canada &nbsp;YYZ → ICN</div>
+  <div class="ac-date" contenteditable="true" spellcheck="false" title="Click to edit date" style="border-bottom:1.5px dashed rgba(212,168,83,.4);outline:none;cursor:text;padding-bottom:1px;min-width:60px;color:#ffffff;font-weight:700;" onfocus="this.style.borderBottomColor='var(--gold)'" onblur="this.style.borderBottomColor='rgba(212,168,83,.4)'">as at Mar 20</div>
+  <div class="ac-divider"></div>
+
+  <div class="ac-ticket">
+    <div>
+      <div class="ac-ticket-label">1 Econ Ticket<br>No Refund / Cancellation</div>
+      <div class="ac-edit-hint">click to edit</div>
+    </div>
+    <div
+      id="ac-price-1"
+      contenteditable="true"
+      class="ac-ticket-price"
+      spellcheck="false"
+      title="Click to edit price">$1,956.62</div>
+  </div>
+
+  <div class="ac-ticket">
+    <div>
+      <div class="ac-ticket-label">1 Prem Econ Ticket<br>Refund / Cancellation for a fee</div>
+      <div class="ac-edit-hint">click to edit</div>
+    </div>
+    <div
+      id="ac-price-2"
+      contenteditable="true"
+      class="ac-ticket-price"
+      spellcheck="false"
+      title="Click to edit price">$4,335.62</div>
+  </div>
+</div>
+<!-- ══ END AIR CANADA BANNER ══ -->
+
 <div id="body">
 <div id="sb-overlay" onclick="toggleSidebar()"></div>
 <div id="sb">
@@ -146,7 +241,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
       </div>
     </div>
 
-    <!-- Per-person total strip -->
     <div style="background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.3);border-radius:7px;padding:6px 10px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center">
       <div>
         <div style="font-size:8px;color:rgba(250,247,242,.55);text-transform:uppercase;letter-spacing:.6px">Est. per person (excl. flights)</div>
@@ -160,56 +254,49 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
       </div>
     </div>
 
-    <!-- Category breakdown grid -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:7px">
-
       <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #FF5A5F">
         <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">🏠 Lodging</div>
         <div id="cat-lodge-pp" style="font-size:13px;font-weight:700;color:#faf7f2">$1,190</div>
         <div id="cat-lodge-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">$70/night · pp</div>
       </div>
-
       <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #37b42d">
         <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">🍜 Food</div>
         <div id="cat-food-pp" style="font-size:13px;font-weight:700;color:#faf7f2">$765</div>
         <div id="cat-food-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">$45/day · pp</div>
       </div>
-
       <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #00a2d1">
         <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">🚇 Local Transit</div>
         <div id="cat-transit-pp" style="font-size:13px;font-weight:700;color:#faf7f2">$255</div>
         <div id="cat-transit-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">$15/day · pp</div>
       </div>
-
       <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #d4a853">
         <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">✈ Inter-city Travel</div>
         <div id="cat-intercity-pp" style="font-size:13px;font-weight:700;color:#faf7f2">$210</div>
         <div id="cat-intercity-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">KTX + flights pp</div>
       </div>
-
       <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #996cac">
         <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">🎟 Activities</div>
         <div id="cat-act-pp" style="font-size:13px;font-weight:700;color:#faf7f2">$255</div>
         <div id="cat-act-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">$15/day · pp</div>
       </div>
-
       <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:6px 8px;border-left:3px solid #e6186c">
         <div style="font-size:8px;color:rgba(250,247,242,.5);text-transform:uppercase;letter-spacing:.5px">✈ ICN Transfer</div>
         <div id="cat-icn-pp" style="font-size:13px;font-weight:700;color:#faf7f2">$175</div>
         <div id="cat-icn-day" style="font-size:8.5px;color:rgba(250,247,242,.5)">AREX x2 · pp</div>
       </div>
-
     </div>
 
-    <!-- Flights callout -->
-    <div style="background:rgba(212,168,83,.1);border:1px dashed rgba(212,168,83,.4);border-radius:6px;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
+    <!-- Total Trip per person callout -->
+    <div style="background:rgba(212,168,83,.15);border:1.5px solid rgba(212,168,83,.5);border-radius:6px;padding:7px 10px;display:flex;justify-content:space-between;align-items:center">
       <div>
-        <div style="font-size:8px;color:var(--gold);text-transform:uppercase;letter-spacing:.5px">✈ Intl Flights (Toronto ↔ Seoul)</div>
-        <div id="cat-flights-pp" style="font-size:12px;font-weight:700;color:#faf7f2">$1,500–$1,900 pp</div>
+        <div style="font-size:8px;color:var(--gold);text-transform:uppercase;letter-spacing:.5px">💰 Total Trip per person (incl. flights)</div>
+        <div id="cat-total-pp" style="font-size:16px;font-weight:700;color:#faf7f2">$4,350–$4,750</div>
+        <div style="font-size:8px;color:rgba(250,247,242,.5)">excl. fees &amp; extras</div>
       </div>
       <div style="text-align:right">
-        <div id="cat-flights-grp" style="font-size:11px;font-weight:700;color:var(--gold)">$18k–23k</div>
-        <div style="font-size:8px;color:rgba(250,247,242,.4)">group · book early</div>
+        <div id="cat-total-grp" style="font-size:13px;font-weight:700;color:var(--gold)">$52k–$57k</div>
+        <div style="font-size:8px;color:rgba(250,247,242,.4)">group total · 12 pax</div>
       </div>
     </div>
 
@@ -286,7 +373,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
   <div class="sh" onclick="tog('icn')">✈ Incheon Airport → Seoul <span id="ar-icn">▾</span></div>
   <div class="sb-b open" id="sec-icn">
     <div style="padding:10px 12px 4px;font-size:9px;color:var(--muted);line-height:1.5">55 km from Seoul · All options depart from T1 or T2 Transportation Center (B1F)</div>
-    <!-- Map route legend -->
     <div style="margin:2px 10px 8px;background:var(--cream);border-radius:7px;padding:7px 10px;border:1px solid #e0d8cc">
       <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Routes shown on map</div>
       <div style="display:flex;flex-direction:column;gap:5px">
@@ -309,7 +395,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
       </div>
     </div>
 
-    <!-- AREX Express -->
     <div style="margin:0 10px 8px;border-radius:8px;overflow:hidden;border:1px solid #e0d8cc">
       <div style="background:#003499;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
         <div style="font-size:11px;font-weight:700">🚄 AREX Express Train</div>
@@ -323,7 +408,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
       </div>
     </div>
 
-    <!-- AREX All-Stop -->
     <div style="margin:0 10px 8px;border-radius:8px;overflow:hidden;border:1px solid #e0d8cc">
       <div style="background:#37b42d;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
         <div style="font-size:11px;font-weight:700">🚇 AREX All-Stop Train</div>
@@ -337,7 +421,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
       </div>
     </div>
 
-    <!-- Limousine Bus -->
     <div style="margin:0 10px 8px;border-radius:8px;overflow:hidden;border:1px solid #e0d8cc">
       <div style="background:#7d6608;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
         <div style="font-size:11px;font-weight:700">🚌 Airport Limousine Bus</div>
@@ -351,7 +434,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
       </div>
     </div>
 
-    <!-- Taxi -->
     <div style="margin:0 10px 8px;border-radius:8px;overflow:hidden;border:1px solid #e0d8cc">
       <div style="background:#c0392b;color:#fff;padding:6px 10px;display:flex;justify-content:space-between;align-items:center">
         <div style="font-size:11px;font-weight:700">🚕 Taxi</div>
@@ -365,7 +447,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
       </div>
     </div>
 
-    <!-- Quick Compare -->
     <div style="margin:0 10px 12px;background:var(--cream);border-radius:8px;padding:8px 10px;border:1px solid #e0d8cc">
       <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Quick Compare — ~10 people</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;text-align:center">
@@ -405,7 +486,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────
 var AIRBNBS = {
   a1:{id:'a1',lat:37.5800,lng:126.9840,city:'airbnb',name:'Airbnb Option A',sub:'Bukchon area · Anguk stn (Line 3) ~5 min',
     rows:[{l:'Nearest metro',v:'Anguk (Line 3)'},{l:'Walk to metro',v:'~5 min'},{l:'To Myeongdong',v:'2 stops ~8 min'},{l:'To Gangnam',v:'5 stops ~15 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],
@@ -457,70 +537,51 @@ var PLACES = [
 ];
 
 var ALL_MARKERS = PLACES.concat(Object.values(AIRBNBS));
-
 var COLORS = {seoul:'#c0392b',busan:'#1a5276',jeju:'#27ae60',daytrip:'#7d6608',airbnb:'#FF5A5F',airport:'#2c3e50'};
 
-// OSM tile helpers
 var TILE_SIZE = 256;
+function lng2tile(lng,z){return Math.floor((lng+180)/360*Math.pow(2,z));}
+function lat2tile(lat,z){return Math.floor((1-Math.log(Math.tan(lat*Math.PI/180)+1/Math.cos(lat*Math.PI/180))/Math.PI)/2*Math.pow(2,z));}
+function tile2lng(x,z){return x/Math.pow(2,z)*360-180;}
+function tile2lat(y,z){var n=Math.PI-2*Math.PI*y/Math.pow(2,z);return 180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n)));}
 
-function lng2tile(lng, z){ return Math.floor((lng+180)/360 * Math.pow(2,z)); }
-function lat2tile(lat, z){ return Math.floor((1 - Math.log(Math.tan(lat*Math.PI/180)+1/Math.cos(lat*Math.PI/180))/Math.PI)/2 * Math.pow(2,z)); }
-function tile2lng(x,z){ return x/Math.pow(2,z)*360-180; }
-function tile2lat(y,z){ var n=Math.PI-2*Math.PI*y/Math.pow(2,z); return 180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))); }
-
-// Geo → canvas pixel
 function geo2px(lat,lng){
-  var scale = TILE_SIZE * Math.pow(2, state.zoom);
-  var x = (lng + 180) / 360 * scale - state.offX;
-  var sinLat = Math.sin(lat * Math.PI / 180);
-  var y = (0.5 - Math.log((1+sinLat)/(1-sinLat))/(4*Math.PI)) * scale - state.offY;
-  return {x:x, y:y};
+  var scale=TILE_SIZE*Math.pow(2,state.zoom);
+  var x=(lng+180)/360*scale-state.offX;
+  var sinLat=Math.sin(lat*Math.PI/180);
+  var y=(0.5-Math.log((1+sinLat)/(1-sinLat))/(4*Math.PI))*scale-state.offY;
+  return{x:x,y:y};
 }
 
-// View presets [lat, lng, zoom]
-var VIEWS = {
-  seoul: [37.562, 126.978, 13],
-  busan: [35.138, 129.082, 13],
-  jeju:  [33.390, 126.550, 12],
-  all:   [36.5,   127.8,   8]
-};
+var VIEWS={seoul:[37.562,126.978,13],busan:[35.138,129.082,13],jeju:[33.390,126.550,12],all:[36.5,127.8,8]};
+var state={zoom:13,offX:0,offY:0,showWalk:true,filter:'all'};
+var tileCache={};
+var canvas,ctx,wrap;
 
-var state = {zoom:13, offX:0, offY:0, showWalk:true, filter:'all'};
-var tileCache = {};
-var canvas, ctx, wrap;
-
-function setView(lat, lng, z) {
-  state.zoom = z;
-  var scale = TILE_SIZE * Math.pow(2, z);
-  var sinLat = Math.sin(lat * Math.PI / 180);
-  state.offX = (lng + 180) / 360 * scale - wrap.clientWidth / 2;
-  state.offY = (0.5 - Math.log((1+sinLat)/(1-sinLat))/(4*Math.PI)) * scale - wrap.clientHeight / 2;
+function setView(lat,lng,z){
+  state.zoom=z;
+  var scale=TILE_SIZE*Math.pow(2,z);
+  var sinLat=Math.sin(lat*Math.PI/180);
+  state.offX=(lng+180)/360*scale-wrap.clientWidth/2;
+  state.offY=(0.5-Math.log((1+sinLat)/(1-sinLat))/(4*Math.PI))*scale-wrap.clientHeight/2;
   draw();
 }
 
-// ── TILE LOADING ─────────────────────────────────────
-// Carto tiles — no referrer restriction, clean design
-var tileSubdomains = ['a','b','c','d'];
-var tileIdx = 0;
-
-function getTileUrl(x,y,z){
-  var s = tileSubdomains[tileIdx % tileSubdomains.length];
-  tileIdx++;
-  return 'https://'+s+'.basemaps.cartocdn.com/rastertiles/voyager/'+z+'/'+x+'/'+y+'.png';
-}
-
-function loadTile(x, y, z) {
-  var key = z+'/'+x+'/'+y;
-  if (tileCache[key]) return tileCache[key];
-  var img = new Image();
-  img.onload = function(){ tileCache[key] = img; draw(); };
-  img.src = getTileUrl(x, y, z);
-  tileCache[key] = img; // store even if loading so we don't double-request
+var tileSubdomains=['a','b','c'];
+var tileIdx=0;
+function getTileUrl(x,y,z){var s=tileSubdomains[tileIdx%tileSubdomains.length];tileIdx++;return'https://'+s+'.tile.openstreetmap.org/'+z+'/'+x+'/'+y+'.png';}
+function loadTile(x,y,z){
+  var key=z+'/'+x+'/'+y;
+  if(tileCache[key])return tileCache[key];
+  var img=new Image();
+  img.crossOrigin='anonymous';
+  img.onload=function(){tileCache[key]=img;draw();};
+  img.src=getTileUrl(x,y,z);
+  tileCache[key]=img;
   return img;
 }
 
-// ── SUBWAY LINES DATA ─────────────────────────────────
-var SUBWAY = [
+var SUBWAY=[
   {name:'Line 1',color:'#003499',pts:[[37.5112,126.9424],[37.5298,126.9643],[37.5548,126.9707],[37.5709,126.9981],[37.5715,127.0095],[37.5805,127.0449]]},
   {name:'Line 2',color:'#37b42d',pts:[[37.5574,126.9252],[37.5601,126.9641],[37.5645,126.9769],[37.5668,127.0048],[37.5659,127.0191],[37.5612,127.0359],[37.5130,127.1000],[37.4979,127.0277],[37.4769,126.9812],[37.4840,126.9295],[37.5343,126.9010],[37.5497,126.9148],[37.5574,126.9252]]},
   {name:'Line 3',color:'#fe5d10',pts:[[37.4848,127.1027],[37.5048,127.0054],[37.5390,127.0186],[37.5607,126.9979],[37.5660,126.9924],[37.5762,126.9852],[37.5793,126.9773],[37.5724,126.9590],[37.6092,126.9328]]},
@@ -531,535 +592,218 @@ var SUBWAY = [
   {name:'Line 9',color:'#e6186c',pts:[[37.5219,126.9241],[37.5124,126.9819],[37.5048,127.0054],[37.5087,127.0620],[37.5124,127.0827]]},
 ];
 
-// ── AIRPORT TRANSPORT ROUTES ─────────────────────────
-// Colors deliberately muted/desaturated to avoid confusion with subway lines
-var TRANSPORT_ROUTES = [
-  {
-    id:'arex_express',
-    name:'AREX Express',
-    color:'#1a1a2e',       // near-black charcoal — distinct from all subway lines
-    style:'express',       // thick solid + animated dash
-    pts:[
-      [37.4602,126.4407],  // ICN T1
-      [37.4560,126.4800],  // ICN T2
-      [37.5048,126.7539],  // Gyeyang
-      [37.5441,126.8557],  // Gimpo Airport
-      [37.5574,126.9252],  // Hongik Univ
-      [37.5455,126.9519],  // Gongdeok
-      [37.5548,126.9707],  // Seoul Station
-    ]
-  },
-  {
-    id:'arex_allstop',
-    name:'AREX All-Stop',
-    color:'#2e7d7d',       // muted teal — not close to any subway color
-    style:'allstop',
-    pts:[
-      [37.4602,126.4407],
-      [37.4560,126.4800],
-      [37.5048,126.7539],
-      [37.5441,126.8557],
-      [37.5574,126.9252],  // Hongik Univ
-      [37.5455,126.9519],  // Gongdeok
-      [37.5645,126.9769],  // City Hall
-      [37.5548,126.9707],  // Seoul Station
-    ]
-  },
-  {
-    id:'limo_bus',
-    name:'Limo Bus',
-    color:'#8b6914',       // muted amber-brown — distinct from subway Line 6 brown (#cd7c2f)
-    style:'bus',
-    pts:[
-      [37.4602,126.4407],
-      [37.5050,126.7610],  // Expressway entry
-      [37.5200,126.8800],  // Gyeongbu Expressway
-      [37.5500,126.9550],  // Namdaemun / Myeongdong area
-      [37.5636,126.9827],  // Myeongdong drop
-    ]
-  },
-  {
-    id:'taxi',
-    name:'Taxi',
-    color:'#555e6e',       // cool slate grey — neutral, no subway match
-    style:'taxi',
-    pts:[
-      [37.4602,126.4407],
-      [37.4900,126.6200],  // Incheon Expressway
-      [37.5050,126.7610],
-      [37.5300,126.8900],
-      [37.5548,126.9707],  // Seoul Station (representative destination)
-    ]
-  }
+var TRANSPORT_ROUTES=[
+  {id:'arex_express',name:'AREX Express',color:'#1a1a2e',style:'express',pts:[[37.4602,126.4407],[37.4560,126.4800],[37.5048,126.7539],[37.5441,126.8557],[37.5574,126.9252],[37.5455,126.9519],[37.5548,126.9707]]},
+  {id:'arex_allstop',name:'AREX All-Stop',color:'#2e7d7d',style:'allstop',pts:[[37.4602,126.4407],[37.4560,126.4800],[37.5048,126.7539],[37.5441,126.8557],[37.5574,126.9252],[37.5455,126.9519],[37.5645,126.9769],[37.5548,126.9707]]},
+  {id:'limo_bus',name:'Limo Bus',color:'#8b6914',style:'bus',pts:[[37.4602,126.4407],[37.5050,126.7610],[37.5200,126.8800],[37.5500,126.9550],[37.5636,126.9827]]},
+  {id:'taxi',name:'Taxi',color:'#555e6e',style:'taxi',pts:[[37.4602,126.4407],[37.4900,126.6200],[37.5050,126.7610],[37.5300,126.8900],[37.5548,126.9707]]}
 ];
 
-var showTransportRoutes = true;
+var showTransportRoutes=true;
 
-// ── DRAW ─────────────────────────────────────────────
-function draw() {
-  var W = wrap.clientWidth, H = wrap.clientHeight;
-  canvas.width = W; canvas.height = H;
+function draw(){
+  var W=wrap.clientWidth,H=wrap.clientHeight;
+  canvas.width=W;canvas.height=H;
   ctx.clearRect(0,0,W,H);
-
-  // Draw map tiles
-  var z = Math.round(state.zoom);
-  var tileScale = TILE_SIZE * Math.pow(2, z);
-  // Scale tiles slightly if zooming between integer levels for smooth zoom feel
-  var scaleFactor = Math.pow(2, state.zoom - z);
-  var tScaled = Math.round(TILE_SIZE * scaleFactor);
-  var offXz = state.offX * Math.pow(2, z) / Math.pow(2, state.zoom);
-  var offYz = state.offY * Math.pow(2, z) / Math.pow(2, state.zoom);
-  var tileX0 = Math.floor(offXz / TILE_SIZE);
-  var tileY0 = Math.floor(offYz / TILE_SIZE);
-  var tilesX = Math.ceil(W / tScaled) + 2;
-  var tilesY = Math.ceil(H / tScaled) + 2;
-  var maxTile = Math.pow(2, z) - 1;
-
-  for (var tx = tileX0; tx <= tileX0 + tilesX; tx++) {
-    for (var ty = tileY0; ty <= tileY0 + tilesY; ty++) {
-      var wx = ((tx % (maxTile+1)) + (maxTile+1)) % (maxTile+1);
-      var wy = Math.max(0, Math.min(maxTile, ty));
-      var img = loadTile(wx, wy, z);
-      var px = Math.round(tx * tScaled - offXz * scaleFactor);
-      var py = Math.round(ty * tScaled - offYz * scaleFactor);
-      if (img && img.complete && img.naturalWidth > 10) {
-        ctx.drawImage(img, px, py, tScaled, tScaled);
-      } else {
-        ctx.fillStyle = '#f0ebe2';
-        ctx.fillRect(px, py, tScaled, tScaled);
-      }
+  var z=Math.round(state.zoom);
+  var scaleFactor=Math.pow(2,state.zoom-z);
+  var tScaled=Math.round(TILE_SIZE*scaleFactor);
+  var offXz=state.offX*Math.pow(2,z)/Math.pow(2,state.zoom);
+  var offYz=state.offY*Math.pow(2,z)/Math.pow(2,state.zoom);
+  var tileX0=Math.floor(offXz/TILE_SIZE);
+  var tileY0=Math.floor(offYz/TILE_SIZE);
+  var tilesX=Math.ceil(W/tScaled)+2;
+  var tilesY=Math.ceil(H/tScaled)+2;
+  var maxTile=Math.pow(2,z)-1;
+  for(var tx=tileX0;tx<=tileX0+tilesX;tx++){
+    for(var ty=tileY0;ty<=tileY0+tilesY;ty++){
+      var wx=((tx%(maxTile+1))+(maxTile+1))%(maxTile+1);
+      var wy=Math.max(0,Math.min(maxTile,ty));
+      var img=loadTile(wx,wy,z);
+      var px=Math.round(tx*tScaled-offXz*scaleFactor);
+      var py=Math.round(ty*tScaled-offYz*scaleFactor);
+      if(img&&img.complete&&img.naturalWidth>10){ctx.drawImage(img,px,py,tScaled,tScaled);}
+      else{ctx.fillStyle='#f0ebe2';ctx.fillRect(px,py,tScaled,tScaled);}
     }
   }
-
-  // Only draw overlays at Seoul zoom levels
-  if (z >= 11) {
-    drawSubway();
-    drawTransportRoutes();
-    if (state.showWalk) drawWalkRings();
-    drawMarkers();
-  } else {
-    drawMarkers(); // always draw markers
-  }
+  if(z>=11){drawSubway();drawTransportRoutes();if(state.showWalk)drawWalkRings();drawMarkers();}
+  else{drawMarkers();}
 }
 
-function drawSubway() {
-  if (state.filter !== 'all' && state.filter !== 'seoul') return;
-  SUBWAY.forEach(function(line) {
+function drawSubway(){
+  if(state.filter!=='all'&&state.filter!=='seoul')return;
+  SUBWAY.forEach(function(line){
     ctx.save();
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 5;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.beginPath();
-    line.pts.forEach(function(pt, i) {
-      var p = geo2px(pt[0], pt[1]);
-      i===0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
-    });
-    ctx.stroke();
-    ctx.strokeStyle = line.color;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    line.pts.forEach(function(pt, i) {
-      var p = geo2px(pt[0], pt[1]);
-      i===0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
-    });
-    ctx.stroke();
+    ctx.strokeStyle='#fff';ctx.lineWidth=5;ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.beginPath();line.pts.forEach(function(pt,i){var p=geo2px(pt[0],pt[1]);i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
+    ctx.strokeStyle=line.color;ctx.lineWidth=3;
+    ctx.beginPath();line.pts.forEach(function(pt,i){var p=geo2px(pt[0],pt[1]);i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
     ctx.restore();
   });
 }
 
-function drawTransportRoutes() {
-  if (!showTransportRoutes) return;
-  if (state.filter !== 'all' && state.filter !== 'seoul' && state.filter !== 'airbnb') return;
-
-  TRANSPORT_ROUTES.forEach(function(route) {
-    var pts = route.pts.map(function(p){ return geo2px(p[0], p[1]); });
-
-    ctx.save();
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    if (route.style === 'express') {
-      // AREX Express: thick white halo + solid dark line + gold center stripe
-      // White halo
-      ctx.strokeStyle = 'rgba(255,255,255,0.85)';
-      ctx.lineWidth = 9;
-      ctx.setLineDash([]);
-      ctx.beginPath(); pts.forEach(function(p,i){ i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); }); ctx.stroke();
-      // Dark outer
-      ctx.strokeStyle = route.color;
-      ctx.lineWidth = 5;
-      ctx.beginPath(); pts.forEach(function(p,i){ i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); }); ctx.stroke();
-      // Gold center dashes — makes it look like a fast rail line
-      ctx.strokeStyle = '#d4a853';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([12, 6]);
-      ctx.beginPath(); pts.forEach(function(p,i){ i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); }); ctx.stroke();
-
-    } else if (route.style === 'allstop') {
-      // AREX All-Stop: white halo + teal line + small white dashes
-      ctx.strokeStyle = 'rgba(255,255,255,0.8)';
-      ctx.lineWidth = 7;
-      ctx.setLineDash([]);
-      ctx.beginPath(); pts.forEach(function(p,i){ i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); }); ctx.stroke();
-      ctx.strokeStyle = route.color;
-      ctx.lineWidth = 4;
-      ctx.beginPath(); pts.forEach(function(p,i){ i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); }); ctx.stroke();
-      // Dot pattern on top
-      ctx.strokeStyle = 'rgba(255,255,255,0.7)';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([3, 9]);
-      ctx.beginPath(); pts.forEach(function(p,i){ i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); }); ctx.stroke();
-
-    } else if (route.style === 'bus') {
-      // Limo Bus: white halo + amber dashed line (long dashes = road vehicle)
-      ctx.strokeStyle = 'rgba(255,255,255,0.75)';
-      ctx.lineWidth = 7;
-      ctx.setLineDash([]);
-      ctx.beginPath(); pts.forEach(function(p,i){ i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); }); ctx.stroke();
-      ctx.strokeStyle = route.color;
-      ctx.lineWidth = 4;
-      ctx.setLineDash([16, 7]);
-      ctx.beginPath(); pts.forEach(function(p,i){ i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); }); ctx.stroke();
-
-    } else if (route.style === 'taxi') {
-      // Taxi: thin white halo + grey dotted line (loosest = slowest/most flexible)
-      ctx.strokeStyle = 'rgba(255,255,255,0.7)';
-      ctx.lineWidth = 6;
-      ctx.setLineDash([]);
-      ctx.beginPath(); pts.forEach(function(p,i){ i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); }); ctx.stroke();
-      ctx.strokeStyle = route.color;
-      ctx.lineWidth = 3;
-      ctx.setLineDash([4, 8]);
-      ctx.beginPath(); pts.forEach(function(p,i){ i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); }); ctx.stroke();
+function drawTransportRoutes(){
+  if(!showTransportRoutes)return;
+  if(state.filter!=='all'&&state.filter!=='seoul'&&state.filter!=='airbnb')return;
+  TRANSPORT_ROUTES.forEach(function(route){
+    var pts=route.pts.map(function(p){return geo2px(p[0],p[1]);});
+    ctx.save();ctx.lineCap='round';ctx.lineJoin='round';
+    if(route.style==='express'){
+      ctx.strokeStyle='rgba(255,255,255,0.85)';ctx.lineWidth=9;ctx.setLineDash([]);
+      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
+      ctx.strokeStyle=route.color;ctx.lineWidth=5;
+      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
+      ctx.strokeStyle='#d4a853';ctx.lineWidth=1.5;ctx.setLineDash([12,6]);
+      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
+    }else if(route.style==='allstop'){
+      ctx.strokeStyle='rgba(255,255,255,0.8)';ctx.lineWidth=7;ctx.setLineDash([]);
+      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
+      ctx.strokeStyle=route.color;ctx.lineWidth=4;
+      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
+      ctx.strokeStyle='rgba(255,255,255,0.7)';ctx.lineWidth=1.5;ctx.setLineDash([3,9]);
+      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
+    }else if(route.style==='bus'){
+      ctx.strokeStyle='rgba(255,255,255,0.75)';ctx.lineWidth=7;ctx.setLineDash([]);
+      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
+      ctx.strokeStyle=route.color;ctx.lineWidth=4;ctx.setLineDash([16,7]);
+      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
+    }else if(route.style==='taxi'){
+      ctx.strokeStyle='rgba(255,255,255,0.7)';ctx.lineWidth=6;ctx.setLineDash([]);
+      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
+      ctx.strokeStyle=route.color;ctx.lineWidth=3;ctx.setLineDash([4,8]);
+      ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
     }
-
-    // Draw route label near midpoint
-    var mid = pts[Math.floor(pts.length / 2)];
-    var label = route.name;
+    var mid=pts[Math.floor(pts.length/2)];
     ctx.setLineDash([]);
-    ctx.font = 'bold 9px DM Sans,sans-serif';
-    var tw = ctx.measureText(label).width;
-    var pw = tw + 10, ph = 15, pr = 4;
-    var px = mid.x - pw/2, py = mid.y - ph - 4;
-    // Pill bg
-    ctx.fillStyle = route.color;
-    ctx.shadowColor = 'rgba(0,0,0,0.3)';
-    ctx.shadowBlur = 4;
-    ctx.beginPath();
-    ctx.roundRect(px, py, pw, ph, pr);
-    ctx.fill();
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = '#fff';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(label, mid.x, py + ph/2);
-
+    ctx.font='bold 9px DM Sans,sans-serif';
+    var tw=ctx.measureText(route.name).width;
+    var pw=tw+10,ph=15,pr=4,px=mid.x-pw/2,py=mid.y-ph-4;
+    ctx.fillStyle=route.color;ctx.shadowColor='rgba(0,0,0,0.3)';ctx.shadowBlur=4;
+    ctx.beginPath();ctx.roundRect(px,py,pw,ph,pr);ctx.fill();
+    ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(route.name,mid.x,py+ph/2);
     ctx.restore();
   });
 }
 
-function drawTransportToggleBtn() {
-  // Small toggle button bottom-right of map
-}
-
-function drawWalkRings() {
-  // Draw rings around every Airbnb — no filter gate, so both Seoul & Busan rings show
-  var radii = [400, 800, 1200];
-  var labels = ['5 min', '10 min', '15 min'];
-  var nums = ['①','②','③'];
-  // Stronger fill + stroke opacities
-  var fillOps  = [0.13, 0.08, 0.04];
-  var strokeOps = [1.0,  0.75, 0.45];
-
-  Object.values(AIRBNBS).forEach(function(ab) {
-    radii.forEach(function(r, i) {
-      var center = geo2px(ab.lat, ab.lng);
-      var pxPerMeter = (TILE_SIZE * Math.pow(2, Math.round(state.zoom))) / (111320 * 360);
-      var pxR = r * pxPerMeter;
-
-      // ── Ring fill ──
+function drawWalkRings(){
+  var radii=[400,800,1200],labels=['5 min','10 min','15 min'],nums=['①','②','③'];
+  var fillOps=[0.13,0.08,0.04],strokeOps=[1.0,0.75,0.45];
+  Object.values(AIRBNBS).forEach(function(ab){
+    radii.forEach(function(r,i){
+      var center=geo2px(ab.lat,ab.lng);
+      var pxPerMeter=(TILE_SIZE*Math.pow(2,Math.round(state.zoom)))/(111320*360);
+      var pxR=r*pxPerMeter;
+      ctx.save();ctx.beginPath();ctx.arc(center.x,center.y,pxR,0,Math.PI*2);ctx.fillStyle='rgba(255,75,85,'+fillOps[i]+')';ctx.fill();ctx.restore();
+      ctx.save();ctx.beginPath();ctx.arc(center.x,center.y,pxR,0,Math.PI*2);
+      ctx.strokeStyle='rgba(255,75,85,0.25)';ctx.lineWidth=8;ctx.setLineDash([]);ctx.stroke();
+      ctx.strokeStyle='rgba(255,75,85,'+strokeOps[i]+')';ctx.lineWidth=2.5;ctx.setLineDash([8,5]);ctx.stroke();ctx.restore();
       ctx.save();
-      ctx.beginPath();
-      ctx.arc(center.x, center.y, pxR, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(255,75,85,' + fillOps[i] + ')';
-      ctx.fill();
-      ctx.restore();
-
-      // ── Ring stroke — solid + thick with glow ──
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(center.x, center.y, pxR, 0, Math.PI*2);
-      // Glow halo
-      ctx.strokeStyle = 'rgba(255,75,85,0.25)';
-      ctx.lineWidth = 8;
-      ctx.setLineDash([]);
-      ctx.stroke();
-      // Solid inner stroke
-      ctx.strokeStyle = 'rgba(255,75,85,' + strokeOps[i] + ')';
-      ctx.lineWidth = 2.5;
-      ctx.setLineDash([8, 5]);
-      ctx.stroke();
-      ctx.restore();
-
-      // ── Badge pill at top of ring ──
-      ctx.save();
-      var bx = center.x;
-      var by = center.y - pxR - 1;
-      var bLabel = nums[i] + '  ' + labels[i];
-      ctx.font = 'bold 11px DM Sans,sans-serif';
-      var tw = ctx.measureText(bLabel).width;
-      var bw = tw + 18, bh = 20, br = 10;
-      var bleft = bx - bw/2;
-      var btop  = by - bh;
-
-      // Pill background
-      ctx.beginPath();
-      ctx.moveTo(bleft + br, btop);
-      ctx.lineTo(bleft + bw - br, btop);
-      ctx.arcTo(bleft+bw, btop, bleft+bw, btop+bh, br);
-      ctx.lineTo(bleft+bw, btop+bh-br);
-      ctx.arcTo(bleft+bw, btop+bh, bleft+bw-br, btop+bh, br);
-      ctx.lineTo(bleft+br, btop+bh);
-      ctx.arcTo(bleft, btop+bh, bleft, btop+bh-br, br);
-      ctx.lineTo(bleft, btop+br);
-      ctx.arcTo(bleft, btop, bleft+br, btop, br);
-      ctx.closePath();
-      ctx.fillStyle = 'rgba(220,50,60,0.92)';
-      ctx.shadowColor = 'rgba(0,0,0,0.35)';
-      ctx.shadowBlur = 6;
-      ctx.fill();
-
-      // Pill border
-      ctx.shadowBlur = 0;
-      ctx.strokeStyle = 'rgba(255,255,255,0.6)';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([]);
-      ctx.stroke();
-
-      // Pill text
-      ctx.fillStyle = '#fff';
-      ctx.shadowColor = 'rgba(0,0,0,0.3)';
-      ctx.shadowBlur = 3;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(bLabel, bx, btop + bh/2);
-      ctx.restore();
+      var bx=center.x,by=center.y-pxR-1,bLabel=nums[i]+'  '+labels[i];
+      ctx.font='bold 11px DM Sans,sans-serif';
+      var tw=ctx.measureText(bLabel).width,bw=tw+18,bh=20,br=10,bleft=bx-bw/2,btop=by-bh;
+      ctx.beginPath();ctx.moveTo(bleft+br,btop);ctx.lineTo(bleft+bw-br,btop);ctx.arcTo(bleft+bw,btop,bleft+bw,btop+bh,br);ctx.lineTo(bleft+bw,btop+bh-br);ctx.arcTo(bleft+bw,btop+bh,bleft+bw-br,btop+bh,br);ctx.lineTo(bleft+br,btop+bh);ctx.arcTo(bleft,btop+bh,bleft,btop+bh-br,br);ctx.lineTo(bleft,btop+br);ctx.arcTo(bleft,btop,bleft+br,btop,br);ctx.closePath();
+      ctx.fillStyle='rgba(220,50,60,0.92)';ctx.shadowColor='rgba(0,0,0,0.35)';ctx.shadowBlur=6;ctx.fill();
+      ctx.shadowBlur=0;ctx.strokeStyle='rgba(255,255,255,0.6)';ctx.lineWidth=1.5;ctx.setLineDash([]);ctx.stroke();
+      ctx.fillStyle='#fff';ctx.shadowColor='rgba(0,0,0,0.3)';ctx.shadowBlur=3;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(bLabel,bx,btop+bh/2);ctx.restore();
     });
   });
 }
 
-// Helper: does a marker belong to a given city filter?
-function markerMatchesFilter(p, f) {
-  if (f === 'all') return true;
-  if (f === p.city) return true;
-  if (f === 'airbnb' && p.city === 'airbnb') return true;
-  // Airbnb markers are tagged city:'airbnb' but physically live in a city.
-  // Show Busan/Seoul airbnbs when their geographic city filter is active.
-  if (p.city === 'airbnb') {
-    var busanAirbnbs = ['ba1','ba2'];
-    var seoulAirbnbs = ['a1','a2'];
-    if (f === 'busan' && busanAirbnbs.indexOf(p.id) !== -1) return true;
-    if (f === 'seoul' && seoulAirbnbs.indexOf(p.id) !== -1) return true;
+function markerMatchesFilter(p,f){
+  if(f==='all')return true;
+  if(f===p.city)return true;
+  if(f==='airbnb'&&p.city==='airbnb')return true;
+  if(p.city==='airbnb'){
+    var busanAirbnbs=['ba1','ba2'],seoulAirbnbs=['a1','a2'];
+    if(f==='busan'&&busanAirbnbs.indexOf(p.id)!==-1)return true;
+    if(f==='seoul'&&seoulAirbnbs.indexOf(p.id)!==-1)return true;
   }
   return false;
 }
 
-function drawMarkers() {
-  var f = state.filter;
-  ALL_MARKERS.forEach(function(p) {
-    if (!markerMatchesFilter(p, f)) return;
-    var pos = geo2px(p.lat, p.lng);
-    var color = COLORS[p.city] || '#c0392b';
-    if (p.city === 'airbnb') {
-      // Airbnb teardrop pin
-      ctx.save();
-      ctx.translate(pos.x, pos.y - 14);
-      ctx.rotate(-Math.PI/4);
-      ctx.fillStyle = '#FF5A5F';
-      ctx.shadowColor = 'rgba(0,0,0,0.35)';
-      ctx.shadowBlur = 6;
-      ctx.beginPath();
-      ctx.roundRect(0, 0, 18, 20, [9, 9, 9, 0]);
-      ctx.fill();
-      ctx.restore();
-      ctx.save();
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 9px DM Sans,sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText({a1:'A',a2:'B',ba1:'C',ba2:'D'}[p.id] || '?', pos.x + 2, pos.y - 12);
-      ctx.restore();
-    } else if (p.id === 'icn') {
-      // Airport — dark pill with ✈ icon
-      ctx.save();
-      ctx.font = 'bold 11px DM Sans,sans-serif';
-      var label = '✈ ICN';
-      var tw = ctx.measureText(label).width;
-      var bw = tw + 16, bh = 22, br = 11;
-      var bx = pos.x - bw/2, by = pos.y - bh/2;
-      // Shadow
-      ctx.shadowColor = 'rgba(0,0,0,0.4)';
-      ctx.shadowBlur = 8;
-      // Pill bg
-      ctx.fillStyle = '#1a1a2e';
-      ctx.beginPath();
-      ctx.roundRect(bx, by, bw, bh, br);
-      ctx.fill();
-      // Border
-      ctx.shadowBlur = 0;
-      ctx.strokeStyle = 'rgba(212,168,83,0.9)';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-      // Text
-      ctx.fillStyle = '#faf7f2';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(label, pos.x, pos.y);
-      ctx.restore();
-    } else {
-      // Circle dot
-      ctx.save();
-      ctx.shadowColor = 'rgba(0,0,0,0.35)';
-      ctx.shadowBlur = 4;
-      ctx.beginPath();
-      ctx.arc(pos.x, pos.y, 7, 0, Math.PI*2);
-      ctx.fillStyle = '#fff';
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(pos.x, pos.y, 5.5, 0, Math.PI*2);
-      ctx.fillStyle = color;
-      ctx.fill();
-      ctx.restore();
+function drawMarkers(){
+  var f=state.filter;
+  ALL_MARKERS.forEach(function(p){
+    if(!markerMatchesFilter(p,f))return;
+    var pos=geo2px(p.lat,p.lng);
+    var color=COLORS[p.city]||'#c0392b';
+    if(p.city==='airbnb'){
+      ctx.save();ctx.translate(pos.x,pos.y-14);ctx.rotate(-Math.PI/4);ctx.fillStyle='#FF5A5F';ctx.shadowColor='rgba(0,0,0,0.35)';ctx.shadowBlur=6;ctx.beginPath();ctx.roundRect(0,0,18,20,[9,9,9,0]);ctx.fill();ctx.restore();
+      ctx.save();ctx.fillStyle='#fff';ctx.font='bold 9px DM Sans,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText({a1:'A',a2:'B',ba1:'C',ba2:'D'}[p.id]||'?',pos.x+2,pos.y-12);ctx.restore();
+    }else if(p.id==='icn'){
+      ctx.save();ctx.font='bold 11px DM Sans,sans-serif';var label='✈ ICN';var tw=ctx.measureText(label).width;var bw=tw+16,bh=22,br=11,bx=pos.x-bw/2,by=pos.y-bh/2;
+      ctx.shadowColor='rgba(0,0,0,0.4)';ctx.shadowBlur=8;ctx.fillStyle='#1a1a2e';ctx.beginPath();ctx.roundRect(bx,by,bw,bh,br);ctx.fill();
+      ctx.shadowBlur=0;ctx.strokeStyle='rgba(212,168,83,0.9)';ctx.lineWidth=1.5;ctx.stroke();ctx.fillStyle='#faf7f2';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,pos.x,pos.y);ctx.restore();
+    }else{
+      ctx.save();ctx.shadowColor='rgba(0,0,0,0.35)';ctx.shadowBlur=4;ctx.beginPath();ctx.arc(pos.x,pos.y,7,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.beginPath();ctx.arc(pos.x,pos.y,5.5,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();ctx.restore();
     }
   });
 }
 
-// ── HIT TESTING ──────────────────────────────────────
-function findMarkerAt(mx, my) {
-  var hit = null;
-  var f = state.filter;
-  ALL_MARKERS.forEach(function(p) {
-    if (!markerMatchesFilter(p, f)) return;
-    var pos = geo2px(p.lat, p.lng);
-    var dx = mx - pos.x, dy = my - pos.y;
-    var r = p.city === 'airbnb' ? 18 : 10;
-    if (dx*dx + dy*dy < r*r) hit = p;
+function findMarkerAt(mx,my){
+  var hit=null,f=state.filter;
+  ALL_MARKERS.forEach(function(p){
+    if(!markerMatchesFilter(p,f))return;
+    var pos=geo2px(p.lat,p.lng);var dx=mx-pos.x,dy=my-pos.y;var r=p.city==='airbnb'?18:10;
+    if(dx*dx+dy*dy<r*r)hit=p;
   });
   return hit;
 }
 
-// ── POPUP ─────────────────────────────────────────────
-function showPopup(p, cx, cy) {
-  var color = COLORS[p.city] || '#888';
-  var cityLabel = {seoul:'Seoul',busan:'Busan',jeju:'Jeju Island',daytrip:'Day Trip',airbnb:'Airbnb'}[p.city] || p.city;
-  var inner = '<div class="pu-h"><div><span class="pu-tag" style="background:'+color+'">'+cityLabel+'</span></div><div class="pu-ti">'+p.name+'</div></div>';
-  inner += '<div class="pu-bd">';
-  if (p.rows) {
-    inner += '<div class="pu-rows">'+p.rows.map(function(r){ return '<div class="pu-row"><span class="pu-lbl">'+r.l+'</span><span class="pu-val">'+r.v+'</span></div>'; }).join('')+'</div>';
-    inner += '<a href="'+p.url+'" target="_blank" class="pu-btn">View on Airbnb →</a>';
-  } else {
-    inner += '<div class="pu-desc">'+p.sub+'</div>';
-  }
-  inner += '</div>';
-  var pu = document.getElementById('popup');
-  document.getElementById('pu-inner').innerHTML = inner;
-  var W = wrap.clientWidth, H = wrap.clientHeight;
-  var pw = 240, ph = 160;
-  var left = cx + 12; if (left + pw > W - 10) left = cx - pw - 12;
-  var top = cy - 20; if (top + ph > H - 10) top = H - ph - 10; if (top < 5) top = 5;
-  pu.style.left = left + 'px';
-  pu.style.top = top + 'px';
-  pu.style.display = 'block';
+function showPopup(p,cx,cy){
+  var color=COLORS[p.city]||'#888';
+  var cityLabel={seoul:'Seoul',busan:'Busan',jeju:'Jeju Island',daytrip:'Day Trip',airbnb:'Airbnb'}[p.city]||p.city;
+  var inner='<div class="pu-h"><div><span class="pu-tag" style="background:'+color+'">'+cityLabel+'</span></div><div class="pu-ti">'+p.name+'</div></div>';
+  inner+='<div class="pu-bd">';
+  if(p.rows){inner+='<div class="pu-rows">'+p.rows.map(function(r){return'<div class="pu-row"><span class="pu-lbl">'+r.l+'</span><span class="pu-val">'+r.v+'</span></div>';}).join('')+'</div>';inner+='<a href="'+p.url+'" target="_blank" class="pu-btn">View on Airbnb →</a>';}
+  else{inner+='<div class="pu-desc">'+p.sub+'</div>';}
+  inner+='</div>';
+  var pu=document.getElementById('popup');
+  document.getElementById('pu-inner').innerHTML=inner;
+  var W=wrap.clientWidth,H=wrap.clientHeight;
+  var pw=240,ph=160,left=cx+12;if(left+pw>W-10)left=cx-pw-12;
+  var top=cy-20;if(top+ph>H-10)top=H-ph-10;if(top<5)top=5;
+  pu.style.left=left+'px';pu.style.top=top+'px';pu.style.display='block';
 }
+function closePopup(){document.getElementById('popup').style.display='none';}
 
-function closePopup() { document.getElementById('popup').style.display = 'none'; }
+var drag={active:false,startX:0,startY:0,offX0:0,offY0:0};
+var touch0=null;
 
-// ── DRAG / PAN (attached after DOM ready) ─────────────
-var drag = {active:false, startX:0, startY:0, offX0:0, offY0:0};
-var touch0 = null;
-
-// ── GLOBAL CONTROLS ──────────────────────────────────
-window.zoom = function(dir) {
-  var cx = wrap.clientWidth/2, cy = wrap.clientHeight/2;
-  var latLngX = (state.offX + cx) / (TILE_SIZE * Math.pow(2, state.zoom));
-  var latLngY = (state.offY + cy) / (TILE_SIZE * Math.pow(2, state.zoom));
-  state.zoom = Math.max(5, Math.min(18, state.zoom + dir));
-  state.offX = latLngX * TILE_SIZE * Math.pow(2, state.zoom) - cx;
-  state.offY = latLngY * TILE_SIZE * Math.pow(2, state.zoom) - cy;
+window.zoom=function(dir){
+  var cx=wrap.clientWidth/2,cy=wrap.clientHeight/2;
+  var latLngX=(state.offX+cx)/(TILE_SIZE*Math.pow(2,state.zoom));
+  var latLngY=(state.offY+cy)/(TILE_SIZE*Math.pow(2,state.zoom));
+  state.zoom=Math.max(5,Math.min(18,state.zoom+dir));
+  state.offX=latLngX*TILE_SIZE*Math.pow(2,state.zoom)-cx;
+  state.offY=latLngY*TILE_SIZE*Math.pow(2,state.zoom)-cy;
   draw();
 };
-
-window.toggleTransport = function() {
-  showTransportRoutes = !showTransportRoutes;
-  document.getElementById('tbtn').textContent = showTransportRoutes ? '✈ hide' : '✈ show';
-  draw();
+window.toggleTransport=function(){showTransportRoutes=!showTransportRoutes;document.getElementById('tbtn').textContent=showTransportRoutes?'✈ hide':'✈ show';draw();};
+window.toggleWalk=function(){state.showWalk=!state.showWalk;document.getElementById('wbtn').textContent=state.showWalk?'① hide':'① show';draw();};
+window.goView=function(v,btn){document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});if(btn)btn.classList.add('on');var vd=VIEWS[v];setView(vd[0],vd[1],vd[2]);closePopup();};
+window.focusPlace=function(id){
+  var p=ALL_MARKERS.filter(function(x){return x.id===id;})[0];if(!p)return;
+  document.querySelectorAll('.pi').forEach(function(e){e.classList.remove('on');});
+  var el=document.getElementById('pi-'+id);if(el)el.classList.add('on');
+  var busanAirbnbs=['ba1','ba2'];var cityTab=busanAirbnbs.indexOf(id)!==-1?'busan':'seoul';
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+  var tabEl=document.getElementById('tab-'+cityTab);if(tabEl)tabEl.classList.add('on');
+  state.filter=cityTab;setView(p.lat,p.lng,15);
+  setTimeout(function(){var pos=geo2px(p.lat,p.lng);showPopup(p,pos.x,pos.y);},50);
 };
-
-window.toggleWalk = function() {
-  state.showWalk = !state.showWalk;
-  document.getElementById('wbtn').textContent = state.showWalk ? '① hide' : '① show';
-  draw();
+window.doFilter=function(f,btn){
+  document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');
+  state.filter=f;var viewMap={all:'all',seoul:'seoul',busan:'busan',jeju:'jeju',airbnb:'all',daytrip:'all'};
+  var vk=viewMap[f];if(vk){var tabEl=document.getElementById('tab-'+vk);window.goView(vk,tabEl||null);}draw();
 };
+window.tog=function(n){var b=document.getElementById('sec-'+n);var a=document.getElementById('ar-'+n);if(!b)return;b.classList.toggle('open');if(a)a.innerHTML=b.classList.contains('open')?'▾':'▶';};
 
-window.goView = function(v, btn) {
-  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); });
-  if (btn) btn.classList.add('on');
-  var vd = VIEWS[v];
-  setView(vd[0], vd[1], vd[2]);
-  closePopup();
-};
-
-window.focusPlace = function(id) {
-  var p = ALL_MARKERS.filter(function(x){ return x.id===id; })[0];
-  if (!p) return;
-  document.querySelectorAll('.pi').forEach(function(e){ e.classList.remove('on'); });
-  var el = document.getElementById('pi-'+id);
-  if (el) el.classList.add('on');
-  // Derive the geographic city tab from the marker's coordinates
-  var busanAirbnbs = ['ba1','ba2'];
-  var cityTab = busanAirbnbs.indexOf(id) !== -1 ? 'busan' : 'seoul';
-  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); });
-  var tabEl = document.getElementById('tab-'+cityTab);
-  if (tabEl) tabEl.classList.add('on');
-  // Also update the map filter state so the pin stays visible
-  state.filter = cityTab;
-  setView(p.lat, p.lng, 15);
-  setTimeout(function(){
-    var pos = geo2px(p.lat, p.lng);
-    showPopup(p, pos.x, pos.y);
-  }, 50);
-};
-
-window.doFilter = function(f, btn) {
-  document.querySelectorAll('.fbtn').forEach(function(b){ b.classList.remove('on'); });
-  if (btn) btn.classList.add('on');
-  state.filter = f;
-  var viewMap = {all:'all',seoul:'seoul',busan:'busan',jeju:'jeju',airbnb:'all',daytrip:'all'};
-  var vk = viewMap[f];
-  if (vk) {
-    var tabEl = document.getElementById('tab-'+vk);
-    window.goView(vk, tabEl || null);
-  }
-  draw();
-};
-
-window.tog = function(n) {
-  var b = document.getElementById('sec-'+n);
-  var a = document.getElementById('ar-'+n);
-  if (!b) return;
-  b.classList.toggle('open');
-  if (a) a.innerHTML = b.classList.contains('open') ? '▾' : '▶';
-};
-
-// ── SIDEBAR LISTS ────────────────────────────────────
-function renderList(elId, city) {
-  var items = PLACES.filter(function(p){ return p.city===city; });
-  document.getElementById(elId).innerHTML = items.map(function(p) {
-    return '<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')">'
-      +'<div style="width:8px;height:8px;border-radius:50%;background:'+(COLORS[p.city]||'#c0392b')+';flex-shrink:0;margin-top:4px"></div>'
-      +'<div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div>'
-      +'</div>';
+function renderList(elId,city){
+  var items=PLACES.filter(function(p){return p.city===city;});
+  document.getElementById(elId).innerHTML=items.map(function(p){
+    return'<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')">'+'<div style="width:8px;height:8px;border-radius:50%;background:'+(COLORS[p.city]||'#c0392b')+';flex-shrink:0;margin-top:4px"></div>'+'<div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div>'+'</div>';
   }).join('');
 }
 renderList('list-seoul','seoul');
@@ -1067,212 +811,107 @@ renderList('list-busan','busan');
 renderList('list-jeju','jeju');
 renderList('list-daytrip','daytrip');
 
-// ── INIT ─────────────────────────────────────────────
-window.addEventListener('load', function() {
-  wrap = document.getElementById('mapwrap');
-  canvas = document.getElementById('mapcanvas');
-  ctx = canvas.getContext('2d');
-  canvas.width = wrap.clientWidth;
-  canvas.height = wrap.clientHeight;
+window.addEventListener('load',function(){
+  wrap=document.getElementById('mapwrap');
+  canvas=document.getElementById('mapcanvas');
+  ctx=canvas.getContext('2d');
+  canvas.width=wrap.clientWidth;canvas.height=wrap.clientHeight;
 
-  // ── Mouse events ──
-  canvas.addEventListener('mousedown', function(e) {
-    drag.active = true;
-    drag.startX = e.clientX; drag.startY = e.clientY;
-    drag.offX0 = state.offX; drag.offY0 = state.offY;
-    canvas.classList.add('dragging');
-    closePopup();
-  });
-  window.addEventListener('mousemove', function(e) {
-    if (!drag.active) return;
-    state.offX = drag.offX0 - (e.clientX - drag.startX);
-    state.offY = drag.offY0 - (e.clientY - drag.startY);
-    draw();
-  });
-  window.addEventListener('mouseup', function(e) {
-    if (!drag.active) return;
-    var moved = Math.abs(e.clientX-drag.startX)+Math.abs(e.clientY-drag.startY);
-    drag.active = false;
-    canvas.classList.remove('dragging');
-    if (moved < 5) {
-      var rect = canvas.getBoundingClientRect();
-      var mx = e.clientX - rect.left, my = e.clientY - rect.top;
-      var hit = findMarkerAt(mx, my);
-      if (hit) showPopup(hit, mx, my); else closePopup();
-    }
+  canvas.addEventListener('mousedown',function(e){drag.active=true;drag.startX=e.clientX;drag.startY=e.clientY;drag.offX0=state.offX;drag.offY0=state.offY;canvas.classList.add('dragging');closePopup();});
+  window.addEventListener('mousemove',function(e){if(!drag.active)return;state.offX=drag.offX0-(e.clientX-drag.startX);state.offY=drag.offY0-(e.clientY-drag.startY);draw();});
+  window.addEventListener('mouseup',function(e){
+    if(!drag.active)return;var moved=Math.abs(e.clientX-drag.startX)+Math.abs(e.clientY-drag.startY);drag.active=false;canvas.classList.remove('dragging');
+    if(moved<5){var rect=canvas.getBoundingClientRect();var mx=e.clientX-rect.left,my=e.clientY-rect.top;var hit=findMarkerAt(mx,my);if(hit)showPopup(hit,mx,my);else closePopup();}
   });
 
-  // ── Touch events ──
-  canvas.addEventListener('touchstart', function(e) {
-    // Only handle touches that originate on the canvas itself, not the sidebar
-    var rect = canvas.getBoundingClientRect();
-    var tx = e.touches[0].clientX, ty = e.touches[0].clientY;
-    if (tx < rect.left || tx > rect.right || ty < rect.top || ty > rect.bottom) return;
-    e.preventDefault();
-    if (e.touches.length === 1) {
-      drag.active = true;
-      drag.startX = tx; drag.startY = ty;
-      drag.offX0 = state.offX; drag.offY0 = state.offY;
-      touch0 = {x: tx, y: ty};
-    }
-  }, {passive:false});
-  canvas.addEventListener('touchmove', function(e) {
-    e.preventDefault();
-    if (drag.active && e.touches.length === 1) {
-      state.offX = drag.offX0 - (e.touches[0].clientX - drag.startX);
-      state.offY = drag.offY0 - (e.touches[0].clientY - drag.startY);
-      draw();
-    }
-  }, {passive:false});
-  canvas.addEventListener('touchend', function(e) {
-    e.preventDefault();
-    if (touch0) {
-      var dx = e.changedTouches[0].clientX - touch0.x;
-      var dy = e.changedTouches[0].clientY - touch0.y;
-      if (Math.abs(dx)+Math.abs(dy) < 8) {
-        var rect = canvas.getBoundingClientRect();
-        var mx = e.changedTouches[0].clientX - rect.left;
-        var my = e.changedTouches[0].clientY - rect.top;
-        var hit = findMarkerAt(mx, my);
-        if (hit) showPopup(hit, mx, my); else closePopup();
-      }
-    }
-    drag.active = false; touch0 = null;
-  }, {passive:false});
+  canvas.addEventListener('touchstart',function(e){
+    var rect=canvas.getBoundingClientRect();var tx=e.touches[0].clientX,ty=e.touches[0].clientY;
+    if(tx<rect.left||tx>rect.right||ty<rect.top||ty>rect.bottom)return;
+    e.preventDefault();if(e.touches.length===1){drag.active=true;drag.startX=tx;drag.startY=ty;drag.offX0=state.offX;drag.offY0=state.offY;touch0={x:tx,y:ty};}
+  },{passive:false});
+  canvas.addEventListener('touchmove',function(e){e.preventDefault();if(drag.active&&e.touches.length===1){state.offX=drag.offX0-(e.touches[0].clientX-drag.startX);state.offY=drag.offY0-(e.touches[0].clientY-drag.startY);draw();}},{passive:false});
+  canvas.addEventListener('touchend',function(e){
+    e.preventDefault();if(touch0){var dx=e.changedTouches[0].clientX-touch0.x,dy=e.changedTouches[0].clientY-touch0.y;
+    if(Math.abs(dx)+Math.abs(dy)<8){var rect=canvas.getBoundingClientRect();var mx=e.changedTouches[0].clientX-rect.left,my=e.changedTouches[0].clientY-rect.top;var hit=findMarkerAt(mx,my);if(hit)showPopup(hit,mx,my);else closePopup();}}
+    drag.active=false;touch0=null;
+  },{passive:false});
 
-  // ── Scroll to zoom ──
-  canvas.addEventListener('wheel', function(e) {
-    e.preventDefault();
-    var rect = canvas.getBoundingClientRect();
-    var mx = e.clientX - rect.left, my = e.clientY - rect.top;
-    var latLngX = (state.offX + mx) / (TILE_SIZE * Math.pow(2, state.zoom));
-    var latLngY = (state.offY + my) / (TILE_SIZE * Math.pow(2, state.zoom));
-    state.zoom = Math.max(5, Math.min(18, state.zoom - e.deltaY * 0.002));
-    state.offX = latLngX * TILE_SIZE * Math.pow(2, state.zoom) - mx;
-    state.offY = latLngY * TILE_SIZE * Math.pow(2, state.zoom) - my;
-    draw();
-  }, {passive:false});
+  canvas.addEventListener('wheel',function(e){
+    e.preventDefault();var rect=canvas.getBoundingClientRect();var mx=e.clientX-rect.left,my=e.clientY-rect.top;
+    var latLngX=(state.offX+mx)/(TILE_SIZE*Math.pow(2,state.zoom));var latLngY=(state.offY+my)/(TILE_SIZE*Math.pow(2,state.zoom));
+    state.zoom=Math.max(5,Math.min(18,state.zoom-e.deltaY*0.002));state.offX=latLngX*TILE_SIZE*Math.pow(2,state.zoom)-mx;state.offY=latLngY*TILE_SIZE*Math.pow(2,state.zoom)-my;draw();
+  },{passive:false});
 
-  // Handle resize
-  window.addEventListener('resize', function() {
-    canvas.width = wrap.clientWidth;
-    canvas.height = wrap.clientHeight;
-    draw();
-  });
-
-  setView(37.562, 126.978, 13);
+  window.addEventListener('resize',function(){canvas.width=wrap.clientWidth;canvas.height=wrap.clientHeight;draw();});
+  setView(37.562,126.978,13);
 });
 
-// ── MOBILE SIDEBAR TOGGLE ────────────────────────────
-window.toggleSidebar = function() {
-  var sb = document.getElementById('sb');
-  var overlay = document.getElementById('sb-overlay');
-  var isOpen = sb.classList.toggle('open');
-  overlay.classList.toggle('vis', isOpen);
+window.toggleSidebar=function(){
+  var sb=document.getElementById('sb'),overlay=document.getElementById('sb-overlay');
+  var isOpen=sb.classList.toggle('open');overlay.classList.toggle('vis',isOpen);
 };
 
-// Auto-close sidebar on mobile after selecting a place
-var _origFocusPlace = window.focusPlace;
-window.focusPlace = function(id) {
+function applyTopOffset(){
+  var hdr=document.getElementById('hdr');
+  var banner=document.getElementById('ac-banner');
+  var offset=(hdr?hdr.offsetHeight:50)+(banner?banner.offsetHeight:42);
+  var body=document.getElementById('body');
+  var sb=document.getElementById('sb');
+  if(body){body.style.top=offset+'px';body.style.height='calc(100dvh - '+offset+'px)';}
+  if(sb&&window.innerWidth<=600){sb.style.top=offset+'px';}
+}
+window.addEventListener('load',applyTopOffset);
+window.addEventListener('resize',applyTopOffset);
+// Re-measure after fonts/images settle
+setTimeout(applyTopOffset,300);
+
+var _origFocusPlace=window.focusPlace;
+window.focusPlace=function(id){
   _origFocusPlace(id);
-  if (window.innerWidth <= 600) {
-    var sb = document.getElementById('sb');
-    var overlay = document.getElementById('sb-overlay');
-    sb.classList.remove('open');
-    overlay.classList.remove('vis');
-  }
+  if(window.innerWidth<=600){var sb=document.getElementById('sb'),overlay=document.getElementById('sb-overlay');sb.classList.remove('open');overlay.classList.remove('vis');}
 };
 
+var BUDGET={nights:17,days:17,pax:12,usdToCad:1.37,lodgePerNight:70,foodPerDay:45,transitPerDay:15,interCityPP:210,activitiesPerDay:15,icnTransferPP:13,flightsLow:1100,flightsHigh:1400};
+var currentCur='cad';
 
-var BUDGET = {
-  // All values in USD — CAD = USD * 1.37 (1 USD ≈ 1.37 CAD as of Mar 2026)
-  nights: 17,
-  days: 17,
-  pax: 12,
-  usdToCad: 1.37,
-  // Per-person USD values
-  lodgePerNight: 70,    // Airbnb $800–1000/night ÷ 12 pax
-  foodPerDay: 45,       // Mix of street food, cafes, Korean BBQ dinners
-  transitPerDay: 15,    // Subway, buses, occasional taxi
-  interCityPP: 210,     // KTX Seoul-Busan $45 + Busan-Jeju flight $33 + Jeju-Seoul $42 + AREX + buses
-  activitiesPerDay: 15, // Palaces, museums, tours (most are cheap/free)
-  icnTransferPP: 13,    // AREX Express x2 ÷ round trip = ~$13 each way
-  flightsLow: 1100,     // YYZ-ICN economy return, book 6mo early
-  flightsHigh: 1400,    // Shoulder season Sep/Oct
-};
+function fmt(usd,cur){var val=cur==='cad'?usd*BUDGET.usdToCad:usd;if(val>=1000)return'$'+(val/1000).toFixed(1)+'k';return'$'+Math.round(val);}
+function fmtFull(usd,cur){var val=cur==='cad'?usd*BUDGET.usdToCad:usd;return'$'+Math.round(val).toLocaleString();}
 
-var currentCur = 'cad';
-
-function fmt(usd, cur) {
-  var val = cur === 'cad' ? usd * BUDGET.usdToCad : usd;
-  if (val >= 1000) return '$' + (val/1000).toFixed(1) + 'k';
-  return '$' + Math.round(val);
-}
-function fmtFull(usd, cur) {
-  var val = cur === 'cad' ? usd * BUDGET.usdToCad : usd;
-  return '$' + Math.round(val).toLocaleString();
-}
-function fmtRange(low, high, cur) {
-  var mul = cur === 'cad' ? BUDGET.usdToCad : 1;
-  return '$' + Math.round(low*mul).toLocaleString() + '–$' + Math.round(high*mul).toLocaleString() + ' pp';
+function updateBudget(cur){
+  var B=BUDGET;
+  var lodgePP=B.lodgePerNight*B.nights,foodPP=B.foodPerDay*B.days,transitPP=B.transitPerDay*B.days,actPP=B.activitiesPerDay*B.days,icnPP=B.icnTransferPP*2;
+  var totalPP=lodgePP+foodPP+transitPP+B.interCityPP+actPP+icnPP,totalGrp=totalPP*B.pax,perDay=totalPP/B.days;
+  var mul=cur==='cad'?B.usdToCad:1,sym='$';
+  document.getElementById('pp-total').textContent=sym+Math.round(totalPP*mul).toLocaleString();
+  document.getElementById('pp-day').textContent=sym+Math.round(perDay*mul)+' / day';
+  document.getElementById('grp-total').textContent=sym+Math.round(totalGrp*mul/1000).toFixed(0)+'k est.';
+  document.getElementById('cat-lodge-pp').textContent=fmtFull(lodgePP,cur);
+  document.getElementById('cat-lodge-day').textContent=sym+Math.round(B.lodgePerNight*mul)+'/night · pp';
+  document.getElementById('cat-food-pp').textContent=fmtFull(foodPP,cur);
+  document.getElementById('cat-food-day').textContent=sym+Math.round(B.foodPerDay*mul)+'/day · pp';
+  document.getElementById('cat-transit-pp').textContent=fmtFull(transitPP,cur);
+  document.getElementById('cat-transit-day').textContent=sym+Math.round(B.transitPerDay*mul)+'/day · pp';
+  document.getElementById('cat-intercity-pp').textContent=fmtFull(B.interCityPP,cur);
+  document.getElementById('cat-act-pp').textContent=fmtFull(actPP,cur);
+  document.getElementById('cat-act-day').textContent=sym+Math.round(B.activitiesPerDay*mul)+'/day · pp';
+  document.getElementById('cat-icn-pp').textContent=fmtFull(icnPP,cur);
+  document.getElementById('cat-icn-day').textContent='AREX x2 · pp';
+  var totalTripLow=Math.round((totalPP+B.flightsLow)*mul),totalTripHigh=Math.round((totalPP+B.flightsHigh)*mul);
+  document.getElementById('cat-total-pp').textContent=sym+totalTripLow.toLocaleString()+'–'+sym+totalTripHigh.toLocaleString()+' pp';
+  document.getElementById('cat-total-grp').textContent=sym+Math.round(totalTripLow*B.pax/1000)+'k–'+sym+Math.round(totalTripHigh*B.pax/1000)+'k';
+  document.getElementById('rate-note').textContent=cur==='cad'?'1 CAD ≈ ₩1,070 · 1 USD ≈ ₩1,460 · Estimates mid-range spending':'1 USD ≈ ₩1,460 · 1 USD = '+(1/B.usdToCad).toFixed(2)+' CAD · Estimates mid-range';
 }
 
-function updateBudget(cur) {
-  var B = BUDGET;
-  var lodgePP   = B.lodgePerNight * B.nights;
-  var foodPP    = B.foodPerDay * B.days;
-  var transitPP = B.transitPerDay * B.days;
-  var actPP     = B.activitiesPerDay * B.days;
-  var icnPP     = B.icnTransferPP * 2; // arrival + departure
-  var totalPP   = lodgePP + foodPP + transitPP + B.interCityPP + actPP + icnPP;
-  var totalGrp  = totalPP * B.pax;
-  var perDay    = totalPP / B.days;
-
-  var mul = cur === 'cad' ? B.usdToCad : 1;
-  var sym = '$';
-
-  document.getElementById('pp-total').textContent   = sym + Math.round(totalPP * mul).toLocaleString();
-  document.getElementById('pp-day').textContent     = sym + Math.round(perDay * mul) + ' / day';
-  document.getElementById('grp-total').textContent  = sym + Math.round(totalGrp * mul / 1000).toFixed(0) + 'k est.';
-
-  document.getElementById('cat-lodge-pp').textContent   = fmtFull(lodgePP, cur);
-  document.getElementById('cat-lodge-day').textContent  = sym + Math.round(B.lodgePerNight * mul) + '/night · pp';
-  document.getElementById('cat-food-pp').textContent    = fmtFull(foodPP, cur);
-  document.getElementById('cat-food-day').textContent   = sym + Math.round(B.foodPerDay * mul) + '/day · pp';
-  document.getElementById('cat-transit-pp').textContent = fmtFull(transitPP, cur);
-  document.getElementById('cat-transit-day').textContent= sym + Math.round(B.transitPerDay * mul) + '/day · pp';
-  document.getElementById('cat-intercity-pp').textContent = fmtFull(B.interCityPP, cur);
-  document.getElementById('cat-act-pp').textContent     = fmtFull(actPP, cur);
-  document.getElementById('cat-act-day').textContent    = sym + Math.round(B.activitiesPerDay * mul) + '/day · pp';
-  document.getElementById('cat-icn-pp').textContent     = fmtFull(icnPP, cur);
-  document.getElementById('cat-icn-day').textContent    = 'AREX x2 · pp';
-
-  var fLow = Math.round(B.flightsLow * mul), fHigh = Math.round(B.flightsHigh * mul);
-  document.getElementById('cat-flights-pp').textContent = sym + fLow.toLocaleString() + '–' + sym + fHigh.toLocaleString() + ' pp';
-  var gLow = Math.round(B.flightsLow * mul * B.pax / 1000);
-  var gHigh = Math.round(B.flightsHigh * mul * B.pax / 1000);
-  document.getElementById('cat-flights-grp').textContent = sym + gLow + 'k–' + sym + gHigh + 'k';
-
-  document.getElementById('rate-note').textContent =
-    cur === 'cad'
-      ? '1 CAD ≈ ₩1,070 · 1 USD ≈ ₩1,460 · Estimates mid-range spending'
-      : '1 USD ≈ ₩1,460 · 1 USD = ' + (1/B.usdToCad).toFixed(2) + ' CAD · Estimates mid-range';
-}
-
-window.setCur = function(cur) {
-  currentCur = cur;
-  document.getElementById('cur-cad').style.background = cur === 'cad' ? 'var(--gold)' : 'rgba(212,168,83,.2)';
-  document.getElementById('cur-cad').style.color      = cur === 'cad' ? 'var(--ink)' : 'var(--gold)';
-  document.getElementById('cur-usd').style.background = cur === 'usd' ? 'var(--gold)' : 'rgba(212,168,83,.2)';
-  document.getElementById('cur-usd').style.color      = cur === 'usd' ? 'var(--ink)' : 'var(--gold)';
+window.setCur=function(cur){
+  currentCur=cur;
+  document.getElementById('cur-cad').style.background=cur==='cad'?'var(--gold)':'rgba(212,168,83,.2)';
+  document.getElementById('cur-cad').style.color=cur==='cad'?'var(--ink)':'var(--gold)';
+  document.getElementById('cur-usd').style.background=cur==='usd'?'var(--gold)':'rgba(212,168,83,.2)';
+  document.getElementById('cur-usd').style.color=cur==='usd'?'var(--ink)':'var(--gold)';
   updateBudget(cur);
 };
 
-// Init with CAD on load
-window.addEventListener('load', function() {
-  updateBudget('cad');
-});
-
+window.addEventListener('load',function(){updateBudget('cad');});
 </script>
 </body>
 </html>
