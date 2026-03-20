@@ -573,11 +573,12 @@ function getTileUrl(x,y,z){var s=tileSubdomains[tileIdx%tileSubdomains.length];t
 function loadTile(x,y,z){
   var key=z+'/'+x+'/'+y;
   if(tileCache[key])return tileCache[key];
+  tileCache[key]='loading';
   var img=new Image();
   img.onload=function(){tileCache[key]=img;draw();};
+  img.onerror=function(){delete tileCache[key];};
   img.src=getTileUrl(x,y,z);
-  tileCache[key]=img;
-  return img;
+  return null;
 }
 
 var SUBWAY=[
@@ -600,10 +601,14 @@ var TRANSPORT_ROUTES=[
 
 var showTransportRoutes=true;
 
+var lastGoodCanvas=null;
+
 function draw(){
   var W=wrap.clientWidth,H=wrap.clientHeight;
-  canvas.width=W;canvas.height=H;
+  if(canvas.width!==W)canvas.width=W;
+  if(canvas.height!==H)canvas.height=H;
   ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#e8e0d4';ctx.fillRect(0,0,W,H);
   var z=Math.round(state.zoom);
   var scaleFactor=Math.pow(2,state.zoom-z);
   var tScaled=Math.round(TILE_SIZE*scaleFactor);
@@ -618,11 +623,26 @@ function draw(){
     for(var ty=tileY0;ty<=tileY0+tilesY;ty++){
       var wx=((tx%(maxTile+1))+(maxTile+1))%(maxTile+1);
       var wy=Math.max(0,Math.min(maxTile,ty));
-      var img=loadTile(wx,wy,z);
       var px=Math.round(tx*tScaled-offXz*scaleFactor);
       var py=Math.round(ty*tScaled-offYz*scaleFactor);
-      if(img&&img.complete&&img.naturalWidth>10){ctx.drawImage(img,px,py,tScaled,tScaled);}
-      else{ctx.fillStyle='#e8e0d4';ctx.fillRect(px,py,tScaled,tScaled);}
+      var img=tileCache[z+'/'+wx+'/'+wy];
+      if(img&&img.complete&&img.naturalWidth>10){
+        ctx.drawImage(img,px,py,tScaled,tScaled);
+      } else {
+        loadTile(wx,wy,z);
+        // fallback: find best available parent tile at lower zoom
+        for(var dz=1;dz<=3;dz++){
+          var pz=z-dz;if(pz<1)break;
+          var scale=Math.pow(2,dz);
+          var ptx=Math.floor(wx/scale),pty=Math.floor(wy/scale);
+          var pimg=tileCache[pz+'/'+ptx+'/'+pty];
+          if(pimg&&pimg.complete&&pimg.naturalWidth>10){
+            var srcX=(wx%scale)/scale*TILE_SIZE,srcY=(wy%scale)/scale*TILE_SIZE,srcS=TILE_SIZE/scale;
+            ctx.drawImage(pimg,srcX,srcY,srcS,srcS,px,py,tScaled,tScaled);
+            break;
+          }
+        }
+      }
     }
   }
   if(z>=11){drawSubway();drawTransportRoutes();if(state.showWalk)drawWalkRings();drawMarkers();}
@@ -841,7 +861,16 @@ window.addEventListener('load',function(){
     state.zoom=Math.max(5,Math.min(18,state.zoom-e.deltaY*0.002));state.offX=latLngX*TILE_SIZE*Math.pow(2,state.zoom)-mx;state.offY=latLngY*TILE_SIZE*Math.pow(2,state.zoom)-my;draw();
   },{passive:false});
 
-  window.addEventListener('resize',function(){canvas.width=wrap.clientWidth;canvas.height=wrap.clientHeight;draw();});
+  var resizeTimer=null;
+  window.addEventListener('resize',function(){
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(function(){
+      var lat=tile2lat((state.offY+wrap.clientHeight/2)/(TILE_SIZE*Math.pow(2,state.zoom))*Math.pow(2,state.zoom),state.zoom);
+      var lng=(state.offX+wrap.clientWidth/2)/(TILE_SIZE*Math.pow(2,state.zoom))*360-180;
+      canvas.width=wrap.clientWidth;canvas.height=wrap.clientHeight;
+      setView(lat,lng,state.zoom);
+    },150);
+  });
   setView(37.562,126.978,13);
 });
 
