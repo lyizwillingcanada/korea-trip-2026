@@ -185,7 +185,7 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 <div id="sb">
   <div id="budget-bar" style="background:var(--ink);border-bottom:2px solid rgba(212,168,83,.4);padding:10px 12px 8px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
-      <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px">💰 Trip Budget — 12 People · 17 Nights</div>
+      <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px">💰 Trip Budget — 12 People · 18 Days</div>
       <div style="display:flex;gap:4px">
         <div id="cur-cad" onclick="setCur('cad')" style="cursor:pointer;padding:2px 7px;border-radius:10px;font-size:8px;font-weight:700;background:var(--gold);color:var(--ink)">CAD</div>
         <div id="cur-usd" onclick="setCur('usd')" style="cursor:pointer;padding:2px 7px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(212,168,83,.2);color:var(--gold)">USD</div>
@@ -255,12 +255,50 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
   <div class="sh" onclick="tog('tl')">📅 Trip Itinerary <span id="ar-tl">▶</span></div>
   <div class="sb-b" id="sec-tl">
     <div class="tl">
-      <div class="tl-i"><div class="tl-d">Sep 25</div><div class="tl-c" style="color:#7d6608">✈ Depart Toronto</div><div class="tl-s">Via Narita</div></div>
-      <div class="tl-i"><div class="tl-d">Sep 26–Oct 1</div><div class="tl-c" style="color:#c0392b">Seoul — Stay 1</div><div class="tl-s">5 nights · Chuseok</div></div>
-      <div class="tl-i"><div class="tl-d">Oct 1–Oct 5</div><div class="tl-c" style="color:#1a5276">Busan</div><div class="tl-s">4 nights · Seafood</div></div>
-      <div class="tl-i"><div class="tl-d">Oct 5–Oct 8</div><div class="tl-c" style="color:#27ae60">Jeju Island</div><div class="tl-s">3 nights · Hallasan</div></div>
-      <div class="tl-i"><div class="tl-d">Oct 8–Oct 11</div><div class="tl-c" style="color:#c0392b">Seoul — Stay 2</div><div class="tl-s">3 nights · Shopping</div></div>
-      <div class="tl-i"><div class="tl-d">Oct 12</div><div class="tl-c" style="color:#7d6608">✈ Return Toronto</div><div class="tl-s">7:05 PM</div></div>
+      <div class="tl-i"><div class="tl-d">Fri Sep 25</div><div class="tl-c" style="color:#7d6608">✈ Depart Toronto</div><div class="tl-s">1:35 PM · Direct to ICN</div></div>
+      <div class="tl-i">
+        <div class="tl-d">Fri Sep 26 – Wed Oct 1</div>
+        <div class="tl-c" style="color:#c0392b">Seoul — Stay 1</div>
+        <div class="tl-s">7 days · Chuseok season</div>
+        <div style="margin-top:3px;display:flex;flex-direction:column;gap:1px">
+          <div style="font-size:8.5px;color:var(--muted);padding-left:2px">Fri · Sat · Sun · Mon · Tue · Wed</div>
+          <div style="font-size:8.5px;color:#7d6608;padding-left:2px;font-weight:600">Thu Oct 1 → depart to Jeju</div>
+        </div>
+      </div>
+      <div class="tl-i">
+        <div class="tl-d">Thu Oct 1 – Mon Oct 5</div>
+        <div class="tl-c" style="color:#27ae60">Jeju Island</div>
+        <div class="tl-s">4 days · Hallasan · beaches</div>
+        <div style="margin-top:3px;display:flex;flex-direction:column;gap:1px">
+          <div style="font-size:8.5px;color:var(--muted);padding-left:2px">Thu (Arrive) · Fri · Sat · Sun</div>
+          <div style="font-size:8.5px;color:#7d6608;padding-left:2px;font-weight:600">Mon Oct 5 → depart to Busan</div>
+        </div>
+      </div>
+      <div class="tl-i">
+        <div class="tl-d">Mon Oct 5 – Fri Oct 9</div>
+        <div class="tl-c" style="color:#1a5276">Busan</div>
+        <div class="tl-s">4 days · Seafood · beaches</div>
+        <div style="margin-top:3px;display:flex;flex-direction:column;gap:1px">
+          <div style="font-size:8.5px;color:var(--muted);padding-left:2px">Mon (Arrive) · Tue · Wed · Thu</div>
+          <div style="font-size:8.5px;color:#7d6608;padding-left:2px;font-weight:600">Fri Oct 9 → depart to Seoul</div>
+        </div>
+      </div>
+      <div class="tl-i">
+        <div class="tl-d">Fri Oct 9 – Sun Oct 11</div>
+        <div class="tl-c" style="color:#c0392b">Seoul — Stay 2</div>
+        <div class="tl-s">3 days · Shopping · nightlife</div>
+        <div style="margin-top:3px;display:flex;flex-direction:column;gap:1px">
+          <div style="font-size:8.5px;color:var(--muted);padding-left:2px">Fri (Arrive) · Sat</div>
+          <div style="font-size:8.5px;color:#7d6608;padding-left:2px;font-weight:600">Sun Oct 11 → depart YYZ</div>
+        </div>
+      </div>
+      <div class="tl-i"><div class="tl-d">Sun Oct 12</div><div class="tl-c" style="color:#7d6608">✈ Return Toronto</div><div class="tl-s">Arrive back home · 18 days total</div></div>
+    </div>
+    <div style="margin:4px 12px 8px;background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:6px 10px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;text-align:center">
+      <div><div style="font-size:8px;color:var(--muted);text-transform:uppercase">Seoul 1</div><div style="font-size:13px;font-weight:700;color:#c0392b">7d</div></div>
+      <div><div style="font-size:8px;color:var(--muted);text-transform:uppercase">Jeju</div><div style="font-size:13px;font-weight:700;color:#27ae60">4d</div></div>
+      <div><div style="font-size:8px;color:var(--muted);text-transform:uppercase">Busan</div><div style="font-size:13px;font-weight:700;color:#1a5276">4d</div></div>
+      <div><div style="font-size:8px;color:var(--muted);text-transform:uppercase">Seoul 2</div><div style="font-size:13px;font-weight:700;color:#c0392b">3d</div></div>
     </div>
   </div>
 
