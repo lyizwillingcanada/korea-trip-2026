@@ -231,6 +231,7 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
     <div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px">🗺 Seoul</div>
     <div class="pi" onclick="focusPlace('a1')"><div><div class="pi-n">Option A — Bukchon area</div><div class="pi-s">Anguk stn (Line 3) ~5 min walk<br>Sep 26–Oct 1 &amp; Oct 8–11</div></div></div>
     <div class="pi" onclick="focusPlace('a2')"><div><div class="pi-n">Option B — Gwanghwamun</div><div class="pi-s">Gyeongbokgung stn (Line 3) ~8 min<br>Sep 26–Oct 1 &amp; Oct 8–11</div></div></div>
+    <div class="pi" id="pi-af3" onclick="focusPlace('af3')"><div><div class="pi-n">Option F — ShareGo House</div><div class="pi-s">Noryangjin Stn (Lines 1 &amp; 9) ~3 min walk<br>Sep 26–Oct 1 &amp; Oct 8–11 · up to 21 guests · ★4.86</div></div></div>
     <div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;border-top:1px solid #e8e0d4;margin-top:3px">🗺 Busan</div>
     <div class="pi" id="pi-ba1" onclick="focusPlace('ba1')"><div><div class="pi-n">Option C — Roots House Busan Stn</div><div class="pi-s">Choryang Ibagu-Gil Alley<br>Sep 30–Oct 4 · $2,241 CAD total</div></div></div>
     <div class="pi" id="pi-ba2" onclick="focusPlace('ba2')"><div><div class="pi-n">Option D — Busan Port Bridge</div><div class="pi-s">Busan Harbor Bridge · Taejong-Ro<br>Sep 30–Oct 4 · $2,352 CAD total</div></div></div>
@@ -241,12 +242,12 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
     <div style="padding:8px 10px 4px;display:flex;flex-direction:column;gap:5px">
       <div style="background:#003499;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 1 — Dark Blue</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Incheon ↔ Soyosan · Seoul Stn, Dongdaemun</div></div>
       <div style="background:#37b42d;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 2 — Green · Circular</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">City Hall, Hongdae, Gangnam, Jamsil</div></div>
-      <div style="background:#fe5d10;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 3 — Orange ⭐ Airbnbs</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Anguk, Gyeongbokgung, Chungmuro</div></div>
+      <div style="background:#fe5d10;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 3 — Orange ⭐ Airbnbs A &amp; B</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Anguk, Gyeongbokgung, Chungmuro</div></div>
       <div style="background:#00a2d1;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 4 — Sky Blue</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Myeongdong, Seoul Stn, Hyehwa</div></div>
       <div style="background:#996cac;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 5 — Purple</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Gwanghwamun, Yeouido, Gongdeok</div></div>
       <div style="background:#cd7c2f;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 6 — Brown</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Itaewon, Mapo, Bulgwang, Sindang</div></div>
       <div style="background:#747f00;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 7 — Olive</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Boramae, Gangnam-gu Office</div></div>
-      <div style="background:#e6186c;color:#fff;border-radius:5px;padding:5px 10px;margin-bottom:2px"><div style="font-size:10px;font-weight:700">Line 9 — Pink · Express</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Yeouido, Express Bus Terminal, COEX</div></div>
+      <div style="background:#e6186c;color:#fff;border-radius:5px;padding:5px 10px;margin-bottom:2px"><div style="font-size:10px;font-weight:700">Line 9 — Pink · Express ⭐ Airbnb F</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Noryangjin, Yeouido, Express Bus Terminal, COEX</div></div>
     </div>
     <div style="border-top:1px solid #e8e0d4;padding:8px 12px 8px">
       <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">🚶 Walking from Airbnbs</div>
@@ -457,7 +458,13 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 </div>
 
 <script>
-var AIRBNBS={a1:{id:'a1',lat:37.5800,lng:126.9840,city:'airbnb',name:'Airbnb Option A',sub:'Bukchon area · Anguk stn (Line 3) ~5 min',rows:[{l:'Nearest metro',v:'Anguk (Line 3)'},{l:'Walk to metro',v:'~5 min'},{l:'To Myeongdong',v:'2 stops ~8 min'},{l:'To Gangnam',v:'5 stops ~15 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],url:'https://www.airbnb.ca/rooms/1071219924971118739'},a2:{id:'a2',lat:37.5667,lng:126.9780,city:'airbnb',name:'Airbnb Option B',sub:'Gwanghwamun · Gyeongbokgung stn (Line 3) ~8 min',rows:[{l:'Nearest metro',v:'Gyeongbokgung (Line 3)'},{l:'Walk to metro',v:'~8 min'},{l:'To Myeongdong',v:'3 stops ~10 min'},{l:'To Gangnam',v:'6 stops ~20 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],url:'https://www.airbnb.ca/rooms/52696974'},b1:{id:'ba1',lat:35.1138,lng:129.0344,city:'airbnb',name:'Option C — Roots House Busan Stn',sub:'Choryang Ibagu-Gil Alley · near Busan Station',rows:[{l:'Neighbourhood',v:'Choryang Ibagu-Gil Alley'},{l:'Near',v:'Busan Station'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,241'},{l:'Per person',v:'~$187 CAD'}],url:'https://www.airbnb.ca/rooms/1602494588154383516'},b2:{id:'ba2',lat:35.1020,lng:129.0400,city:'airbnb',name:'Option D — Busan Port Bridge Taejong-Ro',sub:'Busan Harbor Bridge area · Yeongdo',rows:[{l:'Neighbourhood',v:'Busan Harbor Bridge'},{l:'Near',v:'Busan Port Bridge'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,352'},{l:'Per person',v:'~$196 CAD'}],url:'https://www.airbnb.ca/rooms/1457528950582135704'}};
+var AIRBNBS={
+  af3:{id:'af3',lat:37.5115,lng:126.9427,city:'airbnb',name:'Option F — ShareGo House',sub:'Noryangjin Stn (Lines 1 & 9) · 3 min walk',rows:[{l:'Nearest metro',v:'Noryangjin (Lines 1 & 9)'},{l:'Walk to metro',v:'~3 min'},{l:'To Myeongdong',v:'~15 min (Line 4 via transfer)'},{l:'To Gangnam',v:'Line 9 ~20 min'},{l:'Capacity',v:'10 bed · 5 bath · up to 21 guests'},{l:'Rooftop',v:'Included · free use'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Rating',v:'★4.86 · Superhost'},{l:'Price',v:'TBD (negotiable by headcount)'}],url:'https://www.airbnb.ca/rooms/1363310740761950624'},
+  a1:{id:'a1',lat:37.5800,lng:126.9840,city:'airbnb',name:'Airbnb Option A',sub:'Bukchon area · Anguk stn (Line 3) ~5 min',rows:[{l:'Nearest metro',v:'Anguk (Line 3)'},{l:'Walk to metro',v:'~5 min'},{l:'To Myeongdong',v:'2 stops ~8 min'},{l:'To Gangnam',v:'5 stops ~15 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],url:'https://www.airbnb.ca/rooms/1071219924971118739'},
+  a2:{id:'a2',lat:37.5667,lng:126.9780,city:'airbnb',name:'Airbnb Option B',sub:'Gwanghwamun · Gyeongbokgung stn (Line 3) ~8 min',rows:[{l:'Nearest metro',v:'Gyeongbokgung (Line 3)'},{l:'Walk to metro',v:'~8 min'},{l:'To Myeongdong',v:'3 stops ~10 min'},{l:'To Gangnam',v:'6 stops ~20 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],url:'https://www.airbnb.ca/rooms/52696974'},
+  b1:{id:'ba1',lat:35.1138,lng:129.0344,city:'airbnb',name:'Option C — Roots House Busan Stn',sub:'Choryang Ibagu-Gil Alley · near Busan Station',rows:[{l:'Neighbourhood',v:'Choryang Ibagu-Gil Alley'},{l:'Near',v:'Busan Station'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,241'},{l:'Per person',v:'~$187 CAD'}],url:'https://www.airbnb.ca/rooms/1602494588154383516'},
+  b2:{id:'ba2',lat:35.1020,lng:129.0400,city:'airbnb',name:'Option D — Busan Port Bridge Taejong-Ro',sub:'Busan Harbor Bridge area · Yeongdo',rows:[{l:'Neighbourhood',v:'Busan Harbor Bridge'},{l:'Near',v:'Busan Port Bridge'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,352'},{l:'Per person',v:'~$196 CAD'}],url:'https://www.airbnb.ca/rooms/1457528950582135704'}
+};
 var PLACES=[{id:'s1',city:'seoul',lat:37.5797,lng:126.9770,name:'Gyeongbokgung Palace',sub:'Line 3 · Gyeongbokgung stn'},{id:'s2',city:'seoul',lat:37.5826,lng:126.9850,name:'Bukchon Hanok Village',sub:'Line 3 · Anguk stn'},{id:'s3',city:'seoul',lat:37.5793,lng:126.9910,name:'Changdeokgung Palace',sub:'Line 3 · Anguk stn'},{id:'s4',city:'seoul',lat:37.5512,lng:126.9882,name:'Namsan Tower',sub:'Walk from Myeongdong'},{id:'s5',city:'seoul',lat:37.5563,lng:126.9237,name:'Hongdae',sub:'Line 2 · Hongik Univ stn'},{id:'s6',city:'seoul',lat:37.5172,lng:127.0473,name:'Gangnam',sub:'Line 2 · Gangnam stn'},{id:'s7',city:'seoul',lat:37.5131,lng:127.0589,name:'COEX & Starfield',sub:'Line 9 · Bongeunsa stn'},{id:'s8',city:'seoul',lat:37.5636,lng:126.9827,name:'Myeongdong',sub:'Line 4 · Myeongdong stn'},{id:'s9',city:'seoul',lat:37.5755,lng:127.0610,name:'Gyeongdong Market',sub:'Line 1 · Jegi-dong stn'},{id:'s10',city:'seoul',lat:37.5500,lng:126.9075,name:'Mangwon Market',sub:'Line 6 · Mangwon stn'},{id:'s11',city:'seoul',lat:37.5583,lng:126.9763,name:'Namdaemun Market',sub:'Line 4 · Hoehyeon stn'},{id:'s12',city:'seoul',lat:37.5700,lng:126.9990,name:'Gwangjang Market',sub:'Line 1 · Jongno 5-ga stn'},{id:'s13',city:'seoul',lat:37.5346,lng:126.9940,name:'Itaewon',sub:'Line 6 · Itaewon stn'},{id:'s14',city:'seoul',lat:37.5702,lng:126.9994,name:'Cheonggyecheon Stream',sub:'Restored urban stream'},{id:'s15',city:'seoul',lat:37.5672,lng:127.0090,name:'Dongdaemun Design Plaza',sub:'Line 2/4/5 · DDP stn'},{id:'s16',city:'seoul',lat:37.5285,lng:126.9942,name:'Han River Park (Banpo)',sub:'Banpo Bridge Rainbow Fountain'},{id:'s17',city:'seoul',lat:37.5796,lng:127.0074,name:'Ihwa Mural Village',sub:'Hillside murals · Walk from Hyehwa stn'},{id:'b1',city:'busan',lat:35.0970,lng:129.0350,name:'Jagalchi Fish Market',sub:"Korea's largest seafood market"},{id:'b2',city:'busan',lat:35.1588,lng:129.1603,name:'Haeundae Beach',sub:'Famous beach & waterfront'},{id:'b3',city:'busan',lat:35.0980,lng:129.0107,name:'Gamcheon Culture Village',sub:'Colourful hillside art village'},{id:'b4',city:'busan',lat:35.1879,lng:129.2209,name:'Haedong Yonggungsa',sub:'Coastal temple on rocky cliffs'},{id:'b5',city:'busan',lat:35.1560,lng:129.1340,name:'Zest Bar',sub:'Cocktails, Haeundae area'},{id:'j1',city:'jeju',lat:33.3617,lng:126.5292,name:'Hallasan',sub:"South Korea's highest peak"},{id:'j2',city:'jeju',lat:33.4609,lng:126.9424,name:'Seongsan Ilchulbong',sub:'UNESCO Sunrise Peak'},{id:'j3',city:'jeju',lat:33.5283,lng:126.7710,name:'Manjanggul Lava Tube',sub:"One of world's longest lava caves"},{id:'j4',city:'jeju',lat:33.2450,lng:126.4117,name:'Jeju Beaches',sub:'Hyeopjae, Hamdeok, Gwakji'},{id:'d1',city:'daytrip',lat:35.1935,lng:128.1060,name:'Jinju',sub:'Lantern Festival – week of Oct 9!'},{id:'d2',city:'daytrip',lat:35.8562,lng:129.2247,name:'Gyeongju',sub:'UNESCO site, Bulguksa Temple'},{id:'d3',city:'daytrip',lat:35.5383,lng:129.3114,name:'Ulsan',sub:'Whale Museum, Grand Park'},{id:'d4',city:'daytrip',lat:38.1194,lng:128.4658,name:'Sokcho / Seoraksan',sub:'Fall foliage, national park'},{id:'d5',city:'daytrip',lat:37.2893,lng:127.0134,name:'Suwon',sub:'Hwaseong Fortress (UNESCO)'},{id:'icn',city:'seoul',lat:37.4602,lng:126.4407,name:'Incheon Airport (ICN)',sub:'International airport · 55km from Seoul'}];
 var ALL_PLACES=PLACES.concat(Object.values(AIRBNBS));
 var COLORS={seoul:'#c0392b',busan:'#1a5276',jeju:'#27ae60',daytrip:'#7d6608',airbnb:'#FF5A5F'};
@@ -493,10 +500,8 @@ function initMap(){
   map.getPane('tooltipPane').style.zIndex=700;
   map.getPane('popupPane').style.zIndex=800;
 
-  // Try OSM tiles, fall back to CartoDB if blocked
   var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    maxZoom:19,
-    subdomains:'abc',
+    maxZoom:19,subdomains:'abc',
     attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   });
   var tileErrorCount=0;
@@ -526,9 +531,7 @@ function initMap(){
 
 window.addEventListener('load',function(){
   applyTopOffset();
-  setTimeout(function(){
-    initMap();
-  },50);
+  setTimeout(function(){initMap();},50);
 });
 
 function drawSubway(){
@@ -570,7 +573,7 @@ function markerMatchesFilter(p,f){
   if(f==='airbnb'&&p.city==='airbnb')return true;
   if(p.city==='airbnb'){
     if(f==='busan'&&(p.id==='ba1'||p.id==='ba2'))return true;
-    if(f==='seoul'&&(p.id==='a1'||p.id==='a2'))return true;
+    if(f==='seoul'&&(p.id==='a1'||p.id==='a2'||p.id==='af3'))return true;
   }
   return false;
 }
@@ -582,7 +585,7 @@ function drawMarkers(){
     var color=COLORS[p.city]||'#c0392b';
     var el=document.createElement('div');
     if(p.city==='airbnb'){
-      var lbl={a1:'A',a2:'B',ba1:'C',ba2:'D'}[p.id]||'?';
+      var lbl={a1:'A',a2:'B',ba1:'C',ba2:'D',af3:'F'}[p.id]||'?';
       el.innerHTML='<div style="background:#FF5A5F;color:#fff;width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.4)"><span style="transform:rotate(45deg)">'+lbl+'</span></div>';
     } else if(p.id==='icn'){
       el.innerHTML='<div style="background:#1a1a2e;color:#d4a853;padding:3px 7px;border-radius:10px;font-size:9px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.4);border:1px solid #d4a853">✈ ICN</div>';
@@ -607,7 +610,6 @@ function showPopup(p){
   var pu=document.getElementById('popup');
   document.getElementById('pu-inner').innerHTML=inner;
   pu.style.display='block';
-  // Position popup relative to marker using Leaflet's container point
   var pt=map.latLngToContainerPoint([p.lat,p.lng]);
   var wrap=document.getElementById('mapwrap');
   var W=wrap.clientWidth,H=wrap.clientHeight;
@@ -644,11 +646,14 @@ window.focusPlace=function(id){
   document.querySelectorAll('.pi').forEach(function(e){e.classList.remove('on');});
   var el=document.getElementById('pi-'+id);if(el)el.classList.add('on');
   var busanAirbnbs=['ba1','ba2'];
-  var cityTab=busanAirbnbs.indexOf(id)!==-1?'busan':'seoul';
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
-  var tabEl=document.getElementById('tab-'+cityTab);if(tabEl)tabEl.classList.add('on');
-  currentFilter=cityTab;
-  drawSubway();drawTransport();drawMarkers();
+  var seoulAirbnbs=['a1','a2','af3'];
+  var cityTab=busanAirbnbs.indexOf(id)!==-1?'busan':seoulAirbnbs.indexOf(id)!==-1?'seoul':null;
+  if(cityTab){
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+    var tabEl=document.getElementById('tab-'+cityTab);if(tabEl)tabEl.classList.add('on');
+    currentFilter=cityTab;
+    drawSubway();drawTransport();drawMarkers();
+  }
   if(map)map.flyTo([p.lat,p.lng],15,{duration:0.8});
   setTimeout(function(){showPopup(p);},900);
   if(window.innerWidth<=600){var sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');sb.classList.remove('open');ov.classList.remove('vis');}
@@ -674,7 +679,6 @@ function renderList(elId,city){
     return'<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')">'+'<div style="width:8px;height:8px;border-radius:50%;background:'+(COLORS[p.city]||'#c0392b')+';flex-shrink:0;margin-top:4px"></div><div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div></div>';
   }).join('');
 }
-
 
 window.tgCity=function(id,btn){
   ['seoul','busan','jeju','tips'].forEach(function(c){
