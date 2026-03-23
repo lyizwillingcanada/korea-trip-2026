@@ -54,53 +54,11 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .sh{padding:11px 12px;font-size:9px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;color:var(--muted);background:var(--cream);border-top:1px solid #ddd5c8;border-bottom:1px solid #ddd5c8;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;min-height:44px;-webkit-tap-highlight-color:rgba(212,168,83,.2);touch-action:manipulation}
 .sh:hover{background:#e8ddd0}
 .sb-b{display:none}.sb-b.open{display:block}
-.pi{padding:8px 12px;cursor:pointer;display:flex;gap:7px;align-items:flex-start;border-left:3px solid transparent;transition:background .1s,opacity .15s;min-height:44px;touch-action:manipulation}
+.pi{padding:8px 12px;cursor:pointer;display:flex;gap:7px;align-items:flex-start;border-left:3px solid transparent;transition:background .1s;min-height:44px;touch-action:manipulation}
 .pi:hover{background:rgba(0,0,0,.04)}
 .pi.on{background:rgba(192,57,43,.07);border-left-color:#c0392b}
-.pi.hidden{display:none}
 .pi-n{font-size:11px;font-weight:600;color:var(--ink);line-height:1.3}
 .pi-s{font-size:9px;color:var(--muted);line-height:1.4;margin-top:1px}
-.pi-cats{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px}
-.pi-cat-badge{padding:1px 5px;border-radius:8px;font-size:7.5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:#fff}
-
-/* Category filter bar */
-.cat-filter-bar{padding:6px 10px 7px;background:#f7f3ee;border-bottom:1px solid #e8e0d4;display:flex;flex-direction:column;gap:5px}
-.cat-filter-label{font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-.cat-pills{display:flex;gap:4px;flex-wrap:wrap}
-.cat-pill{display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:20px;font-size:9px;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:all .15s;user-select:none;min-height:28px;-webkit-tap-highlight-color:transparent}
-.cat-pill .pill-icon{font-size:11px;line-height:1}
-.cat-pill .pill-label{letter-spacing:.3px}
-
-/* Food pill */
-.cat-pill[data-cat="food"]{background:rgba(231,76,60,.08);border-color:rgba(231,76,60,.3);color:#c0392b}
-.cat-pill[data-cat="food"].active{background:#c0392b;border-color:#c0392b;color:#fff}
-/* Culture pill */
-.cat-pill[data-cat="culture"]{background:rgba(52,73,94,.08);border-color:rgba(52,73,94,.3);color:#2c3e50}
-.cat-pill[data-cat="culture"].active{background:#2c3e50;border-color:#2c3e50;color:#fff}
-/* Gen Z pill */
-.cat-pill[data-cat="genz"]{background:rgba(155,89,182,.1);border-color:rgba(155,89,182,.35);color:#8e44ad}
-.cat-pill[data-cat="genz"].active{background:#8e44ad;border-color:#8e44ad;color:#fff}
-/* Hiking pill */
-.cat-pill[data-cat="hiking"]{background:rgba(39,174,96,.08);border-color:rgba(39,174,96,.3);color:#1e8449}
-.cat-pill[data-cat="hiking"].active{background:#1e8449;border-color:#1e8449;color:#fff}
-/* Beauty pill */
-.cat-pill[data-cat="beauty"]{background:rgba(230,24,108,.08);border-color:rgba(230,24,108,.3);color:#c0186c}
-.cat-pill[data-cat="beauty"].active{background:#c0186c;border-color:#c0186c;color:#fff}
-/* Night pill */
-.cat-pill[data-cat="night"]{background:rgba(26,26,46,.08);border-color:rgba(26,26,46,.3);color:#1a1a2e}
-.cat-pill[data-cat="night"].active{background:#1a1a2e;border-color:#1a1a2e;color:#fff}
-
-/* Badge colors matching pills */
-.badge-food{background:#c0392b}
-.badge-culture{background:#2c3e50}
-.badge-genz{background:#8e44ad}
-.badge-hiking{background:#1e8449}
-.badge-beauty{background:#c0186c}
-.badge-night{background:#1a1a2e}
-.badge-seafood{background:#1a5276}
-.badge-nature{background:#27ae60}
-.badge-art{background:#d4a853}
-
 .tl{padding:8px 12px 4px}
 .tl-i{border-left:2px solid #ddd5c8;padding:5px 0 5px 12px;margin-left:4px;position:relative}
 .tl-i::before{content:'';position:absolute;left:-5px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--gold)}
@@ -131,11 +89,306 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 #wbtn{margin-top:4px;width:auto;padding:0 8px;font-size:8px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;height:24px}
 .leaflet-control-zoom{display:none!important}.leaflet-control-attribution{font-size:8px!important;opacity:0.6}
 
-/* Active filter summary chip */
-.filter-summary{display:none;padding:4px 10px 5px;background:rgba(212,168,83,.1);border-bottom:1px solid rgba(212,168,83,.2);font-size:8.5px;color:var(--muted);align-items:center;justify-content:space-between}
-.filter-summary.vis{display:flex}
-.filter-reset{cursor:pointer;color:var(--gold);font-weight:700;font-size:8px;text-transform:uppercase;letter-spacing:.4px;padding:2px 6px;border-radius:8px;border:1px solid rgba(212,168,83,.4);background:transparent}
-.filter-reset:hover{background:rgba(212,168,83,.15)}
+/* ═══════════════════════════════
+   TODO VIEW STYLES
+═══════════════════════════════ */
+#todo-view{
+  display:none;
+  position:fixed;
+  top:92px;left:0;right:0;bottom:0;
+  background:#f5f0ea;
+  z-index:1400;
+  overflow:hidden;
+}
+#todo-view.active{display:flex;}
+
+.todo-sidebar{
+  width:220px;
+  flex-shrink:0;
+  background:var(--ink);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+.todo-city-list{
+  padding:12px 10px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  flex:1;
+}
+
+.city-btn{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  border:none;
+  background:transparent;
+  color:rgba(250,247,242,.55);
+  font-family:'DM Sans',sans-serif;
+  font-size:12px;
+  font-weight:600;
+  text-align:left;
+  transition:all .15s;
+  width:100%;
+  position:relative;
+}
+.city-btn:hover{background:rgba(255,255,255,.06);color:#faf7f2;}
+.city-btn.active{background:rgba(212,168,83,.15);color:#faf7f2;border-left:3px solid var(--gold);}
+.city-btn .city-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.city-btn .city-count{margin-left:auto;background:rgba(212,168,83,.25);color:var(--gold);font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;min-width:20px;text-align:center;}
+.city-btn.active .city-count{background:var(--gold);color:var(--ink);}
+
+.todo-main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+.todo-header{
+  background:var(--paper);
+  border-bottom:2px solid #ddd5c8;
+  padding:14px 18px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-shrink:0;
+}
+
+.todo-header-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.todo-header-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.todo-city-name{font-size:18px;font-weight:700;color:var(--ink);}
+.todo-city-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+
+.todo-progress-wrap{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.todo-progress-bar{width:80px;height:6px;background:#e0d8cc;border-radius:3px;overflow:hidden;}
+.todo-progress-fill{height:100%;border-radius:3px;transition:width .4s ease;background:var(--gold);}
+.todo-progress-label{font-size:10px;font-weight:700;color:var(--muted);}
+
+.todo-input-area{
+  padding:12px 18px;
+  background:var(--cream);
+  border-bottom:1px solid #ddd5c8;
+  display:flex;
+  gap:8px;
+  flex-shrink:0;
+}
+
+.todo-input{
+  flex:1;
+  border:1.5px solid #ddd5c8;
+  border-radius:8px;
+  padding:9px 12px;
+  font-family:'DM Sans',sans-serif;
+  font-size:12px;
+  color:var(--ink);
+  background:#fff;
+  outline:none;
+  transition:border-color .15s;
+}
+.todo-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,168,83,.12);}
+.todo-input::placeholder{color:#b0a898;}
+
+.todo-priority-select{
+  border:1.5px solid #ddd5c8;
+  border-radius:8px;
+  padding:9px 8px;
+  font-family:'DM Sans',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  color:var(--muted);
+  background:#fff;
+  outline:none;
+  cursor:pointer;
+  transition:border-color .15s;
+}
+.todo-priority-select:focus{border-color:var(--gold);}
+
+.todo-add-btn{
+  background:var(--gold);
+  color:var(--ink);
+  border:none;
+  border-radius:8px;
+  padding:9px 16px;
+  font-family:'DM Sans',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .15s;
+  white-space:nowrap;
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+.todo-add-btn:hover{background:#c49a40;transform:translateY(-1px);box-shadow:0 3px 10px rgba(212,168,83,.4);}
+.todo-add-btn:active{transform:translateY(0);}
+
+.todo-filter-bar{
+  padding:8px 18px;
+  background:var(--paper);
+  border-bottom:1px solid #ddd5c8;
+  display:flex;
+  gap:5px;
+  align-items:center;
+  flex-shrink:0;
+}
+.todo-filter-label{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-right:4px;}
+.todo-chip{padding:4px 10px;border-radius:20px;font-size:9px;font-weight:700;cursor:pointer;border:1.5px solid #ddd5c8;color:var(--muted);background:transparent;transition:all .12s;text-transform:uppercase;letter-spacing:.3px;}
+.todo-chip.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+.todo-chip:hover:not(.on){background:rgba(0,0,0,.05);}
+
+.todo-list-wrap{
+  flex:1;
+  overflow-y:auto;
+  padding:10px 18px 20px;
+}
+.todo-list-wrap::-webkit-scrollbar{width:3px;}
+.todo-list-wrap::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+
+.todo-empty{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:200px;
+  gap:10px;
+  color:var(--muted);
+}
+.todo-empty-icon{font-size:40px;opacity:.4;}
+.todo-empty-text{font-size:12px;font-weight:600;opacity:.6;}
+.todo-empty-hint{font-size:10px;opacity:.4;}
+
+.todo-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  background:#fff;
+  border-radius:8px;
+  margin-bottom:6px;
+  border:1.5px solid #e8e0d4;
+  transition:all .2s;
+  animation:todoSlideIn .25s ease;
+  cursor:default;
+}
+@keyframes todoSlideIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.todo-item:hover{border-color:#ddd5c8;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.todo-item.done{opacity:.55;background:var(--cream);}
+.todo-item.done .todo-text{text-decoration:line-through;color:var(--muted);}
+
+.todo-check{
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid #ddd5c8;
+  flex-shrink:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;background:#fff;
+}
+.todo-check:hover{border-color:var(--gold);}
+.todo-check.checked{background:var(--gold);border-color:var(--gold);}
+.todo-check.checked::after{content:'✓';font-size:10px;color:var(--ink);font-weight:700;}
+
+.todo-text{font-size:12px;font-weight:600;color:var(--ink);flex:1;line-height:1.4;word-break:break-word;}
+
+.todo-priority-badge{
+  padding:2px 7px;border-radius:10px;
+  font-size:8px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.4px;
+  flex-shrink:0;
+}
+.todo-priority-badge.high{background:rgba(192,57,43,.12);color:#c0392b;}
+.todo-priority-badge.med{background:rgba(212,168,83,.2);color:#8b6914;}
+.todo-priority-badge.low{background:rgba(39,174,96,.12);color:#27ae60;}
+
+.todo-delete{
+  width:24px;height:24px;border-radius:50%;
+  border:none;background:transparent;cursor:pointer;
+  color:#ccc;font-size:14px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;flex-shrink:0;
+}
+.todo-delete:hover{background:rgba(192,57,43,.1);color:#c0392b;}
+
+.todo-section-label{
+  font-size:9px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1px;
+  padding:10px 2px 5px;
+  border-bottom:1px solid #e8e0d4;
+  margin-bottom:6px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.todo-section-count{
+  background:#e8e0d4;color:var(--muted);
+  font-size:9px;padding:1px 6px;border-radius:8px;
+}
+
+.todo-stats-footer{
+  background:var(--ink);
+  padding:8px 18px;
+  display:flex;
+  gap:16px;
+  align-items:center;
+  flex-shrink:0;
+}
+.todo-stat{display:flex;align-items:center;gap:5px;}
+.todo-stat-num{font-size:15px;font-weight:700;color:var(--gold);}
+.todo-stat-lbl{font-size:9px;color:rgba(250,247,242,.4);text-transform:uppercase;letter-spacing:.5px;}
+.todo-stat-divider{width:1px;height:20px;background:rgba(255,255,255,.1);}
+
+.todo-clear-done{
+  margin-left:auto;
+  background:transparent;border:1px solid rgba(212,168,83,.3);
+  color:rgba(212,168,83,.6);
+  border-radius:5px;padding:4px 10px;
+  font-size:9px;font-weight:700;font-family:'DM Sans',sans-serif;
+  cursor:pointer;text-transform:uppercase;letter-spacing:.4px;
+  transition:all .15s;
+}
+.todo-clear-done:hover{background:rgba(212,168,83,.15);color:var(--gold);}
+
+/* Drag handle */
+.todo-drag{
+  cursor:grab;color:#ccc;font-size:12px;
+  display:flex;flex-direction:column;gap:2px;align-items:center;
+  flex-shrink:0;padding:2px 0;
+}
+.todo-drag:active{cursor:grabbing;}
+.todo-drag-dot{width:3px;height:3px;border-radius:50%;background:currentColor;}
+
+@media(max-width:600px){
+  .todo-sidebar{display:none;}
+  #todo-view{flex-direction:column;}
+  .todo-city-mobile-bar{
+    display:flex;
+    background:var(--ink);
+    padding:8px 10px;
+    gap:5px;
+    overflow-x:auto;
+    flex-shrink:0;
+  }
+  .todo-city-mobile-btn{
+    padding:6px 12px;border-radius:20px;
+    font-size:10px;font-weight:700;
+    cursor:pointer;border:1.5px solid rgba(212,168,83,.3);
+    color:rgba(250,247,242,.55);background:transparent;
+    white-space:nowrap;transition:all .15s;font-family:'DM Sans',sans-serif;
+  }
+  .todo-city-mobile-btn.active{background:var(--gold);color:var(--ink);border-color:var(--gold);}
+  .todo-input-area{flex-wrap:wrap;}
+  .todo-input{min-width:100%;}
+}
+@media(min-width:601px){
+  .todo-city-mobile-bar{display:none;}
+}
 </style>
 </head>
 <body>
@@ -152,6 +405,7 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
     <div class="tab" id="tab-busan" onclick="goView('busan',this)">Busan</div>
     <div class="tab" id="tab-jeju" onclick="goView('jeju',this)">Jeju</div>
     <div class="tab" id="tab-all" onclick="goView('all',this)">All Korea</div>
+    <div class="tab" id="tab-todo" onclick="goTodo(this)" style="border-color:rgba(212,168,83,.7)">✅ To Do</div>
   </div>
   <div class="hleg">
     <div class="hleg-i"><div class="hleg-d" style="background:#FF5A5F"></div>Airbnb</div>
@@ -180,12 +434,94 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
   </div>
 </div>
 
+<!-- ═══════════════ TODO VIEW ═══════════════ -->
+<div id="todo-view">
+  <!-- Mobile city bar -->
+  <div class="todo-city-mobile-bar" id="todo-mobile-cities"></div>
+
+  <!-- Desktop sidebar -->
+  <div class="todo-sidebar">
+    <div style="padding:14px 12px 8px;border-bottom:1px solid rgba(255,255,255,.08)">
+      <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px">📋 To Do Lists</div>
+      <div style="font-size:10px;color:rgba(250,247,242,.35);">Organised by location</div>
+    </div>
+    <div class="todo-city-list" id="todo-city-list"></div>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,.08)">
+      <div style="font-size:9px;color:rgba(250,247,242,.3);line-height:1.6;text-align:center">Tip: tasks auto-save<br>in your browser</div>
+    </div>
+  </div>
+
+  <!-- Main area -->
+  <div class="todo-main">
+    <div class="todo-header">
+      <div class="todo-header-title">
+        <div class="todo-header-dot" id="todo-hdr-dot"></div>
+        <div>
+          <div class="todo-city-name" id="todo-hdr-name">Seoul</div>
+          <div class="todo-city-sub" id="todo-hdr-sub">Sep 26 – Oct 1 &amp; Oct 8–11 · 8 nights</div>
+        </div>
+      </div>
+      <div class="todo-progress-wrap">
+        <div class="todo-progress-bar"><div class="todo-progress-fill" id="todo-progress-fill"></div></div>
+        <div class="todo-progress-label" id="todo-progress-label">0 / 0</div>
+      </div>
+    </div>
+
+    <div class="todo-input-area">
+      <input class="todo-input" id="todo-input" type="text" placeholder="Add a task for this location… e.g. Book Gyeongbokgung tickets" maxlength="120"
+        onkeydown="if(event.key==='Enter')addTodo()">
+      <select class="todo-priority-select" id="todo-priority">
+        <option value="high">🔴 High</option>
+        <option value="med" selected>🟡 Medium</option>
+        <option value="low">🟢 Low</option>
+      </select>
+      <button class="todo-add-btn" onclick="addTodo()">+ Add</button>
+    </div>
+
+    <div class="todo-filter-bar">
+      <span class="todo-filter-label">Show:</span>
+      <span class="todo-chip on" onclick="setTodoFilter('all',this)">All</span>
+      <span class="todo-chip" onclick="setTodoFilter('active',this)">Active</span>
+      <span class="todo-chip" onclick="setTodoFilter('done',this)">Done</span>
+      <span class="todo-chip" onclick="setTodoFilter('high',this)">🔴 High</span>
+    </div>
+
+    <div class="todo-list-wrap" id="todo-list-wrap">
+      <div class="todo-empty" id="todo-empty">
+        <div class="todo-empty-icon">📝</div>
+        <div class="todo-empty-text">No tasks yet</div>
+        <div class="todo-empty-hint">Add your first task above</div>
+      </div>
+      <div id="todo-list"></div>
+    </div>
+
+    <div class="todo-stats-footer">
+      <div class="todo-stat">
+        <div class="todo-stat-num" id="stat-total">0</div>
+        <div class="todo-stat-lbl">Total</div>
+      </div>
+      <div class="todo-stat-divider"></div>
+      <div class="todo-stat">
+        <div class="todo-stat-num" id="stat-done">0</div>
+        <div class="todo-stat-lbl">Done</div>
+      </div>
+      <div class="todo-stat-divider"></div>
+      <div class="todo-stat">
+        <div class="todo-stat-num" id="stat-left">0</div>
+        <div class="todo-stat-lbl">Left</div>
+      </div>
+      <button class="todo-clear-done" onclick="clearDone()">Clear done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ORIGINAL LAYOUT ═══════════════ -->
 <div id="body">
 <div id="sb-overlay" onclick="toggleSidebar()"></div>
 <div id="sb">
   <div id="budget-bar" style="background:var(--ink);border-bottom:2px solid rgba(212,168,83,.4);padding:10px 12px 8px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
-      <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px">💰 Trip Budget — 12 People · 18 Days</div>
+      <div style="font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px">💰 Trip Budget — 12 People · 17 Nights</div>
       <div style="display:flex;gap:4px">
         <div id="cur-cad" onclick="setCur('cad')" style="cursor:pointer;padding:2px 7px;border-radius:10px;font-size:8px;font-weight:700;background:var(--gold);color:var(--ink)">CAD</div>
         <div id="cur-usd" onclick="setCur('usd')" style="cursor:pointer;padding:2px 7px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(212,168,83,.2);color:var(--gold)">USD</div>
@@ -255,50 +591,12 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
   <div class="sh" onclick="tog('tl')">📅 Trip Itinerary <span id="ar-tl">▶</span></div>
   <div class="sb-b" id="sec-tl">
     <div class="tl">
-      <div class="tl-i"><div class="tl-d">Fri Sep 25</div><div class="tl-c" style="color:#7d6608">✈ Depart Toronto</div><div class="tl-s">1:35 PM · Direct to ICN</div></div>
-      <div class="tl-i">
-        <div class="tl-d">Fri Sep 26 – Wed Oct 1</div>
-        <div class="tl-c" style="color:#c0392b">Seoul — Stay 1</div>
-        <div class="tl-s">7 days · Chuseok season</div>
-        <div style="margin-top:3px;display:flex;flex-direction:column;gap:1px">
-          <div style="font-size:8.5px;color:var(--muted);padding-left:2px">Fri · Sat · Sun · Mon · Tue · Wed</div>
-          <div style="font-size:8.5px;color:#7d6608;padding-left:2px;font-weight:600">Thu Oct 1 → depart to Jeju</div>
-        </div>
-      </div>
-      <div class="tl-i">
-        <div class="tl-d">Thu Oct 1 – Mon Oct 5</div>
-        <div class="tl-c" style="color:#27ae60">Jeju Island</div>
-        <div class="tl-s">4 days · Hallasan · beaches</div>
-        <div style="margin-top:3px;display:flex;flex-direction:column;gap:1px">
-          <div style="font-size:8.5px;color:var(--muted);padding-left:2px">Thu (Arrive) · Fri · Sat · Sun</div>
-          <div style="font-size:8.5px;color:#7d6608;padding-left:2px;font-weight:600">Mon Oct 5 → depart to Busan</div>
-        </div>
-      </div>
-      <div class="tl-i">
-        <div class="tl-d">Mon Oct 5 – Fri Oct 9</div>
-        <div class="tl-c" style="color:#1a5276">Busan</div>
-        <div class="tl-s">4 days · Seafood · beaches</div>
-        <div style="margin-top:3px;display:flex;flex-direction:column;gap:1px">
-          <div style="font-size:8.5px;color:var(--muted);padding-left:2px">Mon (Arrive) · Tue · Wed · Thu</div>
-          <div style="font-size:8.5px;color:#7d6608;padding-left:2px;font-weight:600">Fri Oct 9 → depart to Seoul</div>
-        </div>
-      </div>
-      <div class="tl-i">
-        <div class="tl-d">Fri Oct 9 – Sun Oct 11</div>
-        <div class="tl-c" style="color:#c0392b">Seoul — Stay 2</div>
-        <div class="tl-s">3 days · Shopping · nightlife</div>
-        <div style="margin-top:3px;display:flex;flex-direction:column;gap:1px">
-          <div style="font-size:8.5px;color:var(--muted);padding-left:2px">Fri (Arrive) · Sat</div>
-          <div style="font-size:8.5px;color:#7d6608;padding-left:2px;font-weight:600">Sun Oct 11 → depart YYZ</div>
-        </div>
-      </div>
-      <div class="tl-i"><div class="tl-d">Sun Oct 12</div><div class="tl-c" style="color:#7d6608">✈ Return Toronto</div><div class="tl-s">Arrive back home · 18 days total</div></div>
-    </div>
-    <div style="margin:4px 12px 8px;background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:6px 10px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;text-align:center">
-      <div><div style="font-size:8px;color:var(--muted);text-transform:uppercase">Seoul 1</div><div style="font-size:13px;font-weight:700;color:#c0392b">7d</div></div>
-      <div><div style="font-size:8px;color:var(--muted);text-transform:uppercase">Jeju</div><div style="font-size:13px;font-weight:700;color:#27ae60">4d</div></div>
-      <div><div style="font-size:8px;color:var(--muted);text-transform:uppercase">Busan</div><div style="font-size:13px;font-weight:700;color:#1a5276">4d</div></div>
-      <div><div style="font-size:8px;color:var(--muted);text-transform:uppercase">Seoul 2</div><div style="font-size:13px;font-weight:700;color:#c0392b">3d</div></div>
+      <div class="tl-i"><div class="tl-d">Sep 25</div><div class="tl-c" style="color:#7d6608">✈ Depart Toronto</div><div class="tl-s">Via Narita</div></div>
+      <div class="tl-i"><div class="tl-d">Sep 26–Oct 1</div><div class="tl-c" style="color:#c0392b">Seoul — Stay 1</div><div class="tl-s">5 nights · Chuseok</div></div>
+      <div class="tl-i"><div class="tl-d">Oct 1–Oct 5</div><div class="tl-c" style="color:#1a5276">Busan</div><div class="tl-s">4 nights · Seafood</div></div>
+      <div class="tl-i"><div class="tl-d">Oct 5–Oct 8</div><div class="tl-c" style="color:#27ae60">Jeju Island</div><div class="tl-s">3 nights · Hallasan</div></div>
+      <div class="tl-i"><div class="tl-d">Oct 8–Oct 11</div><div class="tl-c" style="color:#c0392b">Seoul — Stay 2</div><div class="tl-s">3 nights · Shopping</div></div>
+      <div class="tl-i"><div class="tl-d">Oct 12</div><div class="tl-c" style="color:#7d6608">✈ Return Toronto</div><div class="tl-s">7:05 PM</div></div>
     </div>
   </div>
 
@@ -317,7 +615,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
     <div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px">🗺 Seoul</div>
     <div class="pi" onclick="focusPlace('a1')"><div><div class="pi-n">Option A — Bukchon area</div><div class="pi-s">Anguk stn (Line 3) ~5 min walk<br>Sep 26–Oct 1 &amp; Oct 8–11</div></div></div>
     <div class="pi" onclick="focusPlace('a2')"><div><div class="pi-n">Option B — Gwanghwamun</div><div class="pi-s">Gyeongbokgung stn (Line 3) ~8 min<br>Sep 26–Oct 1 &amp; Oct 8–11</div></div></div>
-    <div class="pi" id="pi-af3" onclick="focusPlace('af3')"><div><div class="pi-n">Option F — ShareGo House</div><div class="pi-s">Noryangjin Stn (Lines 1 &amp; 9) ~3 min walk<br>Sep 26–Oct 1 &amp; Oct 8–11 · up to 21 guests · ★4.86</div></div></div>
     <div style="padding:5px 12px 2px;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;border-top:1px solid #e8e0d4;margin-top:3px">🗺 Busan</div>
     <div class="pi" id="pi-ba1" onclick="focusPlace('ba1')"><div><div class="pi-n">Option C — Roots House Busan Stn</div><div class="pi-s">Choryang Ibagu-Gil Alley<br>Sep 30–Oct 4 · $2,241 CAD total</div></div></div>
     <div class="pi" id="pi-ba2" onclick="focusPlace('ba2')"><div><div class="pi-n">Option D — Busan Port Bridge</div><div class="pi-s">Busan Harbor Bridge · Taejong-Ro<br>Sep 30–Oct 4 · $2,352 CAD total</div></div></div>
@@ -328,12 +625,12 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
     <div style="padding:8px 10px 4px;display:flex;flex-direction:column;gap:5px">
       <div style="background:#003499;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 1 — Dark Blue</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Incheon ↔ Soyosan · Seoul Stn, Dongdaemun</div></div>
       <div style="background:#37b42d;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 2 — Green · Circular</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">City Hall, Hongdae, Gangnam, Jamsil</div></div>
-      <div style="background:#fe5d10;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 3 — Orange ⭐ Airbnbs A &amp; B</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Anguk, Gyeongbokgung, Chungmuro</div></div>
+      <div style="background:#fe5d10;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 3 — Orange ⭐ Airbnbs</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Anguk, Gyeongbokgung, Chungmuro</div></div>
       <div style="background:#00a2d1;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 4 — Sky Blue</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Myeongdong, Seoul Stn, Hyehwa</div></div>
       <div style="background:#996cac;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 5 — Purple</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Gwanghwamun, Yeouido, Gongdeok</div></div>
       <div style="background:#cd7c2f;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 6 — Brown</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Itaewon, Mapo, Bulgwang, Sindang</div></div>
       <div style="background:#747f00;color:#fff;border-radius:5px;padding:5px 10px"><div style="font-size:10px;font-weight:700">Line 7 — Olive</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Boramae, Gangnam-gu Office</div></div>
-      <div style="background:#e6186c;color:#fff;border-radius:5px;padding:5px 10px;margin-bottom:2px"><div style="font-size:10px;font-weight:700">Line 9 — Pink · Express ⭐ Airbnb F</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Noryangjin, Yeouido, Express Bus Terminal, COEX</div></div>
+      <div style="background:#e6186c;color:#fff;border-radius:5px;padding:5px 10px;margin-bottom:2px"><div style="font-size:10px;font-weight:700">Line 9 — Pink · Express</div><div style="font-size:8.5px;opacity:0.85;margin-top:1px">Yeouido, Express Bus Terminal, COEX</div></div>
     </div>
     <div style="border-top:1px solid #e8e0d4;padding:8px 12px 8px">
       <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">🚶 Walking from Airbnbs</div>
@@ -345,68 +642,12 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
     </div>
   </div>
 
-  <!-- SEOUL SECTION with category filters -->
   <div class="sh" onclick="tog('sa')">📍 Seoul <span class="bdg" style="background:#c0392b">5+3 nights</span></div>
-  <div class="sb-b open" id="sec-sa">
-    <div class="cat-filter-bar" id="catbar-seoul">
-      <div class="cat-filter-label">Filter by vibe</div>
-      <div class="cat-pills">
-        <div class="cat-pill" data-cat="food" data-city="seoul" onclick="toggleCatPill(this)"><span class="pill-icon">🍜</span><span class="pill-label">Food</span></div>
-        <div class="cat-pill" data-cat="culture" data-city="seoul" onclick="toggleCatPill(this)"><span class="pill-icon">🏛</span><span class="pill-label">Culture</span></div>
-        <div class="cat-pill" data-cat="genz" data-city="seoul" onclick="toggleCatPill(this)"><span class="pill-icon">⚡</span><span class="pill-label">Gen Z</span></div>
-        <div class="cat-pill" data-cat="hiking" data-city="seoul" onclick="toggleCatPill(this)"><span class="pill-icon">🥾</span><span class="pill-label">Hiking</span></div>
-        <div class="cat-pill" data-cat="beauty" data-city="seoul" onclick="toggleCatPill(this)"><span class="pill-icon">💄</span><span class="pill-label">Beauty</span></div>
-        <div class="cat-pill" data-cat="night" data-city="seoul" onclick="toggleCatPill(this)"><span class="pill-icon">🌙</span><span class="pill-label">Night</span></div>
-      </div>
-      <div class="filter-summary" id="summary-seoul">
-        <span id="summary-seoul-text"></span>
-        <span class="filter-reset" onclick="resetCityFilter('seoul')">Clear all</span>
-      </div>
-    </div>
-    <div id="list-seoul"></div>
-  </div>
-
-  <!-- BUSAN SECTION with category filters -->
+  <div class="sb-b open" id="sec-sa"><div id="list-seoul"></div></div>
   <div class="sh" onclick="tog('ba')">📍 Busan <span class="bdg" style="background:#1a5276">4 nights</span></div>
-  <div class="sb-b" id="sec-ba">
-    <div class="cat-filter-bar" id="catbar-busan">
-      <div class="cat-filter-label">Filter by vibe</div>
-      <div class="cat-pills">
-        <div class="cat-pill" data-cat="food" data-city="busan" onclick="toggleCatPill(this)"><span class="pill-icon">🍜</span><span class="pill-label">Food</span></div>
-        <div class="cat-pill" data-cat="culture" data-city="busan" onclick="toggleCatPill(this)"><span class="pill-icon">🏛</span><span class="pill-label">Culture</span></div>
-        <div class="cat-pill" data-cat="genz" data-city="busan" onclick="toggleCatPill(this)"><span class="pill-icon">⚡</span><span class="pill-label">Gen Z</span></div>
-        <div class="cat-pill" data-cat="hiking" data-city="busan" onclick="toggleCatPill(this)"><span class="pill-icon">🥾</span><span class="pill-label">Hiking</span></div>
-        <div class="cat-pill" data-cat="beauty" data-city="busan" onclick="toggleCatPill(this)"><span class="pill-icon">💄</span><span class="pill-label">Beauty</span></div>
-        <div class="cat-pill" data-cat="night" data-city="busan" onclick="toggleCatPill(this)"><span class="pill-icon">🌙</span><span class="pill-label">Night</span></div>
-      </div>
-      <div class="filter-summary" id="summary-busan">
-        <span id="summary-busan-text"></span>
-        <span class="filter-reset" onclick="resetCityFilter('busan')">Clear all</span>
-      </div>
-    </div>
-    <div id="list-busan"></div>
-  </div>
-
-  <!-- JEJU SECTION with category filters -->
+  <div class="sb-b" id="sec-ba"><div id="list-busan"></div></div>
   <div class="sh" onclick="tog('ja')">📍 Jeju <span class="bdg" style="background:#27ae60">3 nights</span></div>
-  <div class="sb-b" id="sec-ja">
-    <div class="cat-filter-bar" id="catbar-jeju">
-      <div class="cat-filter-label">Filter by vibe</div>
-      <div class="cat-pills">
-        <div class="cat-pill" data-cat="food" data-city="jeju" onclick="toggleCatPill(this)"><span class="pill-icon">🍜</span><span class="pill-label">Food</span></div>
-        <div class="cat-pill" data-cat="culture" data-city="jeju" onclick="toggleCatPill(this)"><span class="pill-icon">🏛</span><span class="pill-label">Culture</span></div>
-        <div class="cat-pill" data-cat="hiking" data-city="jeju" onclick="toggleCatPill(this)"><span class="pill-icon">🥾</span><span class="pill-label">Hiking</span></div>
-        <div class="cat-pill" data-cat="nature" data-city="jeju" onclick="toggleCatPill(this)" style="background:rgba(39,174,96,.08);border-color:rgba(39,174,96,.3);color:#1e8449"><span class="pill-icon">🌿</span><span class="pill-label">Nature</span></div>
-        <div class="cat-pill" data-cat="night" data-city="jeju" onclick="toggleCatPill(this)"><span class="pill-icon">🌙</span><span class="pill-label">Night</span></div>
-      </div>
-      <div class="filter-summary" id="summary-jeju">
-        <span id="summary-jeju-text"></span>
-        <span class="filter-reset" onclick="resetCityFilter('jeju')">Clear all</span>
-      </div>
-    </div>
-    <div id="list-jeju"></div>
-  </div>
-
+  <div class="sb-b" id="sec-ja"><div id="list-jeju"></div></div>
   <div class="sh" onclick="tog('da')">🚌 Day Trips <span id="ar-da">▶</span></div>
   <div class="sb-b" id="sec-da"><div id="list-daytrip"></div></div>
 
@@ -469,22 +710,17 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Seomyeon</b> → central metro hub, ideal group base</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Haeundae / Gwangalli</b> → Metro Line 2</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Songdo Cable Car</b> → taxi recommended</div>
-      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Taejongdae / Huinnyeoul</b> → taxi or charter van</div>
     </div>
     <div id="tg-c-jeju" style="display:none;padding:4px 12px 10px">
       <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Getting around</div>
-      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Hallasan / Seongsan / Seopjikoji</b> → road transport required</div>
-      <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px">Public buses are slow for large groups</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #27ae60;margin-bottom:2px"><b>Best option:</b> private van or two rental vehicles</div>
     </div>
     <div id="tg-c-tips" style="display:none;padding:4px 12px 10px">
       <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:6px 0 5px;font-size:9px;color:#7a6030;line-height:1.7"><b>Seoul</b> — public transit is most efficient unless moving late at night.</div>
       <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7"><b>Busan</b> — mix metro + taxis for coastal destinations.</div>
-      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7"><b>Jeju</b> — private van strongly recommended; public transit adds major travel time for groups.</div>
-      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7"><b>Restaurant evenings</b> — taxis often cheaper than splitting subway transfers for 12 people.</div>
+      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7"><b>Jeju</b> — private van strongly recommended.</div>
     </div>
   </div>
-
 </div>
 
 <div id="mapwrap">
@@ -500,77 +736,253 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 </div>
 
 <script>
-// ─── CATEGORY DEFINITIONS ─────────────────────────────────────────────
-// Each place can have multiple categories
-var CAT_COLORS = {
-  food:    '#c0392b',
-  culture: '#2c3e50',
-  genz:    '#8e44ad',
-  hiking:  '#1e8449',
-  beauty:  '#c0186c',
-  night:   '#1a1a2e',
-  nature:  '#27ae60',
-  seafood: '#1a5276',
-  art:     '#d4a853'
-};
-var CAT_ICONS = {
-  food:'🍜', culture:'🏛', genz:'⚡', hiking:'🥾', beauty:'💄',
-  night:'🌙', nature:'🌿', seafood:'🦞', art:'🎨'
-};
-
-// Active category filters per city
-var activeCats = { seoul: new Set(), busan: new Set(), jeju: new Set() };
-
-var AIRBNBS={
-  af3:{id:'af3',lat:37.5115,lng:126.9427,city:'airbnb',name:'Option F — ShareGo House',sub:'Noryangjin Stn (Lines 1 & 9) · 3 min walk',rows:[{l:'Nearest metro',v:'Noryangjin (Lines 1 & 9)'},{l:'Walk to metro',v:'~3 min'},{l:'To Myeongdong',v:'~15 min (Line 4 via transfer)'},{l:'To Gangnam',v:'Line 9 ~20 min'},{l:'Capacity',v:'10 bed · 5 bath · up to 21 guests'},{l:'Rooftop',v:'Included · free use'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Rating',v:'★4.86 · Superhost'},{l:'Price',v:'TBD (negotiable by headcount)'}],url:'https://www.airbnb.ca/rooms/1363310740761950624'},
-  a1:{id:'a1',lat:37.5800,lng:126.9840,city:'airbnb',name:'Airbnb Option A',sub:'Bukchon area · Anguk stn (Line 3) ~5 min',rows:[{l:'Nearest metro',v:'Anguk (Line 3)'},{l:'Walk to metro',v:'~5 min'},{l:'To Myeongdong',v:'2 stops ~8 min'},{l:'To Gangnam',v:'5 stops ~15 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],url:'https://www.airbnb.ca/rooms/1071219924971118739'},
-  a2:{id:'a2',lat:37.5667,lng:126.9780,city:'airbnb',name:'Airbnb Option B',sub:'Gwanghwamun · Gyeongbokgung stn (Line 3) ~8 min',rows:[{l:'Nearest metro',v:'Gyeongbokgung (Line 3)'},{l:'Walk to metro',v:'~8 min'},{l:'To Myeongdong',v:'3 stops ~10 min'},{l:'To Gangnam',v:'6 stops ~20 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],url:'https://www.airbnb.ca/rooms/52696974'},
-  b1:{id:'ba1',lat:35.1138,lng:129.0344,city:'airbnb',name:'Option C — Roots House Busan Stn',sub:'Choryang Ibagu-Gil Alley · near Busan Station',rows:[{l:'Neighbourhood',v:'Choryang Ibagu-Gil Alley'},{l:'Near',v:'Busan Station'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,241'},{l:'Per person',v:'~$187 CAD'}],url:'https://www.airbnb.ca/rooms/1602494588154383516'},
-  b2:{id:'ba2',lat:35.1020,lng:129.0400,city:'airbnb',name:'Option D — Busan Port Bridge Taejong-Ro',sub:'Busan Harbor Bridge area · Yeongdo',rows:[{l:'Neighbourhood',v:'Busan Harbor Bridge'},{l:'Near',v:'Busan Port Bridge'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,352'},{l:'Per person',v:'~$196 CAD'}],url:'https://www.airbnb.ca/rooms/1457528950582135704'}
-};
-
-var PLACES=[
-  // ── SEOUL ──────────────────────────────────────────
-  {id:'s1',city:'seoul',lat:37.5797,lng:126.9770,name:'Gyeongbokgung Palace',sub:'Line 3 · Gyeongbokgung stn',cats:['culture']},
-  {id:'s2',city:'seoul',lat:37.5826,lng:126.9850,name:'Bukchon Hanok Village',sub:'Line 3 · Anguk stn',cats:['culture','beauty']},
-  {id:'s3',city:'seoul',lat:37.5793,lng:126.9910,name:'Changdeokgung Palace',sub:'Line 3 · Anguk stn',cats:['culture']},
-  {id:'s4',city:'seoul',lat:37.5512,lng:126.9882,name:'Namsan Tower',sub:'Walk from Myeongdong',cats:['hiking','culture','night']},
-  {id:'s5',city:'seoul',lat:37.5563,lng:126.9237,name:'Hongdae',sub:'Line 2 · Hongik Univ stn',cats:['genz','night','food']},
-  {id:'s6',city:'seoul',lat:37.5172,lng:127.0473,name:'Gangnam',sub:'Line 2 · Gangnam stn',cats:['genz','beauty','night']},
-  {id:'s7',city:'seoul',lat:37.5131,lng:127.0589,name:'COEX & Starfield',sub:'Line 9 · Bongeunsa stn',cats:['genz','beauty']},
-  {id:'s8',city:'seoul',lat:37.5636,lng:126.9827,name:'Myeongdong',sub:'Line 4 · Myeongdong stn',cats:['food','beauty','genz']},
-  {id:'s9',city:'seoul',lat:37.5755,lng:127.0610,name:'Gyeongdong Market',sub:'Line 1 · Jegi-dong stn',cats:['food','culture']},
-  {id:'s10',city:'seoul',lat:37.5500,lng:126.9075,name:'Mangwon Market',sub:'Line 6 · Mangwon stn',cats:['food']},
-  {id:'s11',city:'seoul',lat:37.5583,lng:126.9763,name:'Namdaemun Market',sub:'Line 4 · Hoehyeon stn',cats:['food','culture']},
-  {id:'s12',city:'seoul',lat:37.5700,lng:126.9990,name:'Gwangjang Market',sub:'Line 1 · Jongno 5-ga stn',cats:['food','culture']},
-  {id:'s13',city:'seoul',lat:37.5346,lng:126.9940,name:'Itaewon',sub:'Line 6 · Itaewon stn',cats:['genz','food','night']},
-  {id:'s14',city:'seoul',lat:37.5702,lng:126.9994,name:'Cheonggyecheon Stream',sub:'Restored urban stream',cats:['culture','genz']},
-  {id:'s15',city:'seoul',lat:37.5672,lng:127.0090,name:'Dongdaemun Design Plaza',sub:'Line 2/4/5 · DDP stn',cats:['culture','genz','beauty']},
-  {id:'s16',city:'seoul',lat:37.5285,lng:126.9942,name:'Han River Park (Banpo)',sub:'Banpo Bridge Rainbow Fountain',cats:['genz','night']},
-  {id:'s17',city:'seoul',lat:37.5796,lng:127.0074,name:'Ihwa Mural Village',sub:'Hillside murals · Walk from Hyehwa stn',cats:['culture','art']},
-
-  // ── BUSAN ──────────────────────────────────────────
-  {id:'b1',city:'busan',lat:35.0970,lng:129.0350,name:'Jagalchi Fish Market',sub:"Korea's largest seafood market",cats:['food','culture']},
-  {id:'b2',city:'busan',lat:35.1588,lng:129.1603,name:'Haeundae Beach',sub:'Famous beach & waterfront',cats:['genz','night','beauty']},
-  {id:'b3',city:'busan',lat:35.0980,lng:129.0107,name:'Gamcheon Culture Village',sub:'Colourful hillside art village',cats:['culture','art']},
-  {id:'b4',city:'busan',lat:35.1879,lng:129.2209,name:'Haedong Yonggungsa',sub:'Coastal temple on rocky cliffs',cats:['culture','hiking']},
-  {id:'b5',city:'busan',lat:35.1560,lng:129.1340,name:'Zest Bar',sub:'Cocktails · Haeundae area',cats:['night','genz']},
-
-  // ── JEJU ──────────────────────────────────────────
-  {id:'j1',city:'jeju',lat:33.3617,lng:126.5292,name:'Hallasan',sub:"South Korea's highest peak",cats:['hiking','nature']},
-  {id:'j2',city:'jeju',lat:33.4609,lng:126.9424,name:'Seongsan Ilchulbong',sub:'UNESCO Sunrise Peak',cats:['hiking','nature','culture']},
-  {id:'j3',city:'jeju',lat:33.5283,lng:126.7710,name:'Manjanggul Lava Tube',sub:"One of world's longest lava caves",cats:['nature','culture']},
-  {id:'j4',city:'jeju',lat:33.2450,lng:126.4117,name:'Jeju Beaches',sub:'Hyeopjae, Hamdeok, Gwakji',cats:['nature','genz']},
-
-  // ── DAY TRIPS ──────────────────────────────────────
-  {id:'d1',city:'daytrip',lat:35.1935,lng:128.1060,name:'Jinju',sub:'Lantern Festival – week of Oct 9!',cats:['culture']},
-  {id:'d2',city:'daytrip',lat:35.8562,lng:129.2247,name:'Gyeongju',sub:'UNESCO site, Bulguksa Temple',cats:['culture','hiking']},
-  {id:'d3',city:'daytrip',lat:35.5383,lng:129.3114,name:'Ulsan',sub:'Whale Museum, Grand Park',cats:['nature']},
-  {id:'d4',city:'daytrip',lat:38.1194,lng:128.4658,name:'Sokcho / Seoraksan',sub:'Fall foliage, national park',cats:['hiking','nature']},
-  {id:'d5',city:'daytrip',lat:37.2893,lng:127.0134,name:'Suwon',sub:'Hwaseong Fortress (UNESCO)',cats:['culture']},
-  {id:'icn',city:'seoul',lat:37.4602,lng:126.4407,name:'Incheon Airport (ICN)',sub:'International airport · 55km from Seoul',cats:[]}
+// ════════════════════════════════════════
+//  TODO SYSTEM
+// ════════════════════════════════════════
+var TODO_CITIES=[
+  {id:'seoul',label:'Seoul',emoji:'🏯',color:'#c0392b',sub:'Sep 26 – Oct 1 & Oct 8–11 · 8 nights'},
+  {id:'busan',label:'Busan',emoji:'🌊',color:'#1a5276',sub:'Oct 1–5 · 4 nights'},
+  {id:'jeju',label:'Jeju',emoji:'🌋',color:'#27ae60',sub:'Oct 5–8 · 3 nights'},
+  {id:'daytrip',label:'Day Trips',emoji:'🚌',color:'#7d6608',sub:'Jinju · Gyeongju · Suwon'},
+  {id:'general',label:'General',emoji:'📋',color:'#555e6e',sub:'Pre-trip & misc tasks'},
 ];
 
+var todoData = {}; // {cityId: [{id,text,done,priority,created}]}
+var currentTodoCity = 'seoul';
+var currentTodoFilter = 'all';
+
+// Seed some starter tasks
+var STARTER_TASKS = {
+  seoul:[
+    {text:'Book Gyeongbokgung Palace tickets online',priority:'high'},
+    {text:'Reserve Bukchon Hanok Village walking tour',priority:'med'},
+    {text:'Look up Chuseok holiday hours for attractions',priority:'high'},
+    {text:'Plan Han River picnic supplies',priority:'low'},
+  ],
+  busan:[
+    {text:'Book Haeundae Beach accommodation backup',priority:'med'},
+    {text:'Find Jagalchi Market opening hours',priority:'low'},
+    {text:'Research Gamcheon Culture Village entry',priority:'low'},
+  ],
+  jeju:[
+    {text:'Arrange private van for Hallasan hike day',priority:'high'},
+    {text:'Book Seongsan Ilchulbong sunrise slot',priority:'high'},
+    {text:'Check Manjanggul Lava Tube tour times',priority:'med'},
+  ],
+  daytrip:[
+    {text:'Check Jinju Lantern Festival exact dates',priority:'high'},
+    {text:'Book KTX/coach to Gyeongju',priority:'med'},
+  ],
+  general:[
+    {text:'Get T-Money cards for everyone',priority:'high'},
+    {text:'Download Naver Maps offline',priority:'high'},
+    {text:'Check visa requirements for all travellers',priority:'high'},
+    {text:'Set up group KakaoTalk chat',priority:'med'},
+    {text:'Research travel insurance options',priority:'med'},
+  ]
+};
+
+function todoKey(){return 'korea2026_todos';}
+function saveTodos(){try{localStorage.setItem(todoKey(),JSON.stringify(todoData));}catch(e){}}
+function loadTodos(){
+  try{var d=localStorage.getItem(todoKey());if(d)todoData=JSON.parse(d);}catch(e){}
+  // Ensure all cities exist
+  TODO_CITIES.forEach(function(c){
+    if(!todoData[c.id]){
+      todoData[c.id]=[];
+      // Add starters if first time
+      if(STARTER_TASKS[c.id]){
+        STARTER_TASKS[c.id].forEach(function(t){
+          todoData[c.id].push({id:Date.now()+Math.random(),text:t.text,done:false,priority:t.priority,created:Date.now()});
+        });
+      }
+    }
+  });
+  saveTodos();
+}
+
+function buildTodoSidebar(){
+  var cl=document.getElementById('todo-city-list');
+  var ml=document.getElementById('todo-mobile-cities');
+  cl.innerHTML=''; ml.innerHTML='';
+  TODO_CITIES.forEach(function(c){
+    var tasks=todoData[c.id]||[];
+    var left=tasks.filter(function(t){return!t.done;}).length;
+    // Desktop
+    var btn=document.createElement('button');
+    btn.className='city-btn'+(c.id===currentTodoCity?' active':'');
+    btn.innerHTML='<div class="city-dot" style="background:'+c.color+'"></div>'
+      +'<span>'+c.emoji+' '+c.label+'</span>'
+      +'<span class="city-count">'+left+'</span>';
+    btn.onclick=(function(id){return function(){switchTodoCity(id);};})(c.id);
+    cl.appendChild(btn);
+    // Mobile
+    var mbtn=document.createElement('button');
+    mbtn.className='todo-city-mobile-btn'+(c.id===currentTodoCity?' active':'');
+    mbtn.textContent=c.emoji+' '+c.label;
+    mbtn.onclick=(function(id){return function(){switchTodoCity(id);};})(c.id);
+    ml.appendChild(mbtn);
+  });
+}
+
+function switchTodoCity(id){
+  currentTodoCity=id;
+  currentTodoFilter='all';
+  document.querySelectorAll('.todo-chip').forEach(function(c){c.classList.remove('on');});
+  var chips=document.querySelectorAll('.todo-chip');
+  if(chips[0])chips[0].classList.add('on');
+  buildTodoSidebar();
+  renderTodoHeader();
+  renderTodoList();
+}
+
+function renderTodoHeader(){
+  var c=TODO_CITIES.filter(function(x){return x.id===currentTodoCity;})[0];
+  if(!c)return;
+  document.getElementById('todo-hdr-dot').style.background=c.color;
+  document.getElementById('todo-hdr-name').textContent=c.emoji+' '+c.label;
+  document.getElementById('todo-hdr-sub').textContent=c.sub;
+  // progress
+  var tasks=todoData[currentTodoCity]||[];
+  var done=tasks.filter(function(t){return t.done;}).length;
+  var total=tasks.length;
+  var pct=total>0?Math.round(done/total*100):0;
+  document.getElementById('todo-progress-fill').style.width=pct+'%';
+  document.getElementById('todo-progress-fill').style.background=c.color;
+  document.getElementById('todo-progress-label').textContent=done+' / '+total;
+  // stats footer
+  document.getElementById('stat-total').textContent=total;
+  document.getElementById('stat-done').textContent=done;
+  document.getElementById('stat-left').textContent=total-done;
+}
+
+function renderTodoList(){
+  var tasks=todoData[currentTodoCity]||[];
+  var f=currentTodoFilter;
+  var filtered=tasks.filter(function(t){
+    if(f==='all')return true;
+    if(f==='active')return !t.done;
+    if(f==='done')return t.done;
+    if(f==='high')return t.priority==='high'&&!t.done;
+    return true;
+  });
+
+  var listEl=document.getElementById('todo-list');
+  var emptyEl=document.getElementById('todo-empty');
+
+  if(filtered.length===0){
+    emptyEl.style.display='flex';
+    listEl.innerHTML='';
+    return;
+  }
+  emptyEl.style.display='none';
+
+  // Group: active then done (if showing all)
+  var active=filtered.filter(function(t){return!t.done;});
+  var done=filtered.filter(function(t){return t.done;});
+
+  var html='';
+  if(active.length>0){
+    if(done.length>0){html+='<div class="todo-section-label">Active <span class="todo-section-count">'+active.length+'</span></div>';}
+    active.forEach(function(t){html+=renderTodoItem(t);});
+  }
+  if(done.length>0){
+    html+='<div class="todo-section-label">Completed <span class="todo-section-count">'+done.length+'</span></div>';
+    done.forEach(function(t){html+=renderTodoItem(t);});
+  }
+  listEl.innerHTML=html;
+}
+
+function renderTodoItem(t){
+  var pLabels={high:'🔴 High',med:'🟡 Medium',low:'🟢 Low'};
+  return '<div class="todo-item'+(t.done?' done':'')+'" id="ti-'+t.id+'">'
+    +'<div class="todo-drag"><div class="todo-drag-dot"></div><div class="todo-drag-dot"></div><div class="todo-drag-dot"></div></div>'
+    +'<div class="todo-check'+(t.done?' checked':'')+'" onclick="toggleTodo(\''+t.id+'\')"></div>'
+    +'<div class="todo-text">'+escHtml(t.text)+'</div>'
+    +'<span class="todo-priority-badge '+t.priority+'">'+pLabels[t.priority]+'</span>'
+    +'<button class="todo-delete" onclick="deleteTodo(\''+t.id+'\')" title="Delete">×</button>'
+    +'</div>';
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+window.addTodo=function(){
+  var input=document.getElementById('todo-input');
+  var priority=document.getElementById('todo-priority').value;
+  var text=input.value.trim();
+  if(!text)return;
+  if(!todoData[currentTodoCity])todoData[currentTodoCity]=[];
+  todoData[currentTodoCity].unshift({id:Date.now()+Math.random(),text:text,done:false,priority:priority,created:Date.now()});
+  input.value='';
+  input.focus();
+  saveTodos();
+  buildTodoSidebar();
+  renderTodoHeader();
+  renderTodoList();
+};
+
+window.toggleTodo=function(id){
+  var tasks=todoData[currentTodoCity]||[];
+  var t=tasks.filter(function(x){return String(x.id)===String(id);})[0];
+  if(!t)return;
+  t.done=!t.done;
+  saveTodos();
+  buildTodoSidebar();
+  renderTodoHeader();
+  renderTodoList();
+};
+
+window.deleteTodo=function(id){
+  if(!todoData[currentTodoCity])return;
+  todoData[currentTodoCity]=todoData[currentTodoCity].filter(function(t){return String(t.id)!==String(id);});
+  saveTodos();
+  buildTodoSidebar();
+  renderTodoHeader();
+  renderTodoList();
+};
+
+window.clearDone=function(){
+  if(!todoData[currentTodoCity])return;
+  todoData[currentTodoCity]=todoData[currentTodoCity].filter(function(t){return!t.done;});
+  saveTodos();
+  buildTodoSidebar();
+  renderTodoHeader();
+  renderTodoList();
+};
+
+window.setTodoFilter=function(f,btn){
+  currentTodoFilter=f;
+  document.querySelectorAll('.todo-chip').forEach(function(c){c.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  renderTodoList();
+};
+
+window.goTodo=function(btn){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  document.getElementById('todo-view').classList.add('active');
+  document.getElementById('body').style.display='none';
+  // hide legend
+  document.querySelector('.hleg') && (document.querySelector('.hleg').style.visibility='hidden');
+  buildTodoSidebar();
+  renderTodoHeader();
+  renderTodoList();
+};
+
+// Patch goView to hide todo view
+var _origGoView=window.goView;
+window.goView=function(v,btn){
+  document.getElementById('todo-view').classList.remove('active');
+  document.getElementById('body').style.display='flex';
+  document.querySelector('.hleg') && (document.querySelector('.hleg').style.visibility='');
+  if(_origGoView)_origGoView(v,btn);
+};
+
+// ════════════════════════════════════════
+//  ORIGINAL MAP SCRIPT
+// ════════════════════════════════════════
+var AIRBNBS={a1:{id:'a1',lat:37.5800,lng:126.9840,city:'airbnb',name:'Airbnb Option A',sub:'Bukchon area · Anguk stn (Line 3) ~5 min',rows:[{l:'Nearest metro',v:'Anguk (Line 3)'},{l:'Walk to metro',v:'~5 min'},{l:'To Myeongdong',v:'2 stops ~8 min'},{l:'To Gangnam',v:'5 stops ~15 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],url:'https://www.airbnb.ca/rooms/1071219924971118739'},a2:{id:'a2',lat:37.5667,lng:126.9780,city:'airbnb',name:'Airbnb Option B',sub:'Gwanghwamun · Gyeongbokgung stn (Line 3) ~8 min',rows:[{l:'Nearest metro',v:'Gyeongbokgung (Line 3)'},{l:'Walk to metro',v:'~8 min'},{l:'To Myeongdong',v:'3 stops ~10 min'},{l:'To Gangnam',v:'6 stops ~20 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],url:'https://www.airbnb.ca/rooms/52696974'},b1:{id:'ba1',lat:35.1138,lng:129.0344,city:'airbnb',name:'Option C — Roots House Busan Stn',sub:'Choryang Ibagu-Gil Alley · near Busan Station',rows:[{l:'Neighbourhood',v:'Choryang Ibagu-Gil Alley'},{l:'Near',v:'Busan Station'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,241'},{l:'Per person',v:'~$187 CAD'}],url:'https://www.airbnb.ca/rooms/1602494588154383516'},b2:{id:'ba2',lat:35.1020,lng:129.0400,city:'airbnb',name:'Option D — Busan Port Bridge Taejong-Ro',sub:'Busan Harbor Bridge area · Yeongdo',rows:[{l:'Neighbourhood',v:'Busan Harbor Bridge'},{l:'Near',v:'Busan Port Bridge'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,352'},{l:'Per person',v:'~$196 CAD'}],url:'https://www.airbnb.ca/rooms/1457528950582135704'}};
+var PLACES=[{id:'s1',city:'seoul',lat:37.5797,lng:126.9770,name:'Gyeongbokgung Palace',sub:'Line 3 · Gyeongbokgung stn'},{id:'s2',city:'seoul',lat:37.5826,lng:126.9850,name:'Bukchon Hanok Village',sub:'Line 3 · Anguk stn'},{id:'s3',city:'seoul',lat:37.5793,lng:126.9910,name:'Changdeokgung Palace',sub:'Line 3 · Anguk stn'},{id:'s4',city:'seoul',lat:37.5512,lng:126.9882,name:'Namsan Tower',sub:'Walk from Myeongdong'},{id:'s5',city:'seoul',lat:37.5563,lng:126.9237,name:'Hongdae',sub:'Line 2 · Hongik Univ stn'},{id:'s6',city:'seoul',lat:37.5172,lng:127.0473,name:'Gangnam',sub:'Line 2 · Gangnam stn'},{id:'s7',city:'seoul',lat:37.5131,lng:127.0589,name:'COEX & Starfield',sub:'Line 9 · Bongeunsa stn'},{id:'s8',city:'seoul',lat:37.5636,lng:126.9827,name:'Myeongdong',sub:'Line 4 · Myeongdong stn'},{id:'s9',city:'seoul',lat:37.5755,lng:127.0610,name:'Gyeongdong Market',sub:'Line 1 · Jegi-dong stn'},{id:'s10',city:'seoul',lat:37.5500,lng:126.9075,name:'Mangwon Market',sub:'Line 6 · Mangwon stn'},{id:'s11',city:'seoul',lat:37.5583,lng:126.9763,name:'Namdaemun Market',sub:'Line 4 · Hoehyeon stn'},{id:'s12',city:'seoul',lat:37.5700,lng:126.9990,name:'Gwangjang Market',sub:'Line 1 · Jongno 5-ga stn'},{id:'s13',city:'seoul',lat:37.5346,lng:126.9940,name:'Itaewon',sub:'Line 6 · Itaewon stn'},{id:'s14',city:'seoul',lat:37.5702,lng:126.9994,name:'Cheonggyecheon Stream',sub:'Restored urban stream'},{id:'s15',city:'seoul',lat:37.5672,lng:127.0090,name:'Dongdaemun Design Plaza',sub:'Line 2/4/5 · DDP stn'},{id:'s16',city:'seoul',lat:37.5285,lng:126.9942,name:'Han River Park (Banpo)',sub:'Banpo Bridge Rainbow Fountain'},{id:'s17',city:'seoul',lat:37.5796,lng:127.0074,name:'Ihwa Mural Village',sub:'Hillside murals · Walk from Hyehwa stn'},{id:'b1',city:'busan',lat:35.0970,lng:129.0350,name:'Jagalchi Fish Market',sub:"Korea's largest seafood market"},{id:'b2',city:'busan',lat:35.1588,lng:129.1603,name:'Haeundae Beach',sub:'Famous beach & waterfront'},{id:'b3',city:'busan',lat:35.0980,lng:129.0107,name:'Gamcheon Culture Village',sub:'Colourful hillside art village'},{id:'b4',city:'busan',lat:35.1879,lng:129.2209,name:'Haedong Yonggungsa',sub:'Coastal temple on rocky cliffs'},{id:'b5',city:'busan',lat:35.1560,lng:129.1340,name:'Zest Bar',sub:'Cocktails, Haeundae area'},{id:'j1',city:'jeju',lat:33.3617,lng:126.5292,name:'Hallasan',sub:"South Korea's highest peak"},{id:'j2',city:'jeju',lat:33.4609,lng:126.9424,name:'Seongsan Ilchulbong',sub:'UNESCO Sunrise Peak'},{id:'j3',city:'jeju',lat:33.5283,lng:126.7710,name:'Manjanggul Lava Tube',sub:"One of world's longest lava caves"},{id:'j4',city:'jeju',lat:33.2450,lng:126.4117,name:'Jeju Beaches',sub:'Hyeopjae, Hamdeok, Gwakji'},{id:'d1',city:'daytrip',lat:35.1935,lng:128.1060,name:'Jinju',sub:'Lantern Festival – week of Oct 9!'},{id:'d2',city:'daytrip',lat:35.8562,lng:129.2247,name:'Gyeongju',sub:'UNESCO site, Bulguksa Temple'},{id:'d3',city:'daytrip',lat:35.5383,lng:129.3114,name:'Ulsan',sub:'Whale Museum, Grand Park'},{id:'d4',city:'daytrip',lat:38.1194,lng:128.4658,name:'Sokcho / Seoraksan',sub:'Fall foliage, national park'},{id:'d5',city:'daytrip',lat:37.2893,lng:127.0134,name:'Suwon',sub:'Hwaseong Fortress (UNESCO)'},{id:'icn',city:'seoul',lat:37.4602,lng:126.4407,name:'Incheon Airport (ICN)',sub:'International airport · 55km from Seoul'}];
 var ALL_PLACES=PLACES.concat(Object.values(AIRBNBS));
 var COLORS={seoul:'#c0392b',busan:'#1a5276',jeju:'#27ae60',daytrip:'#7d6608',airbnb:'#FF5A5F'};
 var VIEWS={seoul:{lat:37.562,lng:126.978,z:13},busan:{lat:35.138,lng:129.082,z:13},jeju:{lat:33.390,lng:126.550,z:12},all:{lat:36.5,lng:127.8,z:8}};
@@ -593,364 +1005,57 @@ var TRANSPORT=[
 
 var map, markersLayer, subwayLines=[], transportLines=[], walkCircles=[];
 var currentFilter='all', showWalk=true, showTransport=true;
-var globalCatFilter = new Set(); // which cats are currently active globally (for map)
 
-// ─── CATEGORY PILL TOGGLE ─────────────────────────────────────────────
-window.toggleCatPill = function(el) {
-  var cat = el.getAttribute('data-cat');
-  var city = el.getAttribute('data-city');
-  el.classList.toggle('active');
-
-  var citySet = activeCats[city];
-  if (el.classList.contains('active')) {
-    citySet.add(cat);
-  } else {
-    citySet.delete(cat);
-  }
-
-  // Update summary bar
-  updateFilterSummary(city);
-  // Re-render list
-  renderList('list-' + city, city);
-  // Rebuild global cat filter from all active city sets and redraw map
-  rebuildGlobalCatFilter();
-  drawMarkers();
-};
-
-window.resetCityFilter = function(city) {
-  activeCats[city].clear();
-  // Deactivate all pills for this city
-  document.querySelectorAll('.cat-pill[data-city="' + city + '"]').forEach(function(p){ p.classList.remove('active'); });
-  updateFilterSummary(city);
-  renderList('list-' + city, city);
-  rebuildGlobalCatFilter();
-  drawMarkers();
-};
-
-function updateFilterSummary(city) {
-  var summary = document.getElementById('summary-' + city);
-  var text = document.getElementById('summary-' + city + '-text');
-  var set = activeCats[city];
-  if (set.size === 0) {
-    summary.classList.remove('vis');
-    return;
-  }
-  summary.classList.add('vis');
-  var names = [];
-  set.forEach(function(c) {
-    var icons = {food:'🍜',culture:'🏛',genz:'⚡',hiking:'🥾',beauty:'💄',night:'🌙',nature:'🌿'};
-    names.push((icons[c]||'') + ' ' + c.charAt(0).toUpperCase() + c.slice(1));
-  });
-  text.textContent = 'Showing: ' + names.join(', ');
-}
-
-function rebuildGlobalCatFilter() {
-  globalCatFilter.clear();
-  Object.values(activeCats).forEach(function(set) {
-    set.forEach(function(c){ globalCatFilter.add(c); });
-  });
-}
-
-// ─── MAP DATA ──────────────────────────────────────────────────────────
 function initMap(){
   if(map)return;
   map=L.map('mapcanvas',{zoomControl:false,preferCanvas:false}).setView([37.562,126.978],13);
   map.getPane('tilePane').style.zIndex=200;
   if(map.tap)map.tap.disable();
-  var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    maxZoom:19,subdomains:'abc',
-    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  });
+  map.getPane('shadowPane').style.zIndex=400;
+  map.getPane('overlayPane').style.zIndex=500;
+  map.getPane('markerPane').style.zIndex=600;
+  map.getPane('tooltipPane').style.zIndex=700;
+  map.getPane('popupPane').style.zIndex=800;
+  var tileLayer=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,subdomains:'abc',attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
   var tileErrorCount=0;
-  tileLayer.on('tileerror',function(){
-    tileErrorCount++;
-    if(tileErrorCount===3){
-      map.removeLayer(tileLayer);
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
-        maxZoom:19,subdomains:'abcd',attribution:'&copy; OSM &copy; CARTO'
-      }).addTo(map);
-    }
-  });
+  tileLayer.on('tileerror',function(){tileErrorCount++;if(tileErrorCount===3){map.removeLayer(tileLayer);L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'&copy; OSM &copy; CARTO'}).addTo(map);}});
   tileLayer.addTo(map);
   markersLayer=L.layerGroup().addTo(map);
-  drawSubway(); drawTransport(); drawWalkRings(); drawMarkers();
-  renderList('list-seoul','seoul');
-  renderList('list-busan','busan');
-  renderList('list-jeju','jeju');
-  renderList('list-daytrip','daytrip');
+  drawSubway();drawTransport();drawWalkRings();drawMarkers();
+  renderList('list-seoul','seoul');renderList('list-busan','busan');renderList('list-jeju','jeju');renderList('list-daytrip','daytrip');
 }
 
 window.addEventListener('load',function(){
+  loadTodos();
   applyTopOffset();
   setTimeout(function(){initMap();},50);
+  updateBudget('cad');
 });
 
-function drawSubway(){
-  subwayLines.forEach(function(l){if(map.hasLayer(l))map.removeLayer(l);});
-  subwayLines=[];
-  if(currentFilter!=='all'&&currentFilter!=='seoul'&&currentFilter!=='airbnb')return;
-  SUBWAY.forEach(function(s){
-    subwayLines.push(L.polyline(s.pts,{color:'#fff',weight:5,opacity:1}).addTo(map));
-    subwayLines.push(L.polyline(s.pts,{color:s.color,weight:3,opacity:1}).addTo(map));
-  });
-}
-
-function drawTransport(){
-  transportLines.forEach(function(l){if(map.hasLayer(l))map.removeLayer(l);});
-  transportLines=[];
-  if(!showTransport)return;
-  if(currentFilter!=='all'&&currentFilter!=='seoul'&&currentFilter!=='airbnb')return;
-  TRANSPORT.forEach(function(r){
-    transportLines.push(L.polyline(r.pts,{color:'#fff',weight:r.weight+3,opacity:0.6}).addTo(map));
-    transportLines.push(L.polyline(r.pts,{color:r.color,weight:r.weight,dashArray:r.dash,opacity:1}).addTo(map));
-  });
-}
-
-function drawWalkRings(){
-  walkCircles.forEach(function(c){if(map.hasLayer(c))map.removeLayer(c);});
-  walkCircles=[];
-  if(!showWalk)return;
-  Object.values(AIRBNBS).forEach(function(ab){
-    [[400,0.12],[800,0.08],[1200,0.05]].forEach(function(rc){
-      var c=L.circle([ab.lat,ab.lng],{radius:rc[0],color:'rgba(255,75,85,0.8)',weight:2,dashArray:'8 5',fillColor:'rgba(255,75,85,1)',fillOpacity:rc[1]}).addTo(map);
-      walkCircles.push(c);
-    });
-  });
-}
-
-function placeMatchesCityFilter(p,f){
-  if(f==='all')return true;
-  if(f===p.city)return true;
-  if(f==='airbnb'&&p.city==='airbnb')return true;
-  if(p.city==='airbnb'){
-    if(f==='busan'&&(p.id==='ba1'||p.id==='ba2'))return true;
-    if(f==='seoul'&&(p.id==='a1'||p.id==='a2'||p.id==='af3'))return true;
-  }
-  return false;
-}
-
-function placeMatchesCatFilter(p) {
-  if (globalCatFilter.size === 0) return true;
-  if (!p.cats || p.cats.length === 0) return p.city === 'airbnb'; // always show airbnbs
-  return p.cats.some(function(c){ return globalCatFilter.has(c); });
-}
-
-function drawMarkers(){
-  markersLayer.clearLayers();
-  ALL_PLACES.forEach(function(p){
-    if(!placeMatchesCityFilter(p,currentFilter))return;
-    if(!placeMatchesCatFilter(p))return;
-    var color=COLORS[p.city]||'#c0392b';
-    var el=document.createElement('div');
-    if(p.city==='airbnb'){
-      var lbl={a1:'A',a2:'B',ba1:'C',ba2:'D',af3:'F'}[p.id]||'?';
-      el.innerHTML='<div style="background:#FF5A5F;color:#fff;width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.4)"><span style="transform:rotate(45deg)">'+lbl+'</span></div>';
-    } else if(p.id==='icn'){
-      el.innerHTML='<div style="background:#1a1a2e;color:#d4a853;padding:3px 7px;border-radius:10px;font-size:9px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.4);border:1px solid #d4a853">✈ ICN</div>';
-    } else {
-      // Show category icon on marker if a single cat filter is active
-      var markerCat = (globalCatFilter.size === 1 && p.cats && p.cats.length > 0)
-        ? Array.from(globalCatFilter).find(function(c){ return p.cats.includes(c); })
-        : null;
-      var icon = markerCat ? CAT_ICONS[markerCat] : '';
-      var markerColor = markerCat ? CAT_COLORS[markerCat] : color;
-      if (icon) {
-        el.innerHTML='<div style="background:'+markerColor+';color:#fff;width:26px;height:26px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1">'+icon+'</div>';
-      } else {
-        el.innerHTML='<div style="width:14px;height:14px;border-radius:50%;background:'+color+';border:2.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,0.4)"></div>';
-      }
-    }
-    el.style.cursor='pointer';
-    var anchor=p.city==='airbnb'?[12,24]:p.id==='icn'?[20,10]:[7,7];
-    if(p.city!=='airbnb'&&p.id!=='icn'&&globalCatFilter.size===1){anchor=[13,13];}
-    var icon=L.divIcon({html:el.innerHTML,className:'',iconAnchor:anchor});
-    var m=L.marker([p.lat,p.lng],{icon:icon}).addTo(markersLayer);
-    (function(place){m.on('click',function(){showPopup(place);});})(p);
-  });
-}
-
-function showPopup(p){
-  var color=COLORS[p.city]||'#888';
-  var cityLabel={seoul:'Seoul',busan:'Busan',jeju:'Jeju Island',daytrip:'Day Trip',airbnb:'Airbnb'}[p.city]||p.city;
-  var inner='<div class="pu-h"><span class="pu-tag" style="background:'+color+'">'+cityLabel+'</span>';
-  // Show category tags in popup
-  if(p.cats && p.cats.length > 0){
-    inner += '<div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:4px;">';
-    p.cats.forEach(function(c){
-      inner += '<span style="background:'+CAT_COLORS[c]+';color:#fff;padding:1px 5px;border-radius:8px;font-size:7.5px;font-weight:700;text-transform:uppercase">'+(CAT_ICONS[c]||'')+' '+c+'</span>';
-    });
-    inner += '</div>';
-  }
-  inner += '<div class="pu-ti">'+p.name+'</div></div><div class="pu-bd">';
-  if(p.rows){inner+='<div class="pu-rows">'+p.rows.map(function(r){return'<div class="pu-row"><span class="pu-lbl">'+r.l+'</span><span class="pu-val">'+r.v+'</span></div>';}).join('')+'</div><a href="'+p.url+'" target="_blank" class="pu-btn">View on Airbnb →</a>';}
-  else{inner+='<div class="pu-desc">'+p.sub+'</div>';}
-  inner+='</div>';
-  var pu=document.getElementById('popup');
-  document.getElementById('pu-inner').innerHTML=inner;
-  pu.style.display='block';
-  var pt=map.latLngToContainerPoint([p.lat,p.lng]);
-  var wrap=document.getElementById('mapwrap');
-  var W=wrap.clientWidth,H=wrap.clientHeight;
-  var pw=250,ph=200;
-  var left=pt.x+15,top=pt.y-20;
-  if(left+pw>W-10)left=pt.x-pw-15;
-  if(top+ph>H-10)top=H-ph-10;
-  if(top<5)top=5;if(left<5)left=5;
-  pu.style.left=left+'px';pu.style.top=top+'px';
-}
+function drawSubway(){subwayLines.forEach(function(l){if(map.hasLayer(l))map.removeLayer(l);});subwayLines=[];if(currentFilter!=='all'&&currentFilter!=='seoul'&&currentFilter!=='airbnb')return;SUBWAY.forEach(function(s){subwayLines.push(L.polyline(s.pts,{color:'#fff',weight:5,opacity:1}).addTo(map));subwayLines.push(L.polyline(s.pts,{color:s.color,weight:3,opacity:1}).addTo(map));});}
+function drawTransport(){transportLines.forEach(function(l){if(map.hasLayer(l))map.removeLayer(l);});transportLines=[];if(!showTransport)return;if(currentFilter!=='all'&&currentFilter!=='seoul'&&currentFilter!=='airbnb')return;TRANSPORT.forEach(function(r){transportLines.push(L.polyline(r.pts,{color:'#fff',weight:r.weight+3,opacity:0.6}).addTo(map));transportLines.push(L.polyline(r.pts,{color:r.color,weight:r.weight,dashArray:r.dash,opacity:1}).addTo(map));});}
+function drawWalkRings(){walkCircles.forEach(function(c){if(map.hasLayer(c))map.removeLayer(c);});walkCircles=[];if(!showWalk)return;Object.values(AIRBNBS).forEach(function(ab){[[400,0.12],[800,0.08],[1200,0.05]].forEach(function(rc){var c=L.circle([ab.lat,ab.lng],{radius:rc[0],color:'rgba(255,75,85,0.8)',weight:2,dashArray:'8 5',fillColor:'rgba(255,75,85,1)',fillOpacity:rc[1]}).addTo(map);walkCircles.push(c);});});}
+function markerMatchesFilter(p,f){if(f==='all')return true;if(f===p.city)return true;if(f==='airbnb'&&p.city==='airbnb')return true;if(p.city==='airbnb'){if(f==='busan'&&(p.id==='ba1'||p.id==='ba2'))return true;if(f==='seoul'&&(p.id==='a1'||p.id==='a2'))return true;}return false;}
+function drawMarkers(){markersLayer.clearLayers();ALL_PLACES.forEach(function(p){if(!markerMatchesFilter(p,currentFilter))return;var color=COLORS[p.city]||'#c0392b';var el=document.createElement('div');if(p.city==='airbnb'){var lbl={a1:'A',a2:'B',ba1:'C',ba2:'D'}[p.id]||'?';el.innerHTML='<div style="background:#FF5A5F;color:#fff;width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.4)"><span style="transform:rotate(45deg)">'+lbl+'</span></div>';}else if(p.id==='icn'){el.innerHTML='<div style="background:#1a1a2e;color:#d4a853;padding:3px 7px;border-radius:10px;font-size:9px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.4);border:1px solid #d4a853">✈ ICN</div>';}else{el.innerHTML='<div style="width:14px;height:14px;border-radius:50%;background:'+color+';border:2.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,0.4)"></div>';}el.style.cursor='pointer';var anchor=p.city==='airbnb'?[12,24]:p.id==='icn'?[20,10]:[7,7];var icon=L.divIcon({html:el.innerHTML,className:'',iconAnchor:anchor});var m=L.marker([p.lat,p.lng],{icon:icon}).addTo(markersLayer);(function(place){m.on('click',function(){showPopup(place);});})(p);});}
+function showPopup(p){var color=COLORS[p.city]||'#888';var cityLabel={seoul:'Seoul',busan:'Busan',jeju:'Jeju Island',daytrip:'Day Trip',airbnb:'Airbnb'}[p.city]||p.city;var inner='<div class="pu-h"><span class="pu-tag" style="background:'+color+'">'+cityLabel+'</span><div class="pu-ti">'+p.name+'</div></div><div class="pu-bd">';if(p.rows){inner+='<div class="pu-rows">'+p.rows.map(function(r){return'<div class="pu-row"><span class="pu-lbl">'+r.l+'</span><span class="pu-val">'+r.v+'</span></div>';}).join('')+'</div><a href="'+p.url+'" target="_blank" class="pu-btn">View on Airbnb →</a>';}else{inner+='<div class="pu-desc">'+p.sub+'</div>';}inner+='</div>';var pu=document.getElementById('popup');document.getElementById('pu-inner').innerHTML=inner;pu.style.display='block';var pt=map.latLngToContainerPoint([p.lat,p.lng]);var wrap=document.getElementById('mapwrap');var W=wrap.clientWidth,H=wrap.clientHeight;var pw=250,ph=180;var left=pt.x+15;var top=pt.y-20;if(left+pw>W-10)left=pt.x-pw-15;if(top+ph>H-10)top=H-ph-10;if(top<5)top=5;if(left<5)left=5;pu.style.left=left+'px';pu.style.top=top+'px';}
 function closePopup(){document.getElementById('popup').style.display='none';}
-
 window.zoom=function(dir){if(map)map.setZoom(map.getZoom()+dir);};
 window.toggleWalk=function(){showWalk=!showWalk;document.getElementById('wbtn').textContent=showWalk?'① hide':'① show';drawWalkRings();};
 window.toggleTransport=function(){showTransport=!showTransport;document.getElementById('tbtn').textContent=showTransport?'✈ hide':'✈ show';drawTransport();};
-
-window.goView=function(v,btn){
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
-  if(btn)btn.classList.add('on');
-  var vd=VIEWS[v];
-  closePopup();
-  if(map){
-    map.flyTo([vd.lat,vd.lng],vd.z,{duration:0.5});
-    map.once('moveend',function(){drawMarkers();});
-  }
-};
-
-window.focusPlace=function(id){
-  var p=ALL_PLACES.filter(function(x){return x.id===id;})[0];
-  if(!p)return;
-  document.querySelectorAll('.pi').forEach(function(e){e.classList.remove('on');});
-  var el=document.getElementById('pi-'+id);if(el)el.classList.add('on');
-  var busanAirbnbs=['ba1','ba2'];
-  var seoulAirbnbs=['a1','a2','af3'];
-  var cityTab=busanAirbnbs.indexOf(id)!==-1?'busan':seoulAirbnbs.indexOf(id)!==-1?'seoul':null;
-  if(cityTab){
-    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
-    var tabEl=document.getElementById('tab-'+cityTab);if(tabEl)tabEl.classList.add('on');
-    currentFilter=cityTab;
-    drawSubway();drawTransport();drawMarkers();
-  }
-  if(map)map.flyTo([p.lat,p.lng],15,{duration:0.8});
-  setTimeout(function(){showPopup(p);},900);
-  if(window.innerWidth<=600){var sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');sb.classList.remove('open');ov.classList.remove('vis');}
-};
-
-window.doFilter=function(f,btn){
-  document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('on');});
-  if(btn)btn.classList.add('on');
-  currentFilter=f;
-  drawSubway();drawTransport();
-  var viewMap={all:'all',seoul:'seoul',busan:'busan',jeju:'jeju',airbnb:'all',daytrip:'all'};
-  var vk=viewMap[f];
-  if(vk){var tabEl=document.getElementById('tab-'+vk);window.goView(vk,tabEl||null);}
-  else{drawMarkers();}
-};
-
-window.tog=function(n){
-  var b=document.getElementById('sec-'+n);
-  var a=document.getElementById('ar-'+n);
-  if(!b)return;
-  b.classList.toggle('open');
-  if(a)a.innerHTML=b.classList.contains('open')?'▾':'▶';
-};
-
-function renderList(elId, city){
-  var citySet = activeCats[city] || new Set();
-  var items;
-  if (city === 'daytrip') {
-    items = PLACES.filter(function(p){ return p.city === 'daytrip'; });
-  } else {
-    items = PLACES.filter(function(p){
-      if(p.city !== city) return false;
-      if(p.id === 'icn') return false;
-      if(citySet.size === 0) return true;
-      return p.cats && p.cats.some(function(c){ return citySet.has(c); });
-    });
-  }
-
-  var noResults = items.length === 0;
-  var html = '';
-  if(noResults && citySet.size > 0){
-    html = '<div style="padding:14px 12px;font-size:10px;color:var(--muted);text-align:center;">No spots match these filters.<br><span style="font-size:9px">Try removing a filter above.</span></div>';
-  } else {
-    html = items.map(function(p){
-      var color = COLORS[p.city] || '#c0392b';
-      var badges = '';
-      if(p.cats && p.cats.length > 0){
-        badges = '<div class="pi-cats">' + p.cats.map(function(c){
-          return '<span class="pi-cat-badge" style="background:'+CAT_COLORS[c]+'">'+(CAT_ICONS[c]||'')+' '+c+'</span>';
-        }).join('') + '</div>';
-      }
-      return '<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')">'
-        +'<div style="width:8px;height:8px;border-radius:50%;background:'+color+';flex-shrink:0;margin-top:4px"></div>'
-        +'<div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div>'+badges+'</div>'
-        +'</div>';
-    }).join('');
-  }
-  document.getElementById(elId).innerHTML = html;
-}
-
-window.tgCity=function(id,btn){
-  ['seoul','busan','jeju','tips'].forEach(function(c){
-    var el=document.getElementById('tg-c-'+c);
-    if(el)el.style.display=c===id?'block':'none';
-  });
-  document.querySelectorAll('#sec-tg .fbtn').forEach(function(b){b.classList.remove('on');});
-  if(btn)btn.classList.add('on');
-};
-
-window.toggleSidebar=function(){
-  var sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');
-  var isOpen=sb.classList.toggle('open');
-  ov.classList.toggle('vis',isOpen);
-};
-
-function applyTopOffset(){
-  var hdr=document.getElementById('hdr');
-  var banner=document.getElementById('ac-banner');
-  var offset=(hdr?hdr.offsetHeight:50)+(banner?banner.offsetHeight:42);
-  var body=document.getElementById('body');
-  var sb=document.getElementById('sb');
-  if(body){body.style.top=offset+'px';body.style.height='calc(100dvh - '+offset+'px)';}
-  if(sb&&window.innerWidth<=600){sb.style.top=offset+'px';}
-  if(map){setTimeout(function(){map.invalidateSize(true);},10);}
-}
+window.focusPlace=function(id){var p=ALL_PLACES.filter(function(x){return x.id===id;})[0];if(!p)return;document.querySelectorAll('.pi').forEach(function(e){e.classList.remove('on');});var el=document.getElementById('pi-'+id);if(el)el.classList.add('on');var busanAirbnbs=['ba1','ba2'];var cityTab=busanAirbnbs.indexOf(id)!==-1?'busan':'seoul';document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});var tabEl=document.getElementById('tab-'+cityTab);if(tabEl)tabEl.classList.add('on');currentFilter=cityTab;drawSubway();drawTransport();drawMarkers();if(map)map.flyTo([p.lat,p.lng],15,{duration:0.8});setTimeout(function(){showPopup(p);},900);if(window.innerWidth<=600){var sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');sb.classList.remove('open');ov.classList.remove('vis');}};
+window.doFilter=function(f,btn){document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');currentFilter=f;drawSubway();drawTransport();var viewMap={all:'all',seoul:'seoul',busan:'busan',jeju:'jeju',airbnb:'all',daytrip:'all'};var vk=viewMap[f];if(vk){var tabEl=document.getElementById('tab-'+vk);window.goView(vk,tabEl||null);}else{drawMarkers();}};
+window.tog=function(n){var b=document.getElementById('sec-'+n);var a=document.getElementById('ar-'+n);if(!b)return;b.classList.toggle('open');if(a)a.innerHTML=b.classList.contains('open')?'▾':'▶';};
+function renderList(elId,city){var items=PLACES.filter(function(p){return p.city===city;});document.getElementById(elId).innerHTML=items.map(function(p){return'<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')">'+'<div style="width:8px;height:8px;border-radius:50%;background:'+(COLORS[p.city]||'#c0392b')+';flex-shrink:0;margin-top:4px"></div><div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div></div>';}).join('');}
+window.tgCity=function(id,btn){['seoul','busan','jeju','tips'].forEach(function(c){var el=document.getElementById('tg-c-'+c);if(el)el.style.display=c===id?'block':'none';});document.querySelectorAll('#sec-tg .fbtn').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');};
+window.toggleSidebar=function(){var sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');var isOpen=sb.classList.toggle('open');ov.classList.toggle('vis',isOpen);};
+function applyTopOffset(){var hdr=document.getElementById('hdr');var banner=document.getElementById('ac-banner');var offset=(hdr?hdr.offsetHeight:50)+(banner?banner.offsetHeight:42);var body=document.getElementById('body');var sb=document.getElementById('sb');var todo=document.getElementById('todo-view');if(body){body.style.top=offset+'px';body.style.height='calc(100dvh - '+offset+'px)';}if(todo){todo.style.top=offset+'px';}if(sb&&window.innerWidth<=600){sb.style.top=offset+'px';}if(map){setTimeout(function(){map.invalidateSize(true);},10);}}
 window.addEventListener('resize',function(){applyTopOffset();});
-setTimeout(applyTopOffset,100);
-setTimeout(applyTopOffset,500);
+setTimeout(applyTopOffset,100);setTimeout(applyTopOffset,500);
 
 var BUDGET={nights:17,days:17,pax:12,usdToCad:1.37,lodgePerNight:70,foodPerDay:45,transitPerDay:15,interCityPP:210,activitiesPerDay:15,icnTransferPP:13,flightsLow:1100,flightsHigh:1400};
 function fmtFull(usd,cur){var val=cur==='cad'?usd*BUDGET.usdToCad:usd;return'$'+Math.round(val).toLocaleString();}
-function updateBudget(cur){
-  var B=BUDGET,mul=cur==='cad'?B.usdToCad:1,sym='$';
-  var lodgePP=B.lodgePerNight*B.nights,foodPP=B.foodPerDay*B.days,transitPP=B.transitPerDay*B.days,actPP=B.activitiesPerDay*B.days,icnPP=B.icnTransferPP*2;
-  var totalPP=lodgePP+foodPP+transitPP+B.interCityPP+actPP+icnPP,perDay=totalPP/B.days;
-  document.getElementById('pp-total').textContent=sym+Math.round(totalPP*mul).toLocaleString();
-  document.getElementById('pp-day').textContent=sym+Math.round(perDay*mul)+' / day';
-  document.getElementById('grp-total').textContent=sym+Math.round(totalPP*B.pax*mul/1000).toFixed(0)+'k est.';
-  document.getElementById('cat-lodge-pp').textContent=fmtFull(lodgePP,cur);
-  document.getElementById('cat-lodge-day').textContent=sym+Math.round(B.lodgePerNight*mul)+'/night · pp';
-  document.getElementById('cat-food-pp').textContent=fmtFull(foodPP,cur);
-  document.getElementById('cat-food-day').textContent=sym+Math.round(B.foodPerDay*mul)+'/day · pp';
-  document.getElementById('cat-transit-pp').textContent=fmtFull(transitPP,cur);
-  document.getElementById('cat-transit-day').textContent=sym+Math.round(B.transitPerDay*mul)+'/day · pp';
-  document.getElementById('cat-intercity-pp').textContent=fmtFull(B.interCityPP,cur);
-  document.getElementById('cat-act-pp').textContent=fmtFull(actPP,cur);
-  document.getElementById('cat-act-day').textContent=sym+Math.round(B.activitiesPerDay*mul)+'/day · pp';
-  document.getElementById('cat-icn-pp').textContent=fmtFull(icnPP,cur);
-  document.getElementById('cat-icn-day').textContent='AREX x2 · pp';
-  var tLow=Math.round((totalPP+B.flightsLow)*mul),tHigh=Math.round((totalPP+B.flightsHigh)*mul);
-  document.getElementById('cat-total-pp').textContent=sym+tLow.toLocaleString()+'–'+sym+tHigh.toLocaleString()+' pp';
-  document.getElementById('cat-total-grp').textContent=sym+Math.round(tLow*B.pax/1000)+'k–'+sym+Math.round(tHigh*B.pax/1000)+'k';
-  document.getElementById('rate-note').textContent=cur==='cad'?'1 CAD ≈ ₩1,070 · 1 USD ≈ ₩1,460 · Estimates mid-range spending':'1 USD ≈ ₩1,460 · 1 USD = '+(1/B.usdToCad).toFixed(2)+' CAD · Estimates mid-range';
-}
-window.setCur=function(cur){
-  document.getElementById('cur-cad').style.background=cur==='cad'?'var(--gold)':'rgba(212,168,83,.2)';
-  document.getElementById('cur-cad').style.color=cur==='cad'?'var(--ink)':'var(--gold)';
-  document.getElementById('cur-usd').style.background=cur==='usd'?'var(--gold)':'rgba(212,168,83,.2)';
-  document.getElementById('cur-usd').style.color=cur==='usd'?'var(--ink)':'var(--gold)';
-  updateBudget(cur);
-};
-window.addEventListener('load',function(){updateBudget('cad');});
+function updateBudget(cur){var B=BUDGET,mul=cur==='cad'?B.usdToCad:1,sym='$';var lodgePP=B.lodgePerNight*B.nights,foodPP=B.foodPerDay*B.days,transitPP=B.transitPerDay*B.days,actPP=B.activitiesPerDay*B.days,icnPP=B.icnTransferPP*2;var totalPP=lodgePP+foodPP+transitPP+B.interCityPP+actPP+icnPP,perDay=totalPP/B.days;document.getElementById('pp-total').textContent=sym+Math.round(totalPP*mul).toLocaleString();document.getElementById('pp-day').textContent=sym+Math.round(perDay*mul)+' / day';document.getElementById('grp-total').textContent=sym+Math.round(totalPP*B.pax*mul/1000).toFixed(0)+'k est.';document.getElementById('cat-lodge-pp').textContent=fmtFull(lodgePP,cur);document.getElementById('cat-lodge-day').textContent=sym+Math.round(B.lodgePerNight*mul)+'/night · pp';document.getElementById('cat-food-pp').textContent=fmtFull(foodPP,cur);document.getElementById('cat-food-day').textContent=sym+Math.round(B.foodPerDay*mul)+'/day · pp';document.getElementById('cat-transit-pp').textContent=fmtFull(transitPP,cur);document.getElementById('cat-transit-day').textContent=sym+Math.round(B.transitPerDay*mul)+'/day · pp';document.getElementById('cat-intercity-pp').textContent=fmtFull(B.interCityPP,cur);document.getElementById('cat-act-pp').textContent=fmtFull(actPP,cur);document.getElementById('cat-act-day').textContent=sym+Math.round(B.activitiesPerDay*mul)+'/day · pp';document.getElementById('cat-icn-pp').textContent=fmtFull(icnPP,cur);document.getElementById('cat-icn-day').textContent='AREX x2 · pp';var tLow=Math.round((totalPP+B.flightsLow)*mul),tHigh=Math.round((totalPP+B.flightsHigh)*mul);document.getElementById('cat-total-pp').textContent=sym+tLow.toLocaleString()+'–'+sym+tHigh.toLocaleString()+' pp';document.getElementById('cat-total-grp').textContent=sym+Math.round(tLow*B.pax/1000)+'k–'+sym+Math.round(tHigh*B.pax/1000)+'k';document.getElementById('rate-note').textContent=cur==='cad'?'1 CAD ≈ ₩1,070 · 1 USD ≈ ₩1,460 · Estimates mid-range spending':'1 USD ≈ ₩1,460 · 1 USD = '+(1/B.usdToCad).toFixed(2)+' CAD · Estimates mid-range';}
+window.setCur=function(cur){document.getElementById('cur-cad').style.background=cur==='cad'?'var(--gold)':'rgba(212,168,83,.2)';document.getElementById('cur-cad').style.color=cur==='cad'?'var(--ink)':'var(--gold)';document.getElementById('cur-usd').style.background=cur==='usd'?'var(--gold)':'rgba(212,168,83,.2)';document.getElementById('cur-usd').style.color=cur==='usd'?'var(--ink)':'var(--gold)';updateBudget(cur);};
 </script>
 </body>
 </html>
