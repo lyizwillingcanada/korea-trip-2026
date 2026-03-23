@@ -54,11 +54,53 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .sh{padding:11px 12px;font-size:9px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;color:var(--muted);background:var(--cream);border-top:1px solid #ddd5c8;border-bottom:1px solid #ddd5c8;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;min-height:44px;-webkit-tap-highlight-color:rgba(212,168,83,.2);touch-action:manipulation}
 .sh:hover{background:#e8ddd0}
 .sb-b{display:none}.sb-b.open{display:block}
-.pi{padding:8px 12px;cursor:pointer;display:flex;gap:7px;align-items:flex-start;border-left:3px solid transparent;transition:background .1s;min-height:44px;touch-action:manipulation}
+.pi{padding:8px 12px;cursor:pointer;display:flex;gap:7px;align-items:flex-start;border-left:3px solid transparent;transition:background .1s,opacity .15s;min-height:44px;touch-action:manipulation}
 .pi:hover{background:rgba(0,0,0,.04)}
 .pi.on{background:rgba(192,57,43,.07);border-left-color:#c0392b}
+.pi.hidden{display:none}
 .pi-n{font-size:11px;font-weight:600;color:var(--ink);line-height:1.3}
 .pi-s{font-size:9px;color:var(--muted);line-height:1.4;margin-top:1px}
+.pi-cats{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px}
+.pi-cat-badge{padding:1px 5px;border-radius:8px;font-size:7.5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:#fff}
+
+/* Category filter bar */
+.cat-filter-bar{padding:6px 10px 7px;background:#f7f3ee;border-bottom:1px solid #e8e0d4;display:flex;flex-direction:column;gap:5px}
+.cat-filter-label{font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.cat-pills{display:flex;gap:4px;flex-wrap:wrap}
+.cat-pill{display:flex;align-items:center;gap:3px;padding:4px 8px;border-radius:20px;font-size:9px;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:all .15s;user-select:none;min-height:28px;-webkit-tap-highlight-color:transparent}
+.cat-pill .pill-icon{font-size:11px;line-height:1}
+.cat-pill .pill-label{letter-spacing:.3px}
+
+/* Food pill */
+.cat-pill[data-cat="food"]{background:rgba(231,76,60,.08);border-color:rgba(231,76,60,.3);color:#c0392b}
+.cat-pill[data-cat="food"].active{background:#c0392b;border-color:#c0392b;color:#fff}
+/* Culture pill */
+.cat-pill[data-cat="culture"]{background:rgba(52,73,94,.08);border-color:rgba(52,73,94,.3);color:#2c3e50}
+.cat-pill[data-cat="culture"].active{background:#2c3e50;border-color:#2c3e50;color:#fff}
+/* Gen Z pill */
+.cat-pill[data-cat="genz"]{background:rgba(155,89,182,.1);border-color:rgba(155,89,182,.35);color:#8e44ad}
+.cat-pill[data-cat="genz"].active{background:#8e44ad;border-color:#8e44ad;color:#fff}
+/* Hiking pill */
+.cat-pill[data-cat="hiking"]{background:rgba(39,174,96,.08);border-color:rgba(39,174,96,.3);color:#1e8449}
+.cat-pill[data-cat="hiking"].active{background:#1e8449;border-color:#1e8449;color:#fff}
+/* Beauty pill */
+.cat-pill[data-cat="beauty"]{background:rgba(230,24,108,.08);border-color:rgba(230,24,108,.3);color:#c0186c}
+.cat-pill[data-cat="beauty"].active{background:#c0186c;border-color:#c0186c;color:#fff}
+/* Night pill */
+.cat-pill[data-cat="night"]{background:rgba(26,26,46,.08);border-color:rgba(26,26,46,.3);color:#1a1a2e}
+.cat-pill[data-cat="night"].active{background:#1a1a2e;border-color:#1a1a2e;color:#fff}
+
+/* Badge colors matching pills */
+.badge-food{background:#c0392b}
+.badge-culture{background:#2c3e50}
+.badge-genz{background:#8e44ad}
+.badge-hiking{background:#1e8449}
+.badge-beauty{background:#c0186c}
+.badge-night{background:#1a1a2e}
+.badge-seafood{background:#1a5276}
+.badge-nature{background:#27ae60}
+.badge-art{background:#d4a853}
+
 .tl{padding:8px 12px 4px}
 .tl-i{border-left:2px solid #ddd5c8;padding:5px 0 5px 12px;margin-left:4px;position:relative}
 .tl-i::before{content:'';position:absolute;left:-5px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--gold)}
@@ -88,6 +130,12 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 .zbtn:hover{background:#2d2d4a}
 #wbtn{margin-top:4px;width:auto;padding:0 8px;font-size:8px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;height:24px}
 .leaflet-control-zoom{display:none!important}.leaflet-control-attribution{font-size:8px!important;opacity:0.6}
+
+/* Active filter summary chip */
+.filter-summary{display:none;padding:4px 10px 5px;background:rgba(212,168,83,.1);border-bottom:1px solid rgba(212,168,83,.2);font-size:8.5px;color:var(--muted);align-items:center;justify-content:space-between}
+.filter-summary.vis{display:flex}
+.filter-reset{cursor:pointer;color:var(--gold);font-weight:700;font-size:8px;text-transform:uppercase;letter-spacing:.4px;padding:2px 6px;border-radius:8px;border:1px solid rgba(212,168,83,.4);background:transparent}
+.filter-reset:hover{background:rgba(212,168,83,.15)}
 </style>
 </head>
 <body>
@@ -259,12 +307,68 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
     </div>
   </div>
 
+  <!-- SEOUL SECTION with category filters -->
   <div class="sh" onclick="tog('sa')">📍 Seoul <span class="bdg" style="background:#c0392b">5+3 nights</span></div>
-  <div class="sb-b open" id="sec-sa"><div id="list-seoul"></div></div>
+  <div class="sb-b open" id="sec-sa">
+    <div class="cat-filter-bar" id="catbar-seoul">
+      <div class="cat-filter-label">Filter by vibe</div>
+      <div class="cat-pills">
+        <div class="cat-pill" data-cat="food" data-city="seoul" onclick="toggleCatPill(this)"><span class="pill-icon">🍜</span><span class="pill-label">Food</span></div>
+        <div class="cat-pill" data-cat="culture" data-city="seoul" onclick="toggleCatPill(this)"><span class="pill-icon">🏛</span><span class="pill-label">Culture</span></div>
+        <div class="cat-pill" data-cat="genz" data-city="seoul" onclick="toggleCatPill(this)"><span class="pill-icon">⚡</span><span class="pill-label">Gen Z</span></div>
+        <div class="cat-pill" data-cat="hiking" data-city="seoul" onclick="toggleCatPill(this)"><span class="pill-icon">🥾</span><span class="pill-label">Hiking</span></div>
+        <div class="cat-pill" data-cat="beauty" data-city="seoul" onclick="toggleCatPill(this)"><span class="pill-icon">💄</span><span class="pill-label">Beauty</span></div>
+        <div class="cat-pill" data-cat="night" data-city="seoul" onclick="toggleCatPill(this)"><span class="pill-icon">🌙</span><span class="pill-label">Night</span></div>
+      </div>
+      <div class="filter-summary" id="summary-seoul">
+        <span id="summary-seoul-text"></span>
+        <span class="filter-reset" onclick="resetCityFilter('seoul')">Clear all</span>
+      </div>
+    </div>
+    <div id="list-seoul"></div>
+  </div>
+
+  <!-- BUSAN SECTION with category filters -->
   <div class="sh" onclick="tog('ba')">📍 Busan <span class="bdg" style="background:#1a5276">4 nights</span></div>
-  <div class="sb-b" id="sec-ba"><div id="list-busan"></div></div>
+  <div class="sb-b" id="sec-ba">
+    <div class="cat-filter-bar" id="catbar-busan">
+      <div class="cat-filter-label">Filter by vibe</div>
+      <div class="cat-pills">
+        <div class="cat-pill" data-cat="food" data-city="busan" onclick="toggleCatPill(this)"><span class="pill-icon">🍜</span><span class="pill-label">Food</span></div>
+        <div class="cat-pill" data-cat="culture" data-city="busan" onclick="toggleCatPill(this)"><span class="pill-icon">🏛</span><span class="pill-label">Culture</span></div>
+        <div class="cat-pill" data-cat="genz" data-city="busan" onclick="toggleCatPill(this)"><span class="pill-icon">⚡</span><span class="pill-label">Gen Z</span></div>
+        <div class="cat-pill" data-cat="hiking" data-city="busan" onclick="toggleCatPill(this)"><span class="pill-icon">🥾</span><span class="pill-label">Hiking</span></div>
+        <div class="cat-pill" data-cat="beauty" data-city="busan" onclick="toggleCatPill(this)"><span class="pill-icon">💄</span><span class="pill-label">Beauty</span></div>
+        <div class="cat-pill" data-cat="night" data-city="busan" onclick="toggleCatPill(this)"><span class="pill-icon">🌙</span><span class="pill-label">Night</span></div>
+      </div>
+      <div class="filter-summary" id="summary-busan">
+        <span id="summary-busan-text"></span>
+        <span class="filter-reset" onclick="resetCityFilter('busan')">Clear all</span>
+      </div>
+    </div>
+    <div id="list-busan"></div>
+  </div>
+
+  <!-- JEJU SECTION with category filters -->
   <div class="sh" onclick="tog('ja')">📍 Jeju <span class="bdg" style="background:#27ae60">3 nights</span></div>
-  <div class="sb-b" id="sec-ja"><div id="list-jeju"></div></div>
+  <div class="sb-b" id="sec-ja">
+    <div class="cat-filter-bar" id="catbar-jeju">
+      <div class="cat-filter-label">Filter by vibe</div>
+      <div class="cat-pills">
+        <div class="cat-pill" data-cat="food" data-city="jeju" onclick="toggleCatPill(this)"><span class="pill-icon">🍜</span><span class="pill-label">Food</span></div>
+        <div class="cat-pill" data-cat="culture" data-city="jeju" onclick="toggleCatPill(this)"><span class="pill-icon">🏛</span><span class="pill-label">Culture</span></div>
+        <div class="cat-pill" data-cat="hiking" data-city="jeju" onclick="toggleCatPill(this)"><span class="pill-icon">🥾</span><span class="pill-label">Hiking</span></div>
+        <div class="cat-pill" data-cat="nature" data-city="jeju" onclick="toggleCatPill(this)" style="background:rgba(39,174,96,.08);border-color:rgba(39,174,96,.3);color:#1e8449"><span class="pill-icon">🌿</span><span class="pill-label">Nature</span></div>
+        <div class="cat-pill" data-cat="night" data-city="jeju" onclick="toggleCatPill(this)"><span class="pill-icon">🌙</span><span class="pill-label">Night</span></div>
+      </div>
+      <div class="filter-summary" id="summary-jeju">
+        <span id="summary-jeju-text"></span>
+        <span class="filter-reset" onclick="resetCityFilter('jeju')">Clear all</span>
+      </div>
+    </div>
+    <div id="list-jeju"></div>
+  </div>
+
   <div class="sh" onclick="tog('da')">🚌 Day Trips <span id="ar-da">▶</span></div>
   <div class="sb-b" id="sec-da"><div id="list-daytrip"></div></div>
 
@@ -314,7 +418,6 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
       <div class="fbtn" id="tg-jeju" onclick="tgCity('jeju',this)" style="border-radius:20px">Jeju</div>
       <div class="fbtn" id="tg-tips" onclick="tgCity('tips',this)" style="border-radius:20px">Best Picks</div>
     </div>
-
     <div id="tg-c-seoul" style="padding:4px 12px 10px">
       <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Tourist areas + transport</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Myeongdong / Seoul Tower</b> → Line 4, Myeongdong Stn</div>
@@ -322,124 +425,25 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Hongdae / Mangwon</b> → AREX or Line 2</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Gangnam / COEX</b> → Line 2 or Line 9</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Lotte World / Jamsil</b> → Line 2 or Line 8</div>
-      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:8px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Group costs — 12 people</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px">
-        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border-left:3px solid #d4a853;border:1px solid #e8e0d4">
-          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Subway / trip</div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩18,600</div>
-          <div style="font-size:8px;color:var(--muted)">₩1,550 × 12</div>
-        </div>
-        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
-          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">2 rides / day</div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩37,200</div>
-          <div style="font-size:8px;color:var(--muted)">typical daily</div>
-        </div>
-        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
-          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">AREX all-stop</div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩57,000</div>
-          <div style="font-size:8px;color:var(--muted)">₩4,750 × 12</div>
-        </div>
-        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
-          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Jumbo taxi</div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩35–60k</div>
-          <div style="font-size:8px;color:var(--muted)">central Seoul</div>
-        </div>
-      </div>
-      <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4;margin-bottom:6px">
-        <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Private 12-seat van · full day</div>
-        <div style="font-size:12px;font-weight:700;color:var(--ink)">₩250,000–400,000</div>
-      </div>
-      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Restaurant areas</div>
-      <div style="display:flex;flex-wrap:wrap;gap:3px;padding-bottom:4px">
-        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(192,57,43,.1);color:#c0392b">Myeongdong Kyoja → Myeongdong Stn</span>
-        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(192,57,43,.1);color:#c0392b">Ikseon-dong → Anguk Stn</span>
-        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(192,57,43,.1);color:#c0392b">Hongdae BBQ → Hongik Univ Stn</span>
-        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(192,57,43,.1);color:#c0392b">Gwangjang Market → Jongno 5-ga</span>
-      </div>
     </div>
-
     <div id="tg-c-busan" style="display:none;padding:4px 12px 10px">
       <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Tourist areas + transport</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Seomyeon</b> → central metro hub, ideal group base</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Haeundae / Gwangalli</b> → Metro Line 2</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Songdo Cable Car</b> → taxi recommended</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Taejongdae / Huinnyeoul</b> → taxi or charter van</div>
-      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:8px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Group costs — 12 people</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px">
-        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
-          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Metro / trip</div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩18,600</div>
-          <div style="font-size:8px;color:var(--muted)">₩1,550 × 12</div>
-        </div>
-        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
-          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">3 regular taxis</div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩30–45k</div>
-          <div style="font-size:8px;color:var(--muted)">across city</div>
-        </div>
-        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
-          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Jumbo taxi</div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩50–80k</div>
-          <div style="font-size:8px;color:var(--muted)">coastal routes</div>
-        </div>
-        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
-          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Private van · day</div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩220–350k</div>
-          <div style="font-size:8px;color:var(--muted)">full day hire</div>
-        </div>
-      </div>
-      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Restaurant areas</div>
-      <div style="display:flex;flex-wrap:wrap;gap:3px;padding-bottom:4px">
-        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(26,82,118,.1);color:#1a5276">Jagalchi seafood → Jagalchi Stn</span>
-        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(26,82,118,.1);color:#1a5276">Seomyeon food alley → Seomyeon Stn</span>
-        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(26,82,118,.1);color:#1a5276">Nampo-dong → Nampo Stn</span>
-        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(26,82,118,.1);color:#1a5276">Gijang seafood → van/taxi</span>
-      </div>
     </div>
-
     <div id="tg-c-jeju" style="display:none;padding:4px 12px 10px">
       <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Getting around</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px"><b>Hallasan / Seongsan / Seopjikoji</b> → road transport required</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #ddd5c8;margin-bottom:2px">Public buses are slow for large groups</div>
       <div style="font-size:10px;color:var(--ink);line-height:1.6;padding:2px 0 2px 8px;border-left:2px solid #27ae60;margin-bottom:2px"><b>Best option:</b> private van or two rental vehicles</div>
-      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:8px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Group costs — 12 people</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px">
-        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
-          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Private van · full day</div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩300–500k</div>
-          <div style="font-size:8px;color:var(--muted)">route-dependent</div>
-        </div>
-        <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4">
-          <div style="font-size:8px;color:var(--muted);text-transform:uppercase">2 taxis / day</div>
-          <div style="font-size:12px;font-weight:700;color:var(--ink)">₩120–180k</div>
-          <div style="font-size:8px;color:var(--muted)">major routes</div>
-        </div>
-      </div>
-      <div style="background:rgba(255,255,255,.6);border-radius:6px;padding:6px 8px;border:1px solid #e8e0d4;margin-bottom:6px">
-        <div style="font-size:8px;color:var(--muted);text-transform:uppercase">Airport limo bus (point-to-point)</div>
-        <div style="font-size:12px;font-weight:700;color:var(--ink)">₩60,000–72,000</div>
-        <div style="font-size:8px;color:var(--muted)">₩5–6k × 12 people</div>
-      </div>
-      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin:6px 0 4px;border-bottom:1px solid #e8e0d4;padding-bottom:3px">Restaurant areas</div>
-      <div style="display:flex;flex-wrap:wrap;gap:3px;padding-bottom:4px">
-        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(39,174,96,.1);color:#27ae60">Black pork (Donsadon) → taxi</span>
-        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(39,174,96,.1);color:#27ae60">Dongmun Market → taxi/bus</span>
-        <span style="padding:2px 6px;border-radius:10px;font-size:8px;font-weight:700;background:rgba(39,174,96,.1);color:#27ae60">Seogwipo seafood → van preferred</span>
-      </div>
     </div>
-
     <div id="tg-c-tips" style="display:none;padding:4px 12px 10px">
-      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:6px 0 5px;font-size:9px;color:#7a6030;line-height:1.7">
-        <b>Seoul</b> — public transit is most efficient unless moving late at night.
-      </div>
-      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7">
-        <b>Busan</b> — mix metro + taxis for coastal destinations.
-      </div>
-      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7">
-        <b>Jeju</b> — private van strongly recommended; public transit adds major travel time for groups.
-      </div>
-      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7">
-        <b>Restaurant evenings</b> — taxis often cheaper than splitting subway transfers for 12 people.
-      </div>
+      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:6px 0 5px;font-size:9px;color:#7a6030;line-height:1.7"><b>Seoul</b> — public transit is most efficient unless moving late at night.</div>
+      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7"><b>Busan</b> — mix metro + taxis for coastal destinations.</div>
+      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7"><b>Jeju</b> — private van strongly recommended; public transit adds major travel time for groups.</div>
+      <div style="background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.3);border-radius:6px;padding:7px 10px;margin:0 0 5px;font-size:9px;color:#7a6030;line-height:1.7"><b>Restaurant evenings</b> — taxis often cheaper than splitting subway transfers for 12 people.</div>
     </div>
   </div>
 
@@ -458,6 +462,27 @@ body{height:100%;height:100dvh;overflow:hidden;font-family:'DM Sans',sans-serif;
 </div>
 
 <script>
+// ─── CATEGORY DEFINITIONS ─────────────────────────────────────────────
+// Each place can have multiple categories
+var CAT_COLORS = {
+  food:    '#c0392b',
+  culture: '#2c3e50',
+  genz:    '#8e44ad',
+  hiking:  '#1e8449',
+  beauty:  '#c0186c',
+  night:   '#1a1a2e',
+  nature:  '#27ae60',
+  seafood: '#1a5276',
+  art:     '#d4a853'
+};
+var CAT_ICONS = {
+  food:'🍜', culture:'🏛', genz:'⚡', hiking:'🥾', beauty:'💄',
+  night:'🌙', nature:'🌿', seafood:'🦞', art:'🎨'
+};
+
+// Active category filters per city
+var activeCats = { seoul: new Set(), busan: new Set(), jeju: new Set() };
+
 var AIRBNBS={
   af3:{id:'af3',lat:37.5115,lng:126.9427,city:'airbnb',name:'Option F — ShareGo House',sub:'Noryangjin Stn (Lines 1 & 9) · 3 min walk',rows:[{l:'Nearest metro',v:'Noryangjin (Lines 1 & 9)'},{l:'Walk to metro',v:'~3 min'},{l:'To Myeongdong',v:'~15 min (Line 4 via transfer)'},{l:'To Gangnam',v:'Line 9 ~20 min'},{l:'Capacity',v:'10 bed · 5 bath · up to 21 guests'},{l:'Rooftop',v:'Included · free use'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Rating',v:'★4.86 · Superhost'},{l:'Price',v:'TBD (negotiable by headcount)'}],url:'https://www.airbnb.ca/rooms/1363310740761950624'},
   a1:{id:'a1',lat:37.5800,lng:126.9840,city:'airbnb',name:'Airbnb Option A',sub:'Bukchon area · Anguk stn (Line 3) ~5 min',rows:[{l:'Nearest metro',v:'Anguk (Line 3)'},{l:'Walk to metro',v:'~5 min'},{l:'To Myeongdong',v:'2 stops ~8 min'},{l:'To Gangnam',v:'5 stops ~15 min'},{l:'Stay 1',v:'Sep 26 – Oct 1'},{l:'Stay 2',v:'Oct 8 – 11'},{l:'Budget',v:'$600–$1,000/night'}],url:'https://www.airbnb.ca/rooms/1071219924971118739'},
@@ -465,7 +490,49 @@ var AIRBNBS={
   b1:{id:'ba1',lat:35.1138,lng:129.0344,city:'airbnb',name:'Option C — Roots House Busan Stn',sub:'Choryang Ibagu-Gil Alley · near Busan Station',rows:[{l:'Neighbourhood',v:'Choryang Ibagu-Gil Alley'},{l:'Near',v:'Busan Station'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,241'},{l:'Per person',v:'~$187 CAD'}],url:'https://www.airbnb.ca/rooms/1602494588154383516'},
   b2:{id:'ba2',lat:35.1020,lng:129.0400,city:'airbnb',name:'Option D — Busan Port Bridge Taejong-Ro',sub:'Busan Harbor Bridge area · Yeongdo',rows:[{l:'Neighbourhood',v:'Busan Harbor Bridge'},{l:'Near',v:'Busan Port Bridge'},{l:'Guests',v:'12 people'},{l:'Stay',v:'Sep 30 – Oct 4 (4 nights)'},{l:'Total (CAD)',v:'$2,352'},{l:'Per person',v:'~$196 CAD'}],url:'https://www.airbnb.ca/rooms/1457528950582135704'}
 };
-var PLACES=[{id:'s1',city:'seoul',lat:37.5797,lng:126.9770,name:'Gyeongbokgung Palace',sub:'Line 3 · Gyeongbokgung stn'},{id:'s2',city:'seoul',lat:37.5826,lng:126.9850,name:'Bukchon Hanok Village',sub:'Line 3 · Anguk stn'},{id:'s3',city:'seoul',lat:37.5793,lng:126.9910,name:'Changdeokgung Palace',sub:'Line 3 · Anguk stn'},{id:'s4',city:'seoul',lat:37.5512,lng:126.9882,name:'Namsan Tower',sub:'Walk from Myeongdong'},{id:'s5',city:'seoul',lat:37.5563,lng:126.9237,name:'Hongdae',sub:'Line 2 · Hongik Univ stn'},{id:'s6',city:'seoul',lat:37.5172,lng:127.0473,name:'Gangnam',sub:'Line 2 · Gangnam stn'},{id:'s7',city:'seoul',lat:37.5131,lng:127.0589,name:'COEX & Starfield',sub:'Line 9 · Bongeunsa stn'},{id:'s8',city:'seoul',lat:37.5636,lng:126.9827,name:'Myeongdong',sub:'Line 4 · Myeongdong stn'},{id:'s9',city:'seoul',lat:37.5755,lng:127.0610,name:'Gyeongdong Market',sub:'Line 1 · Jegi-dong stn'},{id:'s10',city:'seoul',lat:37.5500,lng:126.9075,name:'Mangwon Market',sub:'Line 6 · Mangwon stn'},{id:'s11',city:'seoul',lat:37.5583,lng:126.9763,name:'Namdaemun Market',sub:'Line 4 · Hoehyeon stn'},{id:'s12',city:'seoul',lat:37.5700,lng:126.9990,name:'Gwangjang Market',sub:'Line 1 · Jongno 5-ga stn'},{id:'s13',city:'seoul',lat:37.5346,lng:126.9940,name:'Itaewon',sub:'Line 6 · Itaewon stn'},{id:'s14',city:'seoul',lat:37.5702,lng:126.9994,name:'Cheonggyecheon Stream',sub:'Restored urban stream'},{id:'s15',city:'seoul',lat:37.5672,lng:127.0090,name:'Dongdaemun Design Plaza',sub:'Line 2/4/5 · DDP stn'},{id:'s16',city:'seoul',lat:37.5285,lng:126.9942,name:'Han River Park (Banpo)',sub:'Banpo Bridge Rainbow Fountain'},{id:'s17',city:'seoul',lat:37.5796,lng:127.0074,name:'Ihwa Mural Village',sub:'Hillside murals · Walk from Hyehwa stn'},{id:'b1',city:'busan',lat:35.0970,lng:129.0350,name:'Jagalchi Fish Market',sub:"Korea's largest seafood market"},{id:'b2',city:'busan',lat:35.1588,lng:129.1603,name:'Haeundae Beach',sub:'Famous beach & waterfront'},{id:'b3',city:'busan',lat:35.0980,lng:129.0107,name:'Gamcheon Culture Village',sub:'Colourful hillside art village'},{id:'b4',city:'busan',lat:35.1879,lng:129.2209,name:'Haedong Yonggungsa',sub:'Coastal temple on rocky cliffs'},{id:'b5',city:'busan',lat:35.1560,lng:129.1340,name:'Zest Bar',sub:'Cocktails, Haeundae area'},{id:'j1',city:'jeju',lat:33.3617,lng:126.5292,name:'Hallasan',sub:"South Korea's highest peak"},{id:'j2',city:'jeju',lat:33.4609,lng:126.9424,name:'Seongsan Ilchulbong',sub:'UNESCO Sunrise Peak'},{id:'j3',city:'jeju',lat:33.5283,lng:126.7710,name:'Manjanggul Lava Tube',sub:"One of world's longest lava caves"},{id:'j4',city:'jeju',lat:33.2450,lng:126.4117,name:'Jeju Beaches',sub:'Hyeopjae, Hamdeok, Gwakji'},{id:'d1',city:'daytrip',lat:35.1935,lng:128.1060,name:'Jinju',sub:'Lantern Festival – week of Oct 9!'},{id:'d2',city:'daytrip',lat:35.8562,lng:129.2247,name:'Gyeongju',sub:'UNESCO site, Bulguksa Temple'},{id:'d3',city:'daytrip',lat:35.5383,lng:129.3114,name:'Ulsan',sub:'Whale Museum, Grand Park'},{id:'d4',city:'daytrip',lat:38.1194,lng:128.4658,name:'Sokcho / Seoraksan',sub:'Fall foliage, national park'},{id:'d5',city:'daytrip',lat:37.2893,lng:127.0134,name:'Suwon',sub:'Hwaseong Fortress (UNESCO)'},{id:'icn',city:'seoul',lat:37.4602,lng:126.4407,name:'Incheon Airport (ICN)',sub:'International airport · 55km from Seoul'}];
+
+var PLACES=[
+  // ── SEOUL ──────────────────────────────────────────
+  {id:'s1',city:'seoul',lat:37.5797,lng:126.9770,name:'Gyeongbokgung Palace',sub:'Line 3 · Gyeongbokgung stn',cats:['culture']},
+  {id:'s2',city:'seoul',lat:37.5826,lng:126.9850,name:'Bukchon Hanok Village',sub:'Line 3 · Anguk stn',cats:['culture','beauty']},
+  {id:'s3',city:'seoul',lat:37.5793,lng:126.9910,name:'Changdeokgung Palace',sub:'Line 3 · Anguk stn',cats:['culture']},
+  {id:'s4',city:'seoul',lat:37.5512,lng:126.9882,name:'Namsan Tower',sub:'Walk from Myeongdong',cats:['hiking','culture','night']},
+  {id:'s5',city:'seoul',lat:37.5563,lng:126.9237,name:'Hongdae',sub:'Line 2 · Hongik Univ stn',cats:['genz','night','food']},
+  {id:'s6',city:'seoul',lat:37.5172,lng:127.0473,name:'Gangnam',sub:'Line 2 · Gangnam stn',cats:['genz','beauty','night']},
+  {id:'s7',city:'seoul',lat:37.5131,lng:127.0589,name:'COEX & Starfield',sub:'Line 9 · Bongeunsa stn',cats:['genz','beauty']},
+  {id:'s8',city:'seoul',lat:37.5636,lng:126.9827,name:'Myeongdong',sub:'Line 4 · Myeongdong stn',cats:['food','beauty','genz']},
+  {id:'s9',city:'seoul',lat:37.5755,lng:127.0610,name:'Gyeongdong Market',sub:'Line 1 · Jegi-dong stn',cats:['food','culture']},
+  {id:'s10',city:'seoul',lat:37.5500,lng:126.9075,name:'Mangwon Market',sub:'Line 6 · Mangwon stn',cats:['food']},
+  {id:'s11',city:'seoul',lat:37.5583,lng:126.9763,name:'Namdaemun Market',sub:'Line 4 · Hoehyeon stn',cats:['food','culture']},
+  {id:'s12',city:'seoul',lat:37.5700,lng:126.9990,name:'Gwangjang Market',sub:'Line 1 · Jongno 5-ga stn',cats:['food','culture']},
+  {id:'s13',city:'seoul',lat:37.5346,lng:126.9940,name:'Itaewon',sub:'Line 6 · Itaewon stn',cats:['genz','food','night']},
+  {id:'s14',city:'seoul',lat:37.5702,lng:126.9994,name:'Cheonggyecheon Stream',sub:'Restored urban stream',cats:['culture','genz']},
+  {id:'s15',city:'seoul',lat:37.5672,lng:127.0090,name:'Dongdaemun Design Plaza',sub:'Line 2/4/5 · DDP stn',cats:['culture','genz','beauty']},
+  {id:'s16',city:'seoul',lat:37.5285,lng:126.9942,name:'Han River Park (Banpo)',sub:'Banpo Bridge Rainbow Fountain',cats:['genz','night']},
+  {id:'s17',city:'seoul',lat:37.5796,lng:127.0074,name:'Ihwa Mural Village',sub:'Hillside murals · Walk from Hyehwa stn',cats:['culture','art']},
+
+  // ── BUSAN ──────────────────────────────────────────
+  {id:'b1',city:'busan',lat:35.0970,lng:129.0350,name:'Jagalchi Fish Market',sub:"Korea's largest seafood market",cats:['food','culture']},
+  {id:'b2',city:'busan',lat:35.1588,lng:129.1603,name:'Haeundae Beach',sub:'Famous beach & waterfront',cats:['genz','night','beauty']},
+  {id:'b3',city:'busan',lat:35.0980,lng:129.0107,name:'Gamcheon Culture Village',sub:'Colourful hillside art village',cats:['culture','art']},
+  {id:'b4',city:'busan',lat:35.1879,lng:129.2209,name:'Haedong Yonggungsa',sub:'Coastal temple on rocky cliffs',cats:['culture','hiking']},
+  {id:'b5',city:'busan',lat:35.1560,lng:129.1340,name:'Zest Bar',sub:'Cocktails · Haeundae area',cats:['night','genz']},
+
+  // ── JEJU ──────────────────────────────────────────
+  {id:'j1',city:'jeju',lat:33.3617,lng:126.5292,name:'Hallasan',sub:"South Korea's highest peak",cats:['hiking','nature']},
+  {id:'j2',city:'jeju',lat:33.4609,lng:126.9424,name:'Seongsan Ilchulbong',sub:'UNESCO Sunrise Peak',cats:['hiking','nature','culture']},
+  {id:'j3',city:'jeju',lat:33.5283,lng:126.7710,name:'Manjanggul Lava Tube',sub:"One of world's longest lava caves",cats:['nature','culture']},
+  {id:'j4',city:'jeju',lat:33.2450,lng:126.4117,name:'Jeju Beaches',sub:'Hyeopjae, Hamdeok, Gwakji',cats:['nature','genz']},
+
+  // ── DAY TRIPS ──────────────────────────────────────
+  {id:'d1',city:'daytrip',lat:35.1935,lng:128.1060,name:'Jinju',sub:'Lantern Festival – week of Oct 9!',cats:['culture']},
+  {id:'d2',city:'daytrip',lat:35.8562,lng:129.2247,name:'Gyeongju',sub:'UNESCO site, Bulguksa Temple',cats:['culture','hiking']},
+  {id:'d3',city:'daytrip',lat:35.5383,lng:129.3114,name:'Ulsan',sub:'Whale Museum, Grand Park',cats:['nature']},
+  {id:'d4',city:'daytrip',lat:38.1194,lng:128.4658,name:'Sokcho / Seoraksan',sub:'Fall foliage, national park',cats:['hiking','nature']},
+  {id:'d5',city:'daytrip',lat:37.2893,lng:127.0134,name:'Suwon',sub:'Hwaseong Fortress (UNESCO)',cats:['culture']},
+  {id:'icn',city:'seoul',lat:37.4602,lng:126.4407,name:'Incheon Airport (ICN)',sub:'International airport · 55km from Seoul',cats:[]}
+];
+
 var ALL_PLACES=PLACES.concat(Object.values(AIRBNBS));
 var COLORS={seoul:'#c0392b',busan:'#1a5276',jeju:'#27ae60',daytrip:'#7d6608',airbnb:'#FF5A5F'};
 var VIEWS={seoul:{lat:37.562,lng:126.978,z:13},busan:{lat:35.138,lng:129.082,z:13},jeju:{lat:33.390,lng:126.550,z:12},all:{lat:36.5,lng:127.8,z:8}};
@@ -488,18 +555,70 @@ var TRANSPORT=[
 
 var map, markersLayer, subwayLines=[], transportLines=[], walkCircles=[];
 var currentFilter='all', showWalk=true, showTransport=true;
+var globalCatFilter = new Set(); // which cats are currently active globally (for map)
 
+// ─── CATEGORY PILL TOGGLE ─────────────────────────────────────────────
+window.toggleCatPill = function(el) {
+  var cat = el.getAttribute('data-cat');
+  var city = el.getAttribute('data-city');
+  el.classList.toggle('active');
+
+  var citySet = activeCats[city];
+  if (el.classList.contains('active')) {
+    citySet.add(cat);
+  } else {
+    citySet.delete(cat);
+  }
+
+  // Update summary bar
+  updateFilterSummary(city);
+  // Re-render list
+  renderList('list-' + city, city);
+  // Rebuild global cat filter from all active city sets and redraw map
+  rebuildGlobalCatFilter();
+  drawMarkers();
+};
+
+window.resetCityFilter = function(city) {
+  activeCats[city].clear();
+  // Deactivate all pills for this city
+  document.querySelectorAll('.cat-pill[data-city="' + city + '"]').forEach(function(p){ p.classList.remove('active'); });
+  updateFilterSummary(city);
+  renderList('list-' + city, city);
+  rebuildGlobalCatFilter();
+  drawMarkers();
+};
+
+function updateFilterSummary(city) {
+  var summary = document.getElementById('summary-' + city);
+  var text = document.getElementById('summary-' + city + '-text');
+  var set = activeCats[city];
+  if (set.size === 0) {
+    summary.classList.remove('vis');
+    return;
+  }
+  summary.classList.add('vis');
+  var names = [];
+  set.forEach(function(c) {
+    var icons = {food:'🍜',culture:'🏛',genz:'⚡',hiking:'🥾',beauty:'💄',night:'🌙',nature:'🌿'};
+    names.push((icons[c]||'') + ' ' + c.charAt(0).toUpperCase() + c.slice(1));
+  });
+  text.textContent = 'Showing: ' + names.join(', ');
+}
+
+function rebuildGlobalCatFilter() {
+  globalCatFilter.clear();
+  Object.values(activeCats).forEach(function(set) {
+    set.forEach(function(c){ globalCatFilter.add(c); });
+  });
+}
+
+// ─── MAP DATA ──────────────────────────────────────────────────────────
 function initMap(){
   if(map)return;
   map=L.map('mapcanvas',{zoomControl:false,preferCanvas:false}).setView([37.562,126.978],13);
   map.getPane('tilePane').style.zIndex=200;
   if(map.tap)map.tap.disable();
-  map.getPane('shadowPane').style.zIndex=400;
-  map.getPane('overlayPane').style.zIndex=500;
-  map.getPane('markerPane').style.zIndex=600;
-  map.getPane('tooltipPane').style.zIndex=700;
-  map.getPane('popupPane').style.zIndex=800;
-
   var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     maxZoom:19,subdomains:'abc',
     attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -510,19 +629,13 @@ function initMap(){
     if(tileErrorCount===3){
       map.removeLayer(tileLayer);
       L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
-        maxZoom:19,subdomains:'abcd',
-        attribution:'&copy; OSM &copy; CARTO'
+        maxZoom:19,subdomains:'abcd',attribution:'&copy; OSM &copy; CARTO'
       }).addTo(map);
     }
   });
   tileLayer.addTo(map);
-
   markersLayer=L.layerGroup().addTo(map);
-  drawSubway();
-  drawTransport();
-  drawWalkRings();
-  drawMarkers();
-
+  drawSubway(); drawTransport(); drawWalkRings(); drawMarkers();
   renderList('list-seoul','seoul');
   renderList('list-busan','busan');
   renderList('list-jeju','jeju');
@@ -567,7 +680,7 @@ function drawWalkRings(){
   });
 }
 
-function markerMatchesFilter(p,f){
+function placeMatchesCityFilter(p,f){
   if(f==='all')return true;
   if(f===p.city)return true;
   if(f==='airbnb'&&p.city==='airbnb')return true;
@@ -578,10 +691,17 @@ function markerMatchesFilter(p,f){
   return false;
 }
 
+function placeMatchesCatFilter(p) {
+  if (globalCatFilter.size === 0) return true;
+  if (!p.cats || p.cats.length === 0) return p.city === 'airbnb'; // always show airbnbs
+  return p.cats.some(function(c){ return globalCatFilter.has(c); });
+}
+
 function drawMarkers(){
   markersLayer.clearLayers();
   ALL_PLACES.forEach(function(p){
-    if(!markerMatchesFilter(p,currentFilter))return;
+    if(!placeMatchesCityFilter(p,currentFilter))return;
+    if(!placeMatchesCatFilter(p))return;
     var color=COLORS[p.city]||'#c0392b';
     var el=document.createElement('div');
     if(p.city==='airbnb'){
@@ -590,10 +710,21 @@ function drawMarkers(){
     } else if(p.id==='icn'){
       el.innerHTML='<div style="background:#1a1a2e;color:#d4a853;padding:3px 7px;border-radius:10px;font-size:9px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.4);border:1px solid #d4a853">✈ ICN</div>';
     } else {
-      el.innerHTML='<div style="width:14px;height:14px;border-radius:50%;background:'+color+';border:2.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,0.4)"></div>';
+      // Show category icon on marker if a single cat filter is active
+      var markerCat = (globalCatFilter.size === 1 && p.cats && p.cats.length > 0)
+        ? Array.from(globalCatFilter).find(function(c){ return p.cats.includes(c); })
+        : null;
+      var icon = markerCat ? CAT_ICONS[markerCat] : '';
+      var markerColor = markerCat ? CAT_COLORS[markerCat] : color;
+      if (icon) {
+        el.innerHTML='<div style="background:'+markerColor+';color:#fff;width:26px;height:26px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1">'+icon+'</div>';
+      } else {
+        el.innerHTML='<div style="width:14px;height:14px;border-radius:50%;background:'+color+';border:2.5px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,0.4)"></div>';
+      }
     }
     el.style.cursor='pointer';
     var anchor=p.city==='airbnb'?[12,24]:p.id==='icn'?[20,10]:[7,7];
+    if(p.city!=='airbnb'&&p.id!=='icn'&&globalCatFilter.size===1){anchor=[13,13];}
     var icon=L.divIcon({html:el.innerHTML,className:'',iconAnchor:anchor});
     var m=L.marker([p.lat,p.lng],{icon:icon}).addTo(markersLayer);
     (function(place){m.on('click',function(){showPopup(place);});})(p);
@@ -603,7 +734,16 @@ function drawMarkers(){
 function showPopup(p){
   var color=COLORS[p.city]||'#888';
   var cityLabel={seoul:'Seoul',busan:'Busan',jeju:'Jeju Island',daytrip:'Day Trip',airbnb:'Airbnb'}[p.city]||p.city;
-  var inner='<div class="pu-h"><span class="pu-tag" style="background:'+color+'">'+cityLabel+'</span><div class="pu-ti">'+p.name+'</div></div><div class="pu-bd">';
+  var inner='<div class="pu-h"><span class="pu-tag" style="background:'+color+'">'+cityLabel+'</span>';
+  // Show category tags in popup
+  if(p.cats && p.cats.length > 0){
+    inner += '<div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:4px;">';
+    p.cats.forEach(function(c){
+      inner += '<span style="background:'+CAT_COLORS[c]+';color:#fff;padding:1px 5px;border-radius:8px;font-size:7.5px;font-weight:700;text-transform:uppercase">'+(CAT_ICONS[c]||'')+' '+c+'</span>';
+    });
+    inner += '</div>';
+  }
+  inner += '<div class="pu-ti">'+p.name+'</div></div><div class="pu-bd">';
   if(p.rows){inner+='<div class="pu-rows">'+p.rows.map(function(r){return'<div class="pu-row"><span class="pu-lbl">'+r.l+'</span><span class="pu-val">'+r.v+'</span></div>';}).join('')+'</div><a href="'+p.url+'" target="_blank" class="pu-btn">View on Airbnb →</a>';}
   else{inner+='<div class="pu-desc">'+p.sub+'</div>';}
   inner+='</div>';
@@ -613,15 +753,12 @@ function showPopup(p){
   var pt=map.latLngToContainerPoint([p.lat,p.lng]);
   var wrap=document.getElementById('mapwrap');
   var W=wrap.clientWidth,H=wrap.clientHeight;
-  var pw=250,ph=180;
-  var left=pt.x+15;
-  var top=pt.y-20;
+  var pw=250,ph=200;
+  var left=pt.x+15,top=pt.y-20;
   if(left+pw>W-10)left=pt.x-pw-15;
   if(top+ph>H-10)top=H-ph-10;
-  if(top<5)top=5;
-  if(left<5)left=5;
-  pu.style.left=left+'px';
-  pu.style.top=top+'px';
+  if(top<5)top=5;if(left<5)left=5;
+  pu.style.left=left+'px';pu.style.top=top+'px';
 }
 function closePopup(){document.getElementById('popup').style.display='none';}
 
@@ -663,21 +800,55 @@ window.doFilter=function(f,btn){
   document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
   currentFilter=f;
-  drawSubway();
-  drawTransport();
+  drawSubway();drawTransport();
   var viewMap={all:'all',seoul:'seoul',busan:'busan',jeju:'jeju',airbnb:'all',daytrip:'all'};
   var vk=viewMap[f];
   if(vk){var tabEl=document.getElementById('tab-'+vk);window.goView(vk,tabEl||null);}
   else{drawMarkers();}
 };
 
-window.tog=function(n){var b=document.getElementById('sec-'+n);var a=document.getElementById('ar-'+n);if(!b)return;b.classList.toggle('open');if(a)a.innerHTML=b.classList.contains('open')?'▾':'▶';};
+window.tog=function(n){
+  var b=document.getElementById('sec-'+n);
+  var a=document.getElementById('ar-'+n);
+  if(!b)return;
+  b.classList.toggle('open');
+  if(a)a.innerHTML=b.classList.contains('open')?'▾':'▶';
+};
 
-function renderList(elId,city){
-  var items=PLACES.filter(function(p){return p.city===city;});
-  document.getElementById(elId).innerHTML=items.map(function(p){
-    return'<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')">'+'<div style="width:8px;height:8px;border-radius:50%;background:'+(COLORS[p.city]||'#c0392b')+';flex-shrink:0;margin-top:4px"></div><div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div></div></div>';
-  }).join('');
+function renderList(elId, city){
+  var citySet = activeCats[city] || new Set();
+  var items;
+  if (city === 'daytrip') {
+    items = PLACES.filter(function(p){ return p.city === 'daytrip'; });
+  } else {
+    items = PLACES.filter(function(p){
+      if(p.city !== city) return false;
+      if(p.id === 'icn') return false;
+      if(citySet.size === 0) return true;
+      return p.cats && p.cats.some(function(c){ return citySet.has(c); });
+    });
+  }
+
+  var noResults = items.length === 0;
+  var html = '';
+  if(noResults && citySet.size > 0){
+    html = '<div style="padding:14px 12px;font-size:10px;color:var(--muted);text-align:center;">No spots match these filters.<br><span style="font-size:9px">Try removing a filter above.</span></div>';
+  } else {
+    html = items.map(function(p){
+      var color = COLORS[p.city] || '#c0392b';
+      var badges = '';
+      if(p.cats && p.cats.length > 0){
+        badges = '<div class="pi-cats">' + p.cats.map(function(c){
+          return '<span class="pi-cat-badge" style="background:'+CAT_COLORS[c]+'">'+(CAT_ICONS[c]||'')+' '+c+'</span>';
+        }).join('') + '</div>';
+      }
+      return '<div class="pi" id="pi-'+p.id+'" onclick="focusPlace(\''+p.id+'\')">'
+        +'<div style="width:8px;height:8px;border-radius:50%;background:'+color+';flex-shrink:0;margin-top:4px"></div>'
+        +'<div><div class="pi-n">'+p.name+'</div><div class="pi-s">'+p.sub+'</div>'+badges+'</div>'
+        +'</div>';
+    }).join('');
+  }
+  document.getElementById(elId).innerHTML = html;
 }
 
 window.tgCity=function(id,btn){
@@ -688,6 +859,7 @@ window.tgCity=function(id,btn){
   document.querySelectorAll('#sec-tg .fbtn').forEach(function(b){b.classList.remove('on');});
   if(btn)btn.classList.add('on');
 };
+
 window.toggleSidebar=function(){
   var sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');
   var isOpen=sb.classList.toggle('open');
