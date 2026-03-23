@@ -1071,12 +1071,18 @@ window.goTodo=function(btn){
 };
 
 // Patch goView to hide todo view
-var _origGoView=window.goView;
 window.goView=function(v,btn){
   document.getElementById('todo-view').classList.remove('active');
   document.getElementById('body').style.display='flex';
   document.querySelector('.hleg') && (document.querySelector('.hleg').style.visibility='');
-  if(_origGoView)_origGoView(v,btn);
+  // Update tab active state
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+  if(btn)btn.classList.add('on');
+  else{var tabEl=document.getElementById('tab-'+v);if(tabEl)tabEl.classList.add('on');}
+  // Navigate map to the selected view
+  currentFilter=v==='all'?'all':v;
+  drawSubway();drawTransport();drawMarkers();
+  if(map&&VIEWS[v])map.flyTo([VIEWS[v].lat,VIEWS[v].lng],VIEWS[v].z,{duration:0.6});
 };
 
 // ════════════════════════════════════════
